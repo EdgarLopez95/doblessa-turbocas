@@ -17,6 +17,13 @@ interface Props {
 }
 
 const { item, index = 0 } = Astro.props;
+
+// La referencia elegida viaja al formulario para no perder la selección.
+const query = new URLSearchParams({
+  servicio: 'Consulta de catálogo o referencia',
+  ref: item.reference ? `${item.name} · ref. ${item.reference}` : item.name,
+});
+const requestHref = `${url('contacto/')}?${query.toString()}#formulario`;
 ---
 
 <article class="product" data-reveal style={`--i: ${index}`}>
@@ -34,7 +41,7 @@ const { item, index = 0 } = Astro.props;
     </dl>
     <p class="status"><Icon name="search" size={16} /> Consulta compatibilidad</p>
     <p class="note"><Icon name="info" size={16} /> {item.note}</p>
-    <a class="btn btn-outline btn-sm confirm" href={url('contacto/#formulario')}>
+    <a class="btn btn-outline btn-sm confirm" href={requestHref}>
       Confirmar compatibilidad<span class="visually-hidden"> de {item.name}</span>
     </a>
   </div>

@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { serviceOptions } from '../data/site';
+import { business, serviceOptions } from '../data/site';
 import { url } from '../lib/url';
 
 interface Props {
@@ -32,6 +32,11 @@ const f = (name: string) => `${id}-${name}`;
   <p class="notice" id={f('aviso')}>
     <Icon name="info" size={20} />
     <span>Formulario demostrativo: no envía ni guarda ningún dato.</span>
+  </p>
+
+  <p class="from-ref" data-from-ref hidden>
+    <Icon name="package" size={20} />
+    <span>Consulta sobre <strong data-from-ref-text></strong></span>
   </p>
 
   <form novalidate aria-labelledby={f('titulo')} aria-describedby={f('aviso')}>
@@ -105,18 +110,72 @@ const f = (name: string) => `${id}-${name}`;
 
     <div class="status" role="status" aria-live="polite" data-status></div>
   </form>
+
+  <div class="summary" data-summary hidden>
+    <h3 class="sum-title" tabindex="-1" data-summary-title>
+      <span class="sum-check"><Icon name="check" size={20} /></span>
+      Resumen de tu solicitud
+    </h3>
+    <p class="notice sum-demo">
+      <Icon name="info" size={20} />
+      <span>Solicitud demostrativa: en la web real este formulario conectará con el equipo de Turbocas.</span>
+    </p>
+    <dl class="sum-list" data-summary-list></dl>
+    <p class="sum-next">Qué pasaría a continuación</p>
+    <ol class="sum-steps">
+      <li><span>01</span> Revisamos los datos del vehículo y los síntomas.</li>
+      <li><span>02</span> Te contactamos para aclarar lo que necesitemos.</li>
+      <li><span>03</span> Te indicamos el diagnóstico necesario y el presupuesto, sin compromiso de reparar.</li>
+    </ol>
+    <div class="sum-actions">
+      <button class="btn btn-outline btn-sm" type="button" data-edit>Modificar la solicitud</button>
+      <a class="btn btn-secondary btn-sm" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+    </div>
+  </div>
 </div>
 
 <script>
   const PHONE = /^(\+?34)?[\s-]*[6789](?:[\s-]*\d){8}$/;
   const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+  const LABELS: Record<string, string> = {
+    servicio: 'Servicio',
+    vehiculo: 'Vehículo o referencia',
+    nombre: 'Nombre',
+    localidad: 'Localidad',
+    contacto: 'Teléfono o email',
+    caso: 'Descripción del caso',
+  };
+
   document.querySelectorAll<HTMLElement>('[data-demo-form]').forEach((wrap) => {
     const form = wrap.querySelector('form');
     const submit = wrap.querySelector<HTMLButtonElement>('[data-submit]');
     const status = wrap.querySelector<HTMLElement>('[data-status]');
+    const summary = wrap.querySelector<HTMLElement>('[data-summary]');
+    const summaryList = wrap.querySelector<HTMLElement>('[data-summary-list]');
+    const summaryTitle = wrap.querySelector<HTMLElement>('[data-summary-title]');
     if (!form || !submit || !status) return;
     submit.disabled = false;
+
+    // La selección hecha en el catálogo o en una landing llega por la URL.
+    const params = new URLSearchParams(window.location.search);
+    const service = form.querySelector<HTMLSelectElement>('select[name="servicio"]');
+    const vehicle = form.querySelector<HTMLInputElement>('input[name="vehiculo"]');
+    const preService = params.get('servicio');
+    const preRef = params.get('ref')?.slice(0, 120);
+
+    if (service && preService && Array.from(service.options).some((o) => o.value === preService)) {
+      service.value = preService;
+    }
+    if (vehicle && preRef) {
+      vehicle.value = preRef;
+      const chip = wrap.querySelector<HTMLElement>('[data-from-ref]');
+      const chipText = wrap.querySelector<HTMLElement>('[data-from-ref-text]');
+      if (chip && chipText) {
+        chipText.textContent = preRef;
+        chip.hidden = false;
+      }
+    }
 
     const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[required]'));
 
@@ -153,9 +212,43 @@ const f = (name: string) => `${id}-${name}`;
         invalid[0].focus();
         return;
       }
-      status.className = 'status is-success';
-      status.textContent =
-        'Solicitud demostrativa: en la web real este formulario conectará con el equipo de Turbocas.';
+      status.className = 'status';
+      status.textContent = '';
+
+      if (!summary || !summaryList) {
+        status.className = 'status is-success';
+        status.textContent =
+          'Solicitud demostrativa: en la web real este formulario conectará con el equipo de Turbocas.';
+        return;
+      }
+
+      // Pantalla de confirmación con el resumen de lo indicado.
+      summaryList.replaceChildren();
+      for (const [name, label] of Object.entries(LABELS)) {
+        const field = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+          `[name="${name}"]`,
+        );
+        const value = field?.value.trim();
+        if (!value) continue;
+        const row = document.createElement('div');
+        const dt = document.createElement('dt');
+        dt.textContent = label;
+        const dd = document.createElement('dd');
+        dd.textContent = value;
+        row.append(dt, dd);
+        summaryList.append(row);
+      }
+
+      form.hidden = true;
+      summary.hidden = false;
+      summaryTitle?.focus();
+    });
+
+    wrap.querySelector<HTMLButtonElement>('[data-edit]')?.addEventListener('click', () => {
+      if (!summary) return;
+      summary.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLElement>('select, input, textarea')?.focus();
     });
   });
 </script>
@@ -264,5 +357,123 @@ const f = (name: string) => `${id}-${name}`;
     background: #fdece8;
     color: var(--signal-700);
     border-left: 3px solid var(--signal-500);
+  }
+
+  .from-ref {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    border: 1px dashed var(--steel-500);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .from-ref :global(svg) {
+    flex: none;
+    margin-top: 1px;
+  }
+
+  /* Confirmación */
+  .summary {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .sum-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+
+  .sum-title:focus {
+    outline: none;
+  }
+
+  .sum-check {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border-radius: 50%;
+    background: #e7f4ec;
+    color: var(--success-600);
+  }
+
+  .sum-demo {
+    border-left-color: var(--success-600);
+  }
+
+  .sum-list {
+    display: grid;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .sum-list :global(div) {
+    display: grid;
+    gap: 2px;
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (min-width: 560px) {
+    .sum-list :global(div) {
+      grid-template-columns: 180px 1fr;
+      gap: var(--s-4);
+    }
+  }
+
+  .sum-list :global(dt) {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel-700);
+  }
+
+  .sum-list :global(dd) {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .sum-next {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .sum-steps {
+    list-style: none;
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .sum-steps li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: var(--s-2);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .sum-steps span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink-950);
+  }
+
+  .sum-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
   }
 </style>

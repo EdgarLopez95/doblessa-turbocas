@@ -60,6 +60,7 @@ Copiadas con `scripts/prepare-images.mjs` (lectura de `../Recursos`, sin modific
 - **Logotipos de fabricantes:** el SVG de marcas solo aparece en la landing de turbos, con aviso de autorización pendiente.
 - **Galerías:** distinguen fotografía real, "Ilustración" e "Imagen de referencia".
 - **Formularios:** el botón se activa con JS y el envío se bloquea siempre, mostrando el mensaje demostrativo; sin JS no se envía nada.
+- **Flujo de solicitud:** la referencia elegida en el catálogo viaja al formulario por la URL (`?servicio=&ref=`) y lo prellena; al enviar se muestra una pantalla de confirmación con el resumen de lo indicado, los siguientes pasos y la opción de modificar la solicitud. Estados cubiertos: selección, prellenado, error inline, confirmación y 404.
 - **WhatsApp:** botón "Próximamente", sin número.
 - **Mapa:** plano ilustrativo rotulado como no interactivo.
 - **JSON-LD:** `AutoRepair` solo con nombre, teléfono y dirección de la auditoría (sin horario, email, geo ni sameAs); `Service` en las landings; `ItemList`/`Product` sin precio ni stock en el catálogo.

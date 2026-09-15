@@ -100,9 +100,9 @@ const itemList = {
   <PageHero
     tone="light"
     tag="Catálogo de muestra"
-    title="Turbocompresores y recambios"
+    title="Catálogo de turbocompresores y recambios"
     lead="Referencias de ejemplo de turbos completos, cartuchos CHRA y juntas. Antes de cualquier pedido confirmamos contigo la compatibilidad con tu vehículo."
-    crumbs={[{ label: 'Catálogo de turbos', href: 'catalogo-turbos/' }]}
+    crumbs={[{ label: 'Catálogo', href: 'catalogo-turbos/' }]}
   >
     <p class="note-box hero-note" slot="media">
       <Icon name="info" size={20} />
@@ -125,7 +125,7 @@ const itemList = {
           <Icon name="search" size={32} />
           <h3>¿No encuentras tu turbo?</h3>
           <p>Envíanos la referencia o los datos de tu vehículo y buscamos la opción adecuada.</p>
-          <a class="btn btn-primary btn-sm" href={url('contacto/#formulario')}>Consultar referencia</a>
+          <a class="btn btn-primary btn-sm" href={`${url('contacto/')}?servicio=${encodeURIComponent('Consulta de catálogo o referencia')}#formulario`}>Consultar referencia</a>
         </article>
       </div>
     </div>
@@ -153,7 +153,7 @@ const itemList = {
           <p class="muted">El catálogo solo muestra algunas referencias. Cuéntanos qué necesitas: también valoramos la reconstrucción de tu turbo actual.</p>
         </div>
         <div class="actions">
-          <a class="btn btn-primary" href={url('contacto/#formulario')}>Solicitar presupuesto <Icon name="arrow" /></a>
+          <a class="btn btn-primary" href={`${url('contacto/')}?servicio=${encodeURIComponent('Consulta de catálogo o referencia')}#formulario`}>Solicitar presupuesto <Icon name="arrow" /></a>
           <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
         </div>
       </div>
