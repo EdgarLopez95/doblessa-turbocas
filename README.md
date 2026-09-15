@@ -12,6 +12,17 @@ npm run build
 
 El sitio se publica automáticamente en GitHub Pages al hacer push a `main`.
 
+## Estructura
+
+- `src/pages/`: una ruta por pantalla, más `sitemap.xml` y `robots.txt` generados.
+- `src/components/`: header, footer, cards, proceso, galería, FAQ, formulario demostrativo, catálogo…
+- `src/data/site.ts`: datos de negocio, servicios y navegación. `src/lib/url.ts` construye todas las rutas bajo la base `/doblessa-turbocas`.
+- `design/`: brief, dirección visual y críticas de diseño (las capturas de `design/qa/` no se versionan).
+
+## Imágenes
+
+`node scripts/prepare-images.mjs` copia desde `../Recursos/recursos-web/imagenes/` solo los recursos usados y genera variantes WebP en `public/images/`. No modifica `Recursos/`.
+
 - Repositorio: `https://github.com/EdgarLopez95/doblessa-turbocas`
 - Presentación: `https://edgarlopez95.github.io/doblessa-turbocas/`
 
