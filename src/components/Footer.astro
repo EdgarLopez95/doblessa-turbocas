@@ -59,6 +59,13 @@ const legalLinks = [
     </div>
   </div>
 
+  <div class="container warranty-box">
+    <p class="warranty-note">
+      <Icon name="shield" size={20} />
+      <span>Trabajamos con garantía. El plazo y las condiciones las confirmará Turbocas en el presupuesto.</span>
+    </p>
+  </div>
+
   <div class="container bottom">
     <p>© Turbocas · Propuesta de rediseño. Datos de contacto y contenidos pendientes de validación por el cliente.</p>
     <nav aria-label="Legal">
@@ -170,14 +177,34 @@ const legalLinks = [
     margin-top: var(--s-6);
   }
 
+  .warranty-box {
+    margin-top: var(--s-12);
+    padding-block: var(--s-4);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .warranty-note {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: 0.9375rem;
+    color: var(--steel-300);
+    line-height: 1.4;
+  }
+
+  .warranty-note :global(svg) {
+    color: var(--turbo-500);
+    flex: none;
+  }
+
   .bottom {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--s-3) var(--s-6);
-    margin-top: var(--s-16);
-    padding-top: var(--s-6);
-    border-top: 1px solid rgb(255 255 255 / 0.12);
+    margin-top: var(--s-6);
+    padding-top: var(--s-2);
     font-size: 0.8125rem;
     color: var(--steel-300);
   }
