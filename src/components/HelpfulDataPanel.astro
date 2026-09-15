@@ -1,0 +1,83 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  vehicleBullet?: string;
+  pieceBullet?: string;
+  class?: string;
+}
+
+const {
+  vehicleBullet = 'Marca, modelo, motor y año del vehículo',
+  pieceBullet = 'Referencia de la pieza si está en la placa (si no la tienes, no pasa nada)',
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['helpful-panel', className]}>
+  <div class="hp-head">
+    <span class="hp-icon"><Icon name="clipboard" size={20} /></span>
+    <h3 class="hp-title">Qué datos nos ayudan</h3>
+  </div>
+  <ul class="hp-list">
+    <li>{vehicleBullet}</li>
+    <li>{pieceBullet}</li>
+    <li>Síntomas o testigos que ves</li>
+    <li>Si puedes, una foto de la pieza o del cuadro</li>
+    <li>Si envías la pieza desde fuera de Castellón: consúltanos ANTES de expedirla</li>
+  </ul>
+  <p class="hp-note">No hace falta que sepas el código técnico. Con esto podemos orientarte.</p>
+</div>
+
+<style>
+  .helpful-panel {
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--turbo-500);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .hp-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .hp-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--steel-100);
+    color: var(--ink-950);
+    flex: none;
+  }
+
+  .hp-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .hp-list {
+    list-style: disc;
+    padding-left: var(--s-6);
+    display: grid;
+    gap: 6px;
+    color: var(--text-strong);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .hp-note {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--steel-700);
+    margin-top: var(--s-1);
+    padding-top: var(--s-3);
+    border-top: 1px dashed var(--border);
+  }
+</style>
