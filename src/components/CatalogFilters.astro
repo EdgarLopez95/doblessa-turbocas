@@ -12,8 +12,8 @@ const { categories } = Astro.props;
   <div class="head">
     <h2 id="filtros-titulo" class="visually-hidden">Buscar en el catálogo</h2>
     <p class="demo" id="filtros-aviso">
-      <Icon name="info" size={18} />
-      Vista demostrativa: la búsqueda y los filtros no están activos en este prototipo.
+      <Icon name="info" size={20} />
+      <span>Filtros de demostración. En la web real podrás buscar por referencia. En este mockup recorre las fichas de ejemplo o usa «¿No encuentras tu turbo?».</span>
     </p>
   </div>
 
@@ -61,15 +61,22 @@ const { categories } = Astro.props;
 
   .demo {
     display: flex;
-    gap: var(--s-2);
-    align-items: center;
-    font-size: 0.875rem;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    background: var(--steel-100);
+    border-left: 3px solid var(--turbo-500);
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
     font-weight: 500;
-    color: var(--ink-800);
+    color: var(--ink-900);
+    line-height: 1.45;
   }
 
   .demo :global(svg) {
     flex: none;
+    margin-top: 2px;
+    color: var(--turbo-600);
   }
 
   .controls {
