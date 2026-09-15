@@ -1,0 +1,96 @@
+---
+import JsonLd from './JsonLd.astro';
+import { absolute, url } from '../lib/url';
+
+interface Crumb {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  /** Migas después de "Inicio". La última es la página actual. */
+  items: Crumb[];
+  tone?: 'light' | 'dark';
+}
+
+const { items, tone = 'light' } = Astro.props;
+const all = [{ label: 'Inicio', href: '' }, ...items];
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: absolute(c.href),
+  })),
+};
+---
+
+<nav class:list={['crumbs', tone]} aria-label="Migas de pan">
+  <ol>
+    {
+      all.map((c, i) => (
+        <li>
+          {i < all.length - 1 ? (
+            <a href={url(c.href)}>{c.label}</a>
+          ) : (
+            <span aria-current="page">{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<JsonLd data={data} />
+
+<style>
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    font-size: 0.8125rem;
+  }
+
+  li {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  li + li::before {
+    content: '/';
+    margin-inline: 8px;
+    opacity: 0.6;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+  }
+
+  a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .light {
+    color: var(--steel-700);
+  }
+
+  .light [aria-current] {
+    color: var(--ink-950);
+    font-weight: 600;
+  }
+
+  .dark {
+    color: var(--steel-300);
+  }
+
+  .dark [aria-current] {
+    color: var(--white);
+    font-weight: 600;
+  }
+</style>

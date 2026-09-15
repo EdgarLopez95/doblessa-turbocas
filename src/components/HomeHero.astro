@@ -1,0 +1,299 @@
+---
+import Icon from './Icon.astro';
+import Img from './Img.astro';
+import { business } from '../data/site';
+import { url } from '../lib/url';
+
+const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brida de turbina'];
+---
+
+<section class="hero surface-dark blueprint">
+  <div class="container grid">
+    <div class="copy">
+      <p class="tag">Laboratorio de turbos · FAP · Direcciones hidráulicas</p>
+      <h1>Reparación y reconstrucción de turbos en Castellón</h1>
+      <p class="lead">
+        <strong>Recupera el rendimiento de tu vehículo.</strong> Diagnosticamos, reconstruimos y comprobamos en banco
+        turbocompresores, filtros de partículas y direcciones hidráulicas para particulares y talleres, en Castellón y
+        fuera de la provincia.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href={url('contacto/#formulario')}>Diagnosticar mi caso <Icon name="arrow" /></a>
+        <a class="link-arrow on-dark-link" href={url('servicios/')}>Ver servicios <Icon name="arrow" /></a>
+      </div>
+      <p class="call">
+        ¿Prefieres contarlo por teléfono? <a href={business.phoneHref}>Llama al {business.phoneDisplay}</a>
+      </p>
+    </div>
+
+    <figure class="visual">
+      <div class="stage">
+        <svg class="dims" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M6 98.5H94M6 97v3M94 97v3M1.5 6V94M0 6h3M0 94h3"></path>
+        </svg>
+        <div class="plate">
+          <Img
+            class="turbo"
+            src="catalogo/turbo-gt2052v-audi-v6-tdi.jpg"
+            alt="Turbocompresor de geometría variable GT2052V con entrada del compresor, actuador y brida de turbina"
+            width={1000}
+            height={1000}
+            priority
+          />
+        </div>
+        <svg class="callouts" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <polyline style="--d: 0" pathLength="1" points="51.6,31.4 58,3 100,3"></polyline>
+          <circle cx="51.6" cy="31.4" r="1.2"></circle>
+          <polyline style="--d: 1" pathLength="1" points="75.1,50 86,74 100,74"></polyline>
+          <circle cx="75.1" cy="50" r="1.2"></circle>
+          <polyline style="--d: 2" pathLength="1" points="29.8,66.2 18,94 0,94"></polyline>
+          <circle cx="29.8" cy="66.2" r="1.2"></circle>
+        </svg>
+        {
+          parts.map((p, i) => (
+            <span class:list={['callout', `c${i + 1}`]} aria-hidden="true">
+              <b>{String(i + 1).padStart(2, '0')}</b>
+              <span class="c-text">{p}</span>
+            </span>
+          ))
+        }
+      </div>
+      <ol class="legend" aria-label="Partes señaladas">
+        {parts.map((p, i) => <li><b>{String(i + 1).padStart(2, '0')}</b> {p}</li>)}
+      </ol>
+      <figcaption class="motto">Precisión que devuelve potencia</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--s-10) 120px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--s-16) 152px;
+    }
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-16);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--s-10);
+    }
+  }
+
+  .copy {
+    display: grid;
+    gap: var(--s-6);
+    justify-items: start;
+  }
+
+  h1 {
+    max-width: 18ch;
+    font-size: clamp(2.625rem, 1.5rem + 3.6vw, 4rem);
+    line-height: 1.02;
+  }
+
+  .lead strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .on-dark-link {
+    color: var(--white);
+  }
+
+  .call {
+    font-size: 0.9375rem;
+    color: var(--steel-300);
+  }
+
+  .call a {
+    color: var(--white);
+    font-weight: 600;
+    text-decoration-color: var(--turbo-500);
+    text-decoration-thickness: 2px;
+    display: inline-block;
+    padding-block: 10px;
+  }
+
+  .visual {
+    margin: 0;
+    justify-self: center;
+    width: min(100%, 500px);
+  }
+
+  .stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+  }
+
+  .dims {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--turbo-500);
+    stroke-width: 0.35;
+    opacity: 0.7;
+  }
+
+  .plate {
+    position: absolute;
+    inset: 6%;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.7);
+    overflow: hidden;
+  }
+
+  .plate :global(.turbo) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4%;
+  }
+
+  .callouts {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .callouts polyline {
+    fill: none;
+    stroke: var(--turbo-600);
+    stroke-width: 0.35;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .callouts circle {
+    fill: var(--turbo-500);
+    stroke: var(--ink-950);
+    stroke-width: 0.4;
+  }
+
+  .callout {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: var(--ink-950);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--white);
+    transform: translateY(calc(-100% - 3px));
+  }
+
+  .callout b {
+    color: var(--turbo-500);
+  }
+
+  .c-text {
+    display: none;
+  }
+
+  .c1 {
+    right: 0;
+    top: 3%;
+  }
+
+  .c2 {
+    right: 0;
+    top: 74%;
+  }
+
+  .c3 {
+    left: 0;
+    top: 94%;
+  }
+
+  .legend {
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    margin-top: var(--s-6);
+    font-size: 0.875rem;
+    color: var(--steel-300);
+  }
+
+  .legend b {
+    font-family: var(--font-display);
+    color: var(--turbo-500);
+    margin-right: 6px;
+  }
+
+  @media (min-width: 560px) {
+    .c-text {
+      display: inline;
+    }
+    .legend {
+      display: none;
+    }
+  }
+
+  .motto {
+    margin-top: var(--s-4);
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--steel-300);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .plate {
+      animation: rise 240ms var(--ease-out) both;
+    }
+    .callouts polyline {
+      animation: draw 240ms var(--ease-out) both;
+      animation-delay: calc(280ms + var(--d) * 80ms);
+    }
+    .callouts circle,
+    .callout {
+      animation: fade 200ms var(--ease-out) both;
+      animation-delay: 520ms;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+</style>

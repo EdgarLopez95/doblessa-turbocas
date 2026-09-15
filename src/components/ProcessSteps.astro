@@ -1,0 +1,145 @@
+---
+import { processSteps } from '../data/site';
+
+interface Step {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  steps?: Step[];
+  tone?: 'dark' | 'light';
+}
+
+const { steps = processSteps, tone = 'dark' } = Astro.props;
+---
+
+<ol class:list={['process', tone]} style={`--count: ${steps.length}`}>
+  {
+    steps.map((step, i) => (
+      <li class="step" data-reveal style={`--i: ${i}`}>
+        <span class="node" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h3 class="step-title">
+          <span class="visually-hidden">Paso {i + 1}: </span>
+          {step.title}
+        </h3>
+        <p class="step-text">{step.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .process {
+    list-style: none;
+    display: grid;
+    gap: 0;
+    position: relative;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    column-gap: var(--s-4);
+    padding-bottom: var(--s-10);
+  }
+
+  .step:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Línea de flujo vertical (móvil) */
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 56px;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(180deg, currentColor 0 6px, transparent 6px 12px);
+    opacity: 0.35;
+  }
+
+  .step:last-child::before {
+    display: none;
+  }
+
+  .node {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--turbo-500);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .step-title {
+    font-size: 1.5rem;
+    align-self: center;
+    padding-top: 12px;
+  }
+
+  .step-text {
+    margin-top: var(--s-2);
+    max-width: 44ch;
+  }
+
+  .dark .node {
+    background: var(--ink-950);
+    color: var(--turbo-500);
+  }
+
+  .dark .step-text {
+    color: var(--steel-300);
+  }
+
+  .light .node {
+    background: var(--white);
+    color: var(--ink-950);
+  }
+
+  .light .step-text {
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 900px) {
+    .process {
+      grid-template-columns: repeat(var(--count), 1fr);
+      column-gap: var(--s-6);
+    }
+
+    .step {
+      grid-template-columns: 1fr;
+      padding-bottom: 0;
+      align-content: start;
+    }
+
+    .node {
+      grid-row: auto;
+      margin-bottom: var(--s-4);
+    }
+
+    .step-title {
+      padding-top: 0;
+    }
+
+    /* Línea de flujo horizontal que conecta nodos */
+    .step::before {
+      left: 72px;
+      right: calc(-1 * var(--s-6) + 8px);
+      top: 27px;
+      bottom: auto;
+      width: auto;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 12px);
+    }
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+interface Props {
+  tag?: string;
+  title: string;
+  lead?: string;
+  id?: string;
+  /** rule: H2 grande a todo el ancho con línea de cota y entradilla debajo. */
+  align?: 'start' | 'split' | 'rule';
+  level?: 'h2' | 'h3';
+}
+
+const { tag, title, lead, id, align = 'start', level = 'h2' } = Astro.props;
+const Heading = level;
+---
+
+<div class:list={['heading', align]}>
+  <div class="head-main">
+    {tag && <p class="tag">{tag}</p>}
+    <Heading id={id}>{title}</Heading>
+  </div>
+  {align === 'rule' && <span class="cota" aria-hidden="true" />}
+  {(lead || Astro.slots.has('default')) && (
+    <div class="head-aside">
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+  )}
+</div>
+
+<style>
+  .heading {
+    display: grid;
+    gap: var(--s-4);
+    margin-bottom: var(--s-10);
+  }
+
+  .head-main {
+    display: grid;
+    gap: var(--s-3);
+    max-width: 22ch;
+  }
+
+  .start .head-main {
+    max-width: 30ch;
+  }
+
+  .head-aside {
+    display: grid;
+    gap: var(--s-4);
+    align-content: end;
+  }
+
+  .rule .head-main {
+    max-width: 46rem;
+  }
+
+  .rule .head-main :global(h2) {
+    font-size: clamp(2.25rem, 1.5rem + 2.4vw, 3.25rem);
+    line-height: 1.05;
+  }
+
+  .rule .head-aside {
+    max-width: 68ch;
+  }
+
+  .cota {
+    position: relative;
+    display: block;
+    height: 1px;
+    margin-block: var(--s-2);
+    background: var(--turbo-500);
+  }
+
+  .cota::before,
+  .cota::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 1px;
+    height: 11px;
+    background: var(--turbo-500);
+  }
+
+  .cota::before {
+    left: 0;
+  }
+
+  .cota::after {
+    right: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .split {
+      grid-template-columns: 5fr 6fr;
+      gap: var(--s-6);
+      column-gap: calc(var(--s-6) * 3);
+      align-items: end;
+    }
+    .split .head-main {
+      max-width: none;
+    }
+  }
+</style>

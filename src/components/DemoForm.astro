@@ -1,0 +1,268 @@
+---
+import Icon from './Icon.astro';
+import { serviceOptions } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  /** Prefijo único para los ids de los campos. */
+  id: string;
+  title: string;
+  intro?: string;
+  submitLabel?: string;
+  defaultService?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const {
+  id,
+  title,
+  intro,
+  submitLabel = 'Solicitar diagnóstico',
+  defaultService,
+  headingLevel = 'h2',
+} = Astro.props;
+const Heading = headingLevel;
+const f = (name: string) => `${id}-${name}`;
+---
+
+<div class="demo-form" data-demo-form>
+  <Heading class="form-title" id={f('titulo')}>{title}</Heading>
+  {intro && <p class="form-intro">{intro}</p>}
+
+  <p class="notice" id={f('aviso')}>
+    <Icon name="info" size={20} />
+    <span>Formulario demostrativo: no envía ni guarda ningún dato.</span>
+  </p>
+
+  <form novalidate aria-labelledby={f('titulo')} aria-describedby={f('aviso')}>
+    <div class="field">
+      <label for={f('servicio')}>¿Qué necesitas?</label>
+      <select class="input" id={f('servicio')} name="servicio" required aria-describedby={f('servicio-error')}>
+        <option value="">Selecciona una opción</option>
+        {serviceOptions.map((o) => <option selected={o === defaultService}>{o}</option>)}
+      </select>
+      <p class="error" id={f('servicio-error')} hidden>Elige el tipo de servicio.</p>
+    </div>
+
+    <div class="field">
+      <label for={f('vehiculo')}>Vehículo o referencia <span class="optional">(opcional)</span></label>
+      <input class="input" id={f('vehiculo')} name="vehiculo" type="text" autocomplete="off" aria-describedby={f('vehiculo-hint')} />
+      <p class="hint" id={f('vehiculo-hint')}>Marca, modelo, motor o la referencia de la pieza si la tienes.</p>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for={f('nombre')}>Nombre</label>
+        <input class="input" id={f('nombre')} name="nombre" type="text" autocomplete="name" required aria-describedby={f('nombre-error')} />
+        <p class="error" id={f('nombre-error')} hidden>Indica tu nombre.</p>
+      </div>
+      <div class="field">
+        <label for={f('localidad')}>Localidad</label>
+        <input class="input" id={f('localidad')} name="localidad" type="text" autocomplete="address-level2" required aria-describedby={f('localidad-error')} />
+        <p class="error" id={f('localidad-error')} hidden>Indica tu localidad.</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for={f('contacto')}>Teléfono o email</label>
+      <input
+        class="input"
+        id={f('contacto')}
+        name="contacto"
+        type="text"
+        inputmode="email"
+        autocomplete="email"
+        required
+        data-contact
+        aria-describedby={`${f('contacto-hint')} ${f('contacto-error')}`}
+      />
+      <p class="hint" id={f('contacto-hint')}>Solo para responder a tu consulta.</p>
+      <p class="error" id={f('contacto-error')} hidden>Escribe un teléfono de 9 cifras o un email válido.</p>
+    </div>
+
+    <div class="field">
+      <label for={f('caso')}>Describe el caso</label>
+      <textarea class="input" id={f('caso')} name="caso" rows="4" required aria-describedby={`${f('caso-hint')} ${f('caso-error')}`}></textarea>
+      <p class="hint" id={f('caso-hint')}>Qué notas, desde cuándo y si se ha encendido algún testigo.</p>
+      <p class="error" id={f('caso-error')} hidden>Cuéntanos brevemente qué ocurre.</p>
+    </div>
+
+    <div class="field consent">
+      <div class="check">
+        <input id={f('consentimiento')} name="consentimiento" type="checkbox" required aria-describedby={f('consentimiento-error')} />
+        <label for={f('consentimiento')}>
+          He leído la <a href={url('politica-de-privacidad/')}>política de privacidad</a> y acepto que se usen mis datos para responder a esta consulta.
+        </label>
+      </div>
+      <p class="error" id={f('consentimiento-error')} hidden>Necesitamos tu consentimiento para responder.</p>
+    </div>
+
+    <button class="btn btn-primary submit" type="submit" disabled data-submit>
+      {submitLabel}
+      <Icon name="arrow" />
+    </button>
+    <noscript><p class="hint">Activa JavaScript para probar esta demostración.</p></noscript>
+
+    <div class="status" role="status" aria-live="polite" data-status></div>
+  </form>
+</div>
+
+<script>
+  const PHONE = /^(\+?34)?[\s-]*[6789](?:[\s-]*\d){8}$/;
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  document.querySelectorAll<HTMLElement>('[data-demo-form]').forEach((wrap) => {
+    const form = wrap.querySelector('form');
+    const submit = wrap.querySelector<HTMLButtonElement>('[data-submit]');
+    const status = wrap.querySelector<HTMLElement>('[data-status]');
+    if (!form || !submit || !status) return;
+    submit.disabled = false;
+
+    const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[required]'));
+
+    const validate = (field: (typeof fields)[number]) => {
+      let ok: boolean;
+      if (field instanceof HTMLInputElement && field.type === 'checkbox') ok = field.checked;
+      else if (field.hasAttribute('data-contact')) {
+        const v = field.value.trim();
+        ok = PHONE.test(v) || EMAIL.test(v);
+      } else ok = field.value.trim().length > 0;
+
+      const error = form.querySelector<HTMLElement>(`#${field.id}-error`);
+      field.setAttribute('aria-invalid', String(!ok));
+      if (error) error.hidden = ok;
+      return ok;
+    };
+
+    fields.forEach((field) => {
+      const evt = field instanceof HTMLInputElement && field.type === 'checkbox' ? 'change' : 'blur';
+      field.addEventListener(evt, () => {
+        if (field.getAttribute('aria-invalid') !== null || field.value) validate(field);
+      });
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') validate(field);
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const invalid = fields.filter((field) => !validate(field));
+      if (invalid.length) {
+        status.className = 'status is-error';
+        status.textContent = `Revisa ${invalid.length === 1 ? 'el campo marcado' : `los ${invalid.length} campos marcados`}.`;
+        invalid[0].focus();
+        return;
+      }
+      status.className = 'status is-success';
+      status.textContent =
+        'Solicitud demostrativa: en la web real este formulario conectará con el equipo de Turbocas.';
+    });
+  });
+</script>
+
+<style>
+  .demo-form {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .form-title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+
+  .form-intro {
+    color: var(--text-muted);
+  }
+
+  .notice {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    background: var(--workshop-50);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--turbo-500);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .notice :global(svg) {
+    flex: none;
+    margin-top: 1px;
+  }
+
+  form {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .row {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  @media (min-width: 560px) {
+    .row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .check {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--s-3);
+    align-items: start;
+  }
+
+  .check input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    accent-color: var(--ink-950);
+    cursor: pointer;
+  }
+
+  .check label {
+    min-height: 44px;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .consent .error {
+    padding-left: 36px;
+  }
+
+  .submit {
+    width: 100%;
+    margin-top: var(--s-2);
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .status {
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .status.is-success {
+    background: #e7f4ec;
+    color: #0e5c35;
+    border-left: 3px solid var(--success-600);
+  }
+
+  .status.is-error {
+    background: #fdece8;
+    color: var(--signal-700);
+    border-left: 3px solid var(--signal-500);
+  }
+</style>

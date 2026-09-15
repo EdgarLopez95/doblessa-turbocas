@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  metaTitle: string;
+  description: string;
+  path: string;
+}
+
+const { title, metaTitle, description, path } = Astro.props;
+---
+
+<BaseLayout title={metaTitle} description={description} path={path}>
+  <section class="section-tight surface-white legal-head">
+    <div class="container">
+      <Breadcrumbs items={[{ label: title, href: path }]} />
+      <h1>{title}</h1>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <p class="note-box warn">
+        <Icon name="warning" size={22} />
+        <span>
+          <strong>Texto provisional del prototipo</strong>
+          Este contenido legal es orientativo y necesita revisión y validación por parte del cliente y su asesoría antes de publicar el sitio real.
+        </span>
+      </p>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-head {
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    margin-top: var(--s-4);
+    font-size: clamp(2.25rem, 1.8rem + 1.6vw, 3rem);
+  }
+
+  .warn {
+    max-width: 72ch;
+    margin-bottom: var(--s-10);
+  }
+
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--ink-800);
+  }
+</style>

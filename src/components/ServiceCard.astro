@@ -1,0 +1,202 @@
+---
+import Icon from './Icon.astro';
+import Img from './Img.astro';
+import type { Service } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  service: Service;
+  index?: number;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { service, index = 0, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const code = `S-${String(index + 1).padStart(2, '0')}`;
+---
+
+<article class:list={['card', service.featured ? 'featured' : 'compact']} data-reveal style={`--i: ${index}`}>
+  {
+    service.featured && service.image && (
+      <div class="media">
+        <Img class="media-img" {...service.image} />
+        <span class="code" aria-hidden="true">{code}</span>
+      </div>
+    )
+  }
+  <div class="body">
+    <div class="top">
+      <span class="icon"><Icon name={service.icon} /></span>
+      <p class="kind">{service.featured ? 'Laboratorio' : 'Taller'}</p>
+    </div>
+    <Heading class="title">{service.name}</Heading>
+    <dl class="spec">
+      <div>
+        <dt>Cuándo</dt>
+        <dd>{service.problem}</dd>
+      </div>
+      <div>
+        <dt>Qué hacemos</dt>
+        <dd>{service.what}</dd>
+      </div>
+      {
+        service.featured && (
+          <div>
+            <dt>Siguiente paso</dt>
+            <dd>{service.next}</dd>
+          </div>
+        )
+      }
+    </dl>
+    <a class="link-arrow more" href={url(service.slug)}>
+      {service.cta}
+      <Icon name="arrow" />
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--dur) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--ink-950);
+  }
+
+  .card:has(.more:focus-visible) {
+    border-color: var(--ink-950);
+  }
+
+  .media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--ink-950);
+    overflow: hidden;
+  }
+
+  /* Tablet: tarjeta horizontal para no ampliar las fotos ni dejar huérfanas */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .featured {
+      flex-direction: row;
+    }
+    .featured .media {
+      width: 300px;
+      flex: none;
+      aspect-ratio: auto;
+    }
+  }
+
+  .media :global(.media-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .code {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 2px 8px;
+    background: var(--ink-950);
+    color: var(--turbo-500);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.06em;
+    border-radius: 2px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    flex: 1;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--ink-950);
+    color: var(--turbo-500);
+  }
+
+  .compact .icon {
+    background: var(--steel-100);
+    color: var(--ink-950);
+  }
+
+  .kind {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel-700);
+  }
+
+  .title {
+    font-size: 1.625rem;
+    font-weight: 700;
+  }
+
+  .spec {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .spec div {
+    display: grid;
+    gap: 2px;
+    padding-top: var(--s-3);
+    border-top: 1px dashed var(--steel-100);
+  }
+
+  dt {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel-700);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .more {
+    margin-top: auto;
+    padding-top: var(--s-2);
+  }
+
+  /* Toda la tarjeta es clicable a través del enlace */
+  .more::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .more:focus-visible {
+    outline: none;
+  }
+</style>

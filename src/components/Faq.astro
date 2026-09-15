@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { q: string; a: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item) => (
+      <details class="faq-item">
+        <summary>
+          <span class="q">{item.q}</span>
+          <span class="toggle" aria-hidden="true">
+            <Icon name="chevron" size={20} />
+          </span>
+        </summary>
+        <div class="answer">
+          <p>{item.a}</p>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: 64px;
+    padding-block: var(--s-4);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .q {
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+
+  .toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    transition:
+      transform var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out);
+  }
+
+  summary:hover .toggle {
+    background: var(--steel-100);
+  }
+
+  details[open] .toggle {
+    transform: rotate(180deg);
+    background: var(--turbo-500);
+    border-color: var(--turbo-500);
+  }
+
+  .answer {
+    padding-bottom: var(--s-6);
+    max-width: 68ch;
+    color: var(--text-muted);
+  }
+</style>

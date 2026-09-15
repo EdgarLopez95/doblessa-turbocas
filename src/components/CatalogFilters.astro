@@ -1,0 +1,132 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  categories: string[];
+}
+
+const { categories } = Astro.props;
+---
+
+<section class="filters" aria-labelledby="filtros-titulo">
+  <div class="head">
+    <h2 id="filtros-titulo" class="visually-hidden">Buscar en el catálogo</h2>
+    <p class="demo" id="filtros-aviso">
+      <Icon name="info" size={18} />
+      Vista demostrativa: la búsqueda y los filtros no están activos en este prototipo.
+    </p>
+  </div>
+
+  <div class="controls" role="search" aria-describedby="filtros-aviso">
+    <div class="field search">
+      <label for="cat-buscar">Referencia, modelo o motor</label>
+      <div class="search-wrap">
+        <Icon name="search" size={20} class="s-icon" />
+        <input class="input" id="cat-buscar" type="search" placeholder="Ej.: 454231, GT2052V" disabled />
+      </div>
+    </div>
+    <div class="field">
+      <label for="cat-categoria">Categoría</label>
+      <select class="input" id="cat-categoria" disabled>
+        <option>Todas las categorías</option>
+        {categories.map((c) => <option>{c}</option>)}
+      </select>
+    </div>
+    <div class="field">
+      <label for="cat-vehiculo">Tipo de vehículo</label>
+      <select class="input" id="cat-vehiculo" disabled>
+        <option>Todos</option>
+        <option>Turismo</option>
+        <option>Furgoneta</option>
+        <option>Vehículo industrial</option>
+      </select>
+    </div>
+  </div>
+
+  <ul class="chips" aria-label="Categorías del catálogo">
+    <li><span class="chip is-on">Todo</span></li>
+    {categories.map((c) => <li><span class="chip">{c}</span></li>)}
+  </ul>
+</section>
+
+<style>
+  .filters {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .demo {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-800);
+  }
+
+  .demo :global(svg) {
+    flex: none;
+  }
+
+  .controls {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  @media (min-width: 640px) {
+    .controls {
+      grid-template-columns: 1fr 1fr;
+    }
+    .search {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .controls {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    .search {
+      grid-column: auto;
+    }
+  }
+
+  .search-wrap {
+    position: relative;
+  }
+
+  .search-wrap :global(.s-icon) {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--steel-700);
+    pointer-events: none;
+  }
+
+  .search-wrap .input {
+    padding-left: 44px;
+  }
+
+  .input:disabled {
+    border-color: var(--steel-500);
+    opacity: 1;
+  }
+
+  .chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .chip.is-on {
+    background: var(--ink-950);
+    border-color: var(--ink-950);
+    color: var(--white);
+  }
+</style>

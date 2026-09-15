@@ -1,0 +1,560 @@
+---
+import Icon from './Icon.astro';
+import { business, mainNav, services } from '../data/site';
+import { img, url } from '../lib/url';
+
+interface Props {
+  diagnoseHref?: string;
+}
+
+const { diagnoseHref = url('contacto/#formulario') } = Astro.props;
+const current = Astro.url.pathname.replace(/\/?$/, '/');
+const isCurrent = (href: string) => current === url(href);
+const isSection = (href: string) => current.startsWith(url(href));
+const serviceHrefs = ['servicios/', ...services.map((s) => s.slug)];
+const inServices = serviceHrefs.some((h) => isCurrent(h));
+
+const labServices = services.filter((s) => s.featured);
+const panelSecondary = [
+  { name: 'Mecánica y mantenimiento', human: 'Revisiones, aceite, pre-ITV y diagnóstico', href: 'mecanica-mantenimiento/', icon: 'wrench' as const },
+];
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a class="brand" href={url('')}>
+      <img src={img('marca/logo-turbocas.png')} alt="Turbocas, laboratorio mecánico — Inicio" width="193" height="78" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Principal">
+      <ul class="nav-list">
+        <li class="has-panel">
+          <button
+            class:list={['nav-link', 'nav-trigger', { active: inServices }]}
+            type="button"
+            aria-expanded="false"
+            aria-controls="panel-servicios"
+            data-panel-toggle
+          >
+            Servicios <Icon name="chevron" size={18} class="chev" />
+          </button>
+          <div class="services-panel" id="panel-servicios" hidden data-panel>
+            <div class="panel-col">
+              <p class="tag">Laboratorio</p>
+              <ul class="panel-list">
+                {
+                  labServices.map((s) => (
+                    <li>
+                      <a class="panel-item" href={url(s.slug)} aria-current={isCurrent(s.slug) ? 'page' : undefined}>
+                        <span class="panel-icon"><Icon name={s.icon} /></span>
+                        <span>
+                          <span class="panel-human">{s.human}</span>
+                          <span class="panel-tech">{s.name}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="panel-col panel-col-alt">
+              <p class="tag">Taller en Castellón</p>
+              <ul class="panel-list">
+                {
+                  panelSecondary.map((s) => (
+                    <li>
+                      <a class="panel-item" href={url(s.href)} aria-current={isCurrent(s.href) ? 'page' : undefined}>
+                        <span class="panel-icon"><Icon name={s.icon} /></span>
+                        <span>
+                          <span class="panel-human">{s.human}</span>
+                          <span class="panel-tech">{s.name}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+              <a class="link-arrow panel-all" href={url('servicios/')}>
+                Ver todos los servicios <Icon name="arrow" />
+              </a>
+            </div>
+          </div>
+        </li>
+        {
+          mainNav.slice(1).map((item) => (
+            <li>
+              <a
+                class:list={['nav-link', { active: isSection(item.href) }]}
+                href={url(item.href)}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="bar-actions">
+      <a class="phone" href={business.phoneHref}>
+        <Icon name="phone" size={20} />
+        <span class="phone-text"><span class="visually-hidden">Llamar al </span>{business.phoneDisplay}</span>
+      </a>
+      <a class="btn btn-primary btn-sm cta" href={diagnoseHref}>Diagnosticar mi caso</a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-movil"
+        aria-label="Abrir menú"
+        data-menu-toggle
+      >
+        <Icon name="menu" class="i-open" />
+        <Icon name="close" class="i-close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="menu-movil" hidden data-menu>
+    <nav class="container" aria-label="Menú móvil">
+      <p class="tag">¿Qué necesita tu vehículo?</p>
+      <ul class="m-services">
+        {
+          labServices.map((s) => (
+            <li>
+              <a href={url(s.slug)} aria-current={isCurrent(s.slug) ? 'page' : undefined}>
+                <Icon name={s.icon} />
+                <span>
+                  <span class="panel-human">{s.human}</span>
+                  <span class="panel-tech">{s.name}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={url('mecanica-mantenimiento/')} aria-current={isCurrent('mecanica-mantenimiento/') ? 'page' : undefined}>
+            <Icon name="wrench" />
+            <span>
+              <span class="panel-human">Revisión, aceite o pre-ITV</span>
+              <span class="panel-tech">Mecánica y mantenimiento</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul class="m-links">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={url(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+                <Icon name="arrow" size={20} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="m-actions">
+        <a class="btn btn-primary" href={diagnoseHref}>Diagnosticar mi caso</a>
+        <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> Llamar al {business.phoneDisplay}</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    const panelToggle = header.querySelector<HTMLButtonElement>('[data-panel-toggle]');
+    const panel = header.querySelector<HTMLElement>('[data-panel]');
+    const menuToggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = header.querySelector<HTMLElement>('[data-menu]');
+
+    const setPanel = (open: boolean) => {
+      if (!panelToggle || !panel) return;
+      panelToggle.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+    };
+
+    const setMenu = (open: boolean) => {
+      if (!menuToggle || !menu) return;
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      menu.hidden = !open;
+      document.body.classList.toggle('menu-open', open);
+    };
+
+    panelToggle?.addEventListener('click', () => setPanel(panel?.hidden ?? false));
+    menuToggle?.addEventListener('click', () => setMenu(menu?.hidden ?? false));
+
+    document.addEventListener('click', (event) => {
+      const target = event.target as Node;
+      if (panel && !panel.hidden && !panel.contains(target) && !panelToggle?.contains(target)) setPanel(false);
+    });
+
+    header.addEventListener('focusout', (event) => {
+      const next = event.relatedTarget as Node | null;
+      const wrap = panelToggle?.parentElement;
+      if (panel && !panel.hidden && wrap && next && !wrap.contains(next)) setPanel(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (panel && !panel.hidden) {
+        setPanel(false);
+        panelToggle?.focus();
+      }
+      if (menu && !menu.hidden) {
+        setMenu(false);
+        menuToggle?.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
+      if (e.matches) setMenu(false);
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+    height: var(--header-h);
+  }
+
+  .brand {
+    display: flex;
+    flex: none;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .brand img {
+    width: 124px;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .brand img {
+      width: 148px;
+    }
+  }
+
+  .nav-desktop {
+    display: none;
+    margin-inline: auto;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--s-1);
+    list-style: none;
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    padding: 0 12px;
+    background: none;
+    border: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--ink-950);
+    cursor: pointer;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 6px;
+    height: 2px;
+    background: var(--turbo-500);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after,
+  .nav-trigger[aria-expanded='true']::after {
+    transform: scaleX(1);
+  }
+
+  .nav-trigger :global(.chev) {
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .nav-trigger[aria-expanded='true'] :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .has-panel {
+    position: static;
+  }
+
+  .services-panel {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--header-h) - 1px);
+    width: min(var(--container), 100% - 2 * var(--gutter));
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--turbo-500);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 24px 48px -24px rgb(17 24 39 / 0.25);
+  }
+
+  .services-panel:not([hidden]) {
+    animation: panel-in 180ms var(--ease-out);
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -6px);
+    }
+  }
+
+  .panel-col {
+    padding: var(--s-6);
+  }
+
+  .panel-col-alt {
+    background: var(--workshop-50);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-list {
+    list-style: none;
+    display: grid;
+    gap: var(--s-1);
+    margin-top: var(--s-3);
+  }
+
+  .panel-col:first-child .panel-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-3);
+  }
+
+  .panel-item {
+    display: flex;
+    gap: var(--s-3);
+    padding: var(--s-3);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease-out);
+  }
+
+  .panel-col:first-child .panel-item {
+    flex-direction: column;
+    border: 1px solid var(--border);
+    height: 100%;
+  }
+
+  .panel-item:hover {
+    background: var(--steel-100);
+  }
+
+  .panel-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: var(--radius-sm);
+    background: var(--ink-950);
+    color: var(--turbo-500);
+  }
+
+  .panel-human {
+    display: block;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .panel-tech {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .panel-all {
+    margin-top: auto;
+    padding-top: var(--s-4);
+  }
+
+  .bar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-left: auto;
+  }
+
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-width: 44px;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .phone-text {
+    display: none;
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .menu-toggle :global(.i-close),
+  .menu-toggle[aria-expanded='true'] :global(.i-open) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] :global(.i-close) {
+    display: block;
+  }
+
+  @media (min-width: 640px) {
+    .cta {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .phone-text {
+      display: inline;
+    }
+    .bar-actions {
+      gap: var(--s-4);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .nav-desktop {
+      display: block;
+    }
+    .menu-toggle {
+      display: none;
+    }
+    .bar-actions {
+      margin-left: 0;
+    }
+  }
+
+  /* Menú móvil */
+  .mobile-menu {
+    position: absolute;
+    inset: calc(var(--header-h) - 1px) 0 auto 0;
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    background: var(--white);
+    border-top: 2px solid var(--turbo-500);
+    box-shadow: 0 24px 48px -24px rgb(17 24 39 / 0.35);
+    padding-block: var(--s-6) var(--s-10);
+  }
+
+  .m-services {
+    list-style: none;
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+
+  .m-services a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 56px;
+    padding: var(--s-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .m-services a :global(svg) {
+    flex: none;
+    color: var(--ink-950);
+  }
+
+  .m-links {
+    list-style: none;
+    margin-top: var(--s-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .m-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .m-links a[aria-current='page'],
+  .m-services a[aria-current='page'] {
+    box-shadow: inset 3px 0 0 var(--turbo-500);
+    padding-left: var(--s-3);
+  }
+
+  .m-actions {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  @media (min-width: 640px) {
+    .m-services {
+      grid-template-columns: 1fr 1fr;
+    }
+    .m-actions {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

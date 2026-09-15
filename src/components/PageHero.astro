@@ -1,0 +1,83 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface Props {
+  tag: string;
+  title: string;
+  lead: string;
+  crumbs?: { label: string; href: string }[];
+  tone?: 'dark' | 'light';
+}
+
+const { tag, title, lead, crumbs, tone = 'dark' } = Astro.props;
+const hasMedia = Astro.slots.has('media');
+---
+
+<section class:list={['hero', tone === 'dark' ? 'surface-dark blueprint' : 'surface-white', { 'has-media': hasMedia }]}>
+  <div class="container">
+    {crumbs && <Breadcrumbs items={crumbs} tone={tone} />}
+    <div class="grid">
+      <div class="copy">
+        <p class="tag">{tag}</p>
+        <h1>{title}</h1>
+        <p class="lead">{lead}</p>
+        <slot name="actions" />
+      </div>
+      {
+        hasMedia && (
+          <div class="media">
+            <slot name="media" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--s-6) var(--s-16);
+    overflow: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--s-6) var(--s-24);
+    }
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-10);
+    align-items: center;
+    margin-top: var(--s-6);
+  }
+
+  @media (min-width: 960px) {
+    .has-media .grid {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--s-16);
+    }
+    .grid {
+      margin-top: var(--s-10);
+    }
+  }
+
+  .copy {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+  }
+
+  .copy h1 {
+    max-width: 18ch;
+  }
+
+  .copy :global(.actions) {
+    margin-top: var(--s-4);
+  }
+
+  .media {
+    position: relative;
+  }
+</style>

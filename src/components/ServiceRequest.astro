@@ -1,0 +1,175 @@
+---
+// Bloque final de landing: preguntas frecuentes + formulario lateral + teléfono.
+import DemoForm from './DemoForm.astro';
+import Faq from './Faq.astro';
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+interface Props {
+  faqTitle?: string;
+  faq: { q: string; a: string }[];
+  formTitle: string;
+  formIntro?: string;
+  submitLabel: string;
+  defaultService: string;
+  formId: string;
+}
+
+const { faqTitle = 'Preguntas frecuentes', faq, formTitle, formIntro, submitLabel, defaultService, formId } = Astro.props;
+---
+
+<section class="section request" aria-labelledby={`${formId}-faq`}>
+  <div class="container grid">
+    <div class="faq-col">
+      <p class="tag">Dudas habituales</p>
+      <h2 id={`${formId}-faq`}>{faqTitle}</h2>
+      <Faq items={faq} />
+      <div class="after">
+        <p class="after-title">Qué pasa después de tu solicitud</p>
+        <ol>
+          <li><span>01</span> Revisamos la información del vehículo y los síntomas.</li>
+          <li><span>02</span> Te contactamos para aclarar lo que necesitemos.</li>
+          <li><span>03</span> Te indicamos el diagnóstico necesario y el presupuesto, sin compromiso de reparar.</li>
+        </ol>
+      </div>
+      <div class="call">
+        <Icon name="phone" size={28} />
+        <div>
+          <p class="call-title">¿Prefieres explicarlo por teléfono?</p>
+          <a class="call-number" href={business.phoneHref}>{business.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+    <aside class="form-col" id="solicitud" aria-label={formTitle}>
+      <div class="form-card">
+        <DemoForm id={formId} title={formTitle} intro={formIntro} submitLabel={submitLabel} defaultService={defaultService} />
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .request {
+    background: var(--workshop-50);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-16);
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--s-16);
+      align-items: start;
+    }
+    .form-col {
+      position: sticky;
+      top: calc(var(--header-h) + var(--s-6));
+    }
+  }
+
+  .faq-col {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+
+  .faq-col h2 {
+    margin-bottom: var(--s-4);
+  }
+
+  .after {
+    margin-top: var(--s-10);
+  }
+
+  .after-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .after ol {
+    list-style: none;
+    display: grid;
+    margin-top: var(--s-3);
+  }
+
+  .after li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: var(--s-3);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .after li span {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink-950);
+  }
+
+  .call {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-top: var(--s-6);
+    padding: var(--s-4) var(--s-6);
+    background: var(--ink-950);
+    color: var(--white);
+    border-radius: var(--radius);
+  }
+
+  .call :global(svg) {
+    color: var(--turbo-500);
+    flex: none;
+  }
+
+  .call-title {
+    color: var(--steel-300);
+    font-size: 0.9375rem;
+  }
+
+  .call-number {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--white);
+  }
+
+  .call-number:hover {
+    color: var(--turbo-500);
+  }
+
+  .call :global(:focus-visible) {
+    outline-color: var(--turbo-500);
+  }
+
+  .form-card {
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--turbo-500);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .form-card {
+      padding: var(--s-10);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .form-card {
+      padding: var(--s-6) var(--s-6) var(--s-6);
+    }
+  }
+</style>

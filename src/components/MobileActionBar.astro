@@ -1,0 +1,73 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  diagnoseHref?: string;
+}
+
+const { diagnoseHref = url('contacto/#formulario') } = Astro.props;
+---
+
+<div class="action-bar" data-action-bar>
+  <a class="btn btn-outline call" href={business.phoneHref}>
+    <Icon name="phone" />
+    <span>Llamar</span>
+  </a>
+  <a class="btn btn-primary" href={diagnoseHref}>Diagnosticar mi caso</a>
+</div>
+
+<script>
+  // La barra se oculta mientras se escribe en un formulario para no tapar campos ni teclado.
+  const bar = document.querySelector<HTMLElement>('[data-action-bar]');
+  if (bar) {
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement && el.matches('input, select, textarea');
+    document.addEventListener('focusin', (e) => bar.classList.toggle('is-hidden', isField(e.target)));
+    document.addEventListener('focusout', () => {
+      requestAnimationFrame(() => bar.classList.toggle('is-hidden', isField(document.activeElement)));
+    });
+  }
+</script>
+
+<style>
+  .action-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 24px -16px rgb(17 24 39 / 0.3);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .action-bar.is-hidden {
+    transform: translateY(110%);
+  }
+
+  .call {
+    padding-inline: 16px;
+  }
+
+  :global(body) {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  :global(body.menu-open) .action-bar {
+    transform: translateY(110%);
+  }
+
+  @media (min-width: 768px) {
+    .action-bar {
+      display: none;
+    }
+    :global(body) {
+      padding-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,153 @@
+---
+import Img from './Img.astro';
+
+export interface GalleryItem {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+  /** Etiqueta técnica corta, p. ej. "Banco turbo". */
+  label?: string;
+  fit?: 'cover' | 'contain';
+  wide?: boolean;
+}
+
+interface Props {
+  items: GalleryItem[];
+  columns?: 3 | 4;
+  /** feature: primera imagen grande + el resto pequeñas (desktop). */
+  layout?: 'grid' | 'feature';
+}
+
+const { items, columns = 4, layout = 'grid' } = Astro.props;
+---
+
+<ul class:list={['gallery', `cols-${columns}`, layout]}>
+  {
+    items.map((item, i) => (
+      <li class:list={['tile', { wide: item.wide }]} data-reveal style={`--i: ${i}`}>
+        <figure>
+          <div class:list={['frame', item.fit ?? 'cover']}>
+            <Img class="g-img" src={item.src} alt={item.alt} width={item.width} height={item.height} />
+            {item.label && <span class="label" aria-hidden="true">{item.label}</span>}
+          </div>
+          <figcaption>{item.caption}</figcaption>
+        </figure>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .gallery {
+    list-style: none;
+    display: grid;
+    gap: var(--s-6) var(--s-4);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 560px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery {
+      gap: var(--s-6);
+    }
+    .cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .wide {
+      grid-column: span 2;
+    }
+    .feature {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    .feature .tile:first-child {
+      grid-row: span 2;
+    }
+    .feature .tile:first-child figure {
+      height: 100%;
+      grid-template-rows: 1fr auto;
+    }
+    .feature .tile:first-child .frame {
+      aspect-ratio: auto;
+      min-height: 0;
+    }
+  }
+
+  figure {
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--ink-800);
+  }
+
+  .frame.contain {
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+
+  .frame :global(.g-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .frame.contain :global(.g-img) {
+    object-fit: contain;
+    padding: var(--s-4);
+  }
+
+  /* Esquinas de encuadre técnico */
+  .frame::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--turbo-500), var(--turbo-500)) top left / 14px 2px,
+      linear-gradient(var(--turbo-500), var(--turbo-500)) top left / 2px 14px,
+      linear-gradient(var(--turbo-500), var(--turbo-500)) bottom right / 14px 2px,
+      linear-gradient(var(--turbo-500), var(--turbo-500)) bottom right / 2px 14px;
+    background-repeat: no-repeat;
+  }
+
+  .label {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 2px 8px;
+    background: var(--ink-950);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  figcaption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  :global(.surface-dark) figcaption {
+    color: var(--steel-300);
+  }
+</style>

@@ -1,0 +1,161 @@
+---
+import Icon from './Icon.astro';
+import Img from './Img.astro';
+import { url } from '../lib/url';
+
+export interface CatalogItem {
+  name: string;
+  category: string;
+  reference?: string;
+  note: string;
+  image: { src: string; alt: string; width: number; height: number };
+}
+
+interface Props {
+  item: CatalogItem;
+  index?: number;
+}
+
+const { item, index = 0 } = Astro.props;
+---
+
+<article class="product" data-reveal style={`--i: ${index}`}>
+  <div class="media">
+    <Img class="p-img" {...item.image} />
+    <span class="category">{item.category}</span>
+  </div>
+  <div class="body">
+    <h3 class="name">{item.name}</h3>
+    <dl class="data">
+      <div>
+        <dt>Referencia</dt>
+        <dd class="ref">{item.reference ?? 'Consultar'}</dd>
+      </div>
+    </dl>
+    <p class="status"><Icon name="search" size={16} /> Consulta compatibilidad</p>
+    <p class="note"><Icon name="info" size={16} /> {item.note}</p>
+    <a class="btn btn-outline btn-sm confirm" href={url('contacto/#formulario')}>
+      Confirmar compatibilidad<span class="visually-hidden"> de {item.name}</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .product {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--dur) var(--ease-out);
+  }
+
+  .product:hover {
+    border-color: var(--steel-500);
+  }
+
+  .media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .media :global(.p-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--s-6);
+    mix-blend-mode: multiply;
+  }
+
+  .category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--ink-950);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    flex: 1;
+  }
+
+  .name {
+    font-size: 1.3125rem;
+    line-height: 1.2;
+  }
+
+  .data {
+    display: grid;
+    margin: 0;
+    font-size: 0.8125rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .data div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-block: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  dt {
+    color: var(--steel-700);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .ref {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 4px 10px;
+    border: 1px dashed var(--steel-500);
+    border-radius: 999px;
+    background: var(--workshop-50);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .note {
+    display: flex;
+    gap: 6px;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--steel-700);
+  }
+
+  .note :global(svg) {
+    flex: none;
+    margin-top: 2px;
+  }
+
+  .confirm {
+    margin-top: auto;
+    width: 100%;
+  }
+</style>

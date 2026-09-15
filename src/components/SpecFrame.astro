@@ -1,0 +1,150 @@
+---
+// Marco técnico con cotas para imágenes destacadas.
+interface Props {
+  label?: string;
+  tone?: 'dark' | 'light';
+  fit?: 'cover' | 'contain';
+}
+
+const { label, tone = 'dark', fit = 'cover' } = Astro.props;
+---
+
+<figure class:list={['spec-frame', tone, fit]}>
+  <div class="inner">
+    <slot />
+  </div>
+  <span class="dim dim-x" aria-hidden="true"></span>
+  <span class="dim dim-y" aria-hidden="true"></span>
+  {label && <figcaption class="cap">{label}</figcaption>}
+</figure>
+
+<style>
+  .spec-frame {
+    position: relative;
+    margin: 0 0 var(--s-6) var(--s-6);
+  }
+
+  .inner {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+  }
+
+  .dark .inner {
+    background: var(--ink-800);
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .light .inner {
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+
+  .inner :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .contain .inner :global(img) {
+    object-fit: contain;
+    padding: var(--s-6);
+  }
+
+  /* Cotas: línea con topes en los extremos */
+  .dim {
+    position: absolute;
+    color: var(--turbo-500);
+  }
+
+  .dim-x {
+    left: 0;
+    right: 0;
+    bottom: calc(-1 * var(--s-4));
+    height: 1px;
+    background: currentColor;
+  }
+
+  .dim-x::before,
+  .dim-x::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 1px;
+    height: 11px;
+    background: currentColor;
+  }
+
+  .dim-x::before {
+    left: 0;
+  }
+
+  .dim-x::after {
+    right: 0;
+  }
+
+  .dim-y {
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * var(--s-4));
+    width: 1px;
+    background: currentColor;
+  }
+
+  .dim-y::before,
+  .dim-y::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    width: 11px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .dim-y::before {
+    top: 0;
+  }
+
+  .dim-y::after {
+    bottom: 0;
+  }
+
+  .cap {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 2px 8px;
+    background: var(--ink-950);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dim-x {
+      transform-origin: left;
+      animation: draw-x 240ms var(--ease-out) 120ms both;
+    }
+    .dim-y {
+      transform-origin: top;
+      animation: draw-y 240ms var(--ease-out) 60ms both;
+    }
+  }
+
+  @keyframes draw-x {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes draw-y {
+    from {
+      transform: scaleY(0);
+    }
+  }
+</style>

@@ -1,0 +1,196 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+import { img, url } from '../lib/url';
+
+const serviceLinks = [
+  { label: 'Reconstrucción de turbos', href: 'reconstruccion-turbos/' },
+  { label: 'Limpieza de FAP y catalizador', href: 'limpieza-fap-catalizador/' },
+  { label: 'Direcciones hidráulicas', href: 'direcciones-hidraulicas/' },
+  { label: 'Mecánica y mantenimiento', href: 'mecanica-mantenimiento/' },
+  { label: 'Todos los servicios', href: 'servicios/' },
+];
+
+const companyLinks = [
+  { label: 'Laboratorio', href: 'laboratorio/' },
+  { label: 'Catálogo de turbos', href: 'catalogo-turbos/' },
+  { label: 'Sobre Turbocas', href: 'sobre-turbocas/' },
+  { label: 'Contacto y presupuesto', href: 'contacto/' },
+];
+
+const legalLinks = [
+  { label: 'Aviso legal', href: 'aviso-legal/' },
+  { label: 'Política de privacidad', href: 'politica-de-privacidad/' },
+];
+---
+
+<footer class="footer surface-dark">
+  <div class="container grid">
+    <div class="brand-col">
+      <a class="brand" href={url('')}>
+        <img src={img('marca/logo-turbocas.png')} alt="Turbocas, laboratorio mecánico — Inicio" width="193" height="78" loading="lazy" />
+      </a>
+      <p class="claim">Precisión que devuelve potencia.</p>
+      <p class="muted-dark">
+        Laboratorio de turbocompresores, FAP/catalizadores y direcciones hidráulicas, con taller mecánico en Castellón.
+      </p>
+    </div>
+
+    <nav class="col" aria-labelledby="f-servicios">
+      <h2 class="col-title" id="f-servicios">Servicios</h2>
+      <ul>{serviceLinks.map((l) => <li><a href={url(l.href)}>{l.label}</a></li>)}</ul>
+    </nav>
+
+    <nav class="col" aria-labelledby="f-turbocas">
+      <h2 class="col-title" id="f-turbocas">Turbocas</h2>
+      <ul>{companyLinks.map((l) => <li><a href={url(l.href)}>{l.label}</a></li>)}</ul>
+    </nav>
+
+    <div class="col">
+      <h2 class="col-title">Contacto</h2>
+      <address>
+        <a class="f-phone" href={business.phoneHref}><Icon name="phone" size={20} /> {business.phoneDisplay}</a>
+        <p class="f-address">
+          <Icon name="pin" size={20} />
+          <span>{business.street}<br />{business.postalCode} {business.city}</span>
+        </p>
+      </address>
+      <a class="btn btn-primary btn-sm f-cta" href={url('contacto/#formulario')}>Solicitar presupuesto</a>
+    </div>
+  </div>
+
+  <div class="container bottom">
+    <p>© Turbocas · Propuesta de rediseño. Datos de contacto y contenidos pendientes de validación por el cliente.</p>
+    <nav aria-label="Legal">
+      <ul>{legalLinks.map((l) => <li><a href={url(l.href)}>{l.label}</a></li>)}</ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 3px solid var(--turbo-500);
+    padding-block: var(--s-16) var(--s-6);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-10) var(--s-6);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 4fr 3fr 2fr 3fr;
+    }
+  }
+
+  .brand {
+    display: inline-block;
+  }
+
+  .brand img {
+    width: 150px;
+    filter: invert(1);
+  }
+
+  .claim {
+    margin-top: var(--s-4);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--turbo-500);
+  }
+
+  .muted-dark {
+    margin-top: var(--s-2);
+    color: var(--steel-300);
+    max-width: 38ch;
+  }
+
+  .col-title {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel-300);
+    margin-bottom: var(--s-3);
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .col a:not(.btn) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .col a:not(.btn):hover {
+    text-decoration: underline;
+    text-decoration-color: var(--turbo-500);
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  .f-phone {
+    gap: var(--s-2);
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  .f-phone :global(svg),
+  .f-address :global(svg) {
+    color: var(--turbo-500);
+    flex: none;
+  }
+
+  .f-address {
+    display: flex;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+    color: var(--steel-300);
+    line-height: 1.5;
+  }
+
+  .f-cta {
+    margin-top: var(--s-6);
+  }
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-16);
+    padding-top: var(--s-6);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: 0.8125rem;
+    color: var(--steel-300);
+  }
+
+  .bottom ul {
+    display: flex;
+    gap: var(--s-6);
+  }
+
+  .bottom a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--white);
+  }
+</style>
