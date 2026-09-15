@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .astro/
+design/qa/
 .env
 .env.*
 !.env.example
