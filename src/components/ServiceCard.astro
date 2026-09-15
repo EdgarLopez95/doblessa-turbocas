@@ -88,11 +88,12 @@ const code = `S-${String(index + 1).padStart(2, '0')}`;
       flex-direction: row;
     }
     .featured .media {
-      width: 300px;
+      width: 280px;
       flex: none;
-      align-self: flex-start;
-      margin: var(--s-6) 0 var(--s-6) var(--s-6);
-      border-radius: var(--radius-sm);
+      align-self: stretch;
+      margin: 0;
+      aspect-ratio: auto;
+      border-radius: 0;
     }
   }
 
