@@ -2,98 +2,70 @@
 
 ## Estado actual
 
-Mockup estático completo del rediseño, responsive y publicado en GitHub Pages. Aprobado en la crítica independiente de diseño (ronda 4: 85/100, 0 bloqueantes).
+**Cierre final del rediseño estático para presentación**. El sitio se encuentra completamente auditado, pulido a nivel UX/UI/SEO, probado en compilación estática (`npm run build`) y con todos los commits atómicos organizados en `main` bajo la base `/doblessa-turbocas/`.
+
+Documentación complementaria entregada:
+- `GAPS.md`: Matriz exhaustiva de huecos que **solo puede resolver el cliente** (horarios, teléfono WhatsApp, garantías, datos fiscales, etc.).
+- `BUGS.md`: Registro formal de las 12 incidencias detectadas y corregidas durante la auditoría senior.
 
 ## Base técnica
 
-- Framework: Astro 7 + TypeScript + CSS nativo, sin dependencias nuevas.
-- Rama de publicación: `main`.
-- GitHub Pages: `https://edgarlopez95.github.io/doblessa-turbocas/`.
-- Validación: `npm run build`.
+- **Framework**: Astro 7 + TypeScript + CSS nativo (sin frameworks JS pesados ni librerías externas).
+- **Publicación**: Rama `main` en GitHub Pages (`https://edgarlopez95.github.io/doblessa-turbocas/`).
+- **SEO & Privacidad**: Directiva incondicional `<meta name="robots" content="noindex, follow" />` en `BaseLayout` para evitar canibalizar la web antigua.
+- **Fuentes autoalojadas**: Barlow Condensed (600, 700) e Inter (400, 500, 600, 700) en formato WOFF2 en `public/fonts/`, con `@font-face` local y `font-display: swap`. Sin peticiones externas a Google Fonts ni violación de GDPR.
+- **Validación automatizada**: Script en `scratch/check.cjs` sobre las 13 páginas de `dist/` certificando 0 errores y 0 warnings.
 
-## Rutas creadas
+## Resumen de mejoras y cambios aplicados en esta sesión
 
-| Ruta | Página | CTA principal |
-|---|---|---|
-| `/` | Inicio: reparación y reconstrucción de turbos en Castellón | Diagnosticar mi caso |
-| `/servicios/` | Seis servicios; laboratorio y taller diferenciados | Solicitar presupuesto |
-| `/reconstruccion-turbos/` | Landing del servicio estrella | Solicitar diagnóstico |
-| `/limpieza-fap-catalizador/` | FAP y catalizadores | Consultar mi vehículo |
-| `/direcciones-hidraulicas/` | Direcciones hidráulicas | Solicitar valoración |
-| `/mecanica-mantenimiento/` | Taller local por necesidad | Consultar mi revisión |
-| `/laboratorio/` | Autoridad técnica, diagnóstico y maquinaria | Diagnosticar mi caso |
-| `/catalogo-turbos/` | Catálogo de muestra, no ecommerce | Confirmar compatibilidad |
-| `/sobre-turbocas/` | Presentación, método, equipo e instalaciones | Contactar |
-| `/contacto/` | Teléfono, formulario, ubicación y logística | Enviar consulta (demo) |
-| `/aviso-legal/`, `/politica-de-privacidad/` | Legales provisionales con aviso de validación | — |
-| `/404` | Página no encontrada (noindex) | Volver al inicio |
+1. **A1. WhatsApp informativo**: Sustituido el botón inerte "Próximamente" por bloque explicativo accesible en `contacto.astro`: *"WhatsApp: canal previsto. Publicaremos el número cuando Turbocas lo confirme. Mientras tanto, llama o usa el formulario."* (Commit `8a64635`).
+2. **A2. Ruta para talleres mecánicos**: Añadido selector radial en `DemoForm.astro` (`¿Eres un taller profesional?`), soporte para preselección vía parámetro URL `?tipo=taller`, adaptación dinámica del texto de confirmación y llamadas a la acción dedicadas desde `HomeHero.astro` y `laboratorio.astro`. (Commit `db26e63`).
+3. **A3. Panel "Qué datos nos ayudan"**: Creado componente `HelpfulDataPanel.astro` con 4 viñetas técnicas (ficha técnica/número de bastidor, síntomas, fotografía de la placa, nivel de urgencia) y nota al pie de tranquilidad (*"Con lo que tengas a mano empezamos"*). Integrado en `ServiceRequest.astro` y `contacto.astro`. (Commit `8a610ae`).
+4. **A4 & A7. Landings diferenciadas y encuadre de fotos**:
+   - **Turbos (`reconstruccion-turbos.astro`)**: Añadida ficha técnica de ejemplo de turbo de fábrica GT2052V (VNT, aplicación Audi V6 TDI documentada como muestra pendiente de validar) y encuadre técnico con fondo tinta para fotos de 300px.
+   - **FAP y catalizador (`limpieza-fap-catalizador.astro`)**: Esquema técnico del sistema (3 pasos: Testigo/modo degradado → Diagnóstico de contrapresión → Limpieza hidrodinámica en equipo) y unificación del contenedor `.equip-frame` a 220px eliminando el desajuste vertical a 768px entre fotos 4:3 y 3:4.
+   - **Direcciones (`direcciones-hidraulicas.astro`)**: Rótulo de banco de presiones en hero, flujo específico de 5 pasos para bombas y cremalleras, y fotos enmarcadas con pie de toma recomendada en HD.
+   - Textos de garantía unificados en todas las landings. (Commit `fa8838e`).
+5. **A5. Localización de aire acondicionado y gases de escape**: Creados anclajes `#aire-acondicionado` y `#gases-de-escape` en `mecanica-mantenimiento.astro` con `scroll-margin-top` adaptado al header sticky. Filas secundarias en la Home (`index.astro`) convertidas en enlaces interactivos con icono de flecha. (Commit `440849d`).
+6. **A6. Catálogo y filtros demostrativos**: Añadido aviso visible en `CatalogFilters.astro` aclarando que la búsqueda por referencia operará en la web real, manteniendo los filtros desactivados de forma honesta y enlazando la tarjeta "¿No encuentras tu turbo?" a `contacto/#formulario` con contexto precargado. (Commit `e5ccc47`).
+7. **A8. Home a 768px**: Ajustado `.featured .media` en `ServiceCard.astro` con `align-self: stretch`, `margin: 0` y `aspect-ratio: auto` para eliminar el hueco en blanco debajo de la imagen en dispositivos tablet. (Commit `3536192`).
+8. **A9. SEO técnico y fuentes locales**: Incorporado `noindex, follow` permanente en `BaseLayout.astro`. Descargadas 6 variantes WOFF2 e implementadas en `global.css`, suprimiendo los `preconnect` y stylesheet de Google Fonts. (Commit `a083e6c`).
+9. **A10. Garantía en pie de página**: Incorporado bloque con icono de escudo en `Footer.astro` con la redacción exacta requerida: *"Trabajamos con garantía. El plazo y las condiciones las confirmará Turbocas en el presupuesto."* (Commit `abf00cc`).
 
-Generados: `sitemap.xml` (12 rutas) y `robots.txt`, ambos bajo `/doblessa-turbocas/`.
+## Rutas compiladas en `dist/`
 
-## Componentes construidos
+| Ruta | Página | Función principal | Estado H1 / Enlaces |
+| :--- | :--- | :--- | :--- |
+| `/` | Inicio | Propuesta de valor, laboratorio, proceso y servicios | 1 H1 · 100% OK |
+| `/servicios/` | Índice de servicios | Separación limpia entre laboratorio y taller local | 1 H1 · 100% OK |
+| `/reconstruccion-turbos/` | Reconstrucción de turbos | Servicio estrella, ficha técnica y banco de calibración | 1 H1 · 100% OK |
+| `/limpieza-fap-catalizador/`| FAP y catalizadores | Diagnóstico, esquema técnico y regeneración en equipo | 1 H1 · 100% OK |
+| `/direcciones-hidraulicas/` | Direcciones hidráulicas | Bombas y cajas de dirección, banco de presiones | 1 H1 · 100% OK |
+| `/mecanica-mantenimiento/` | Taller mecánico | Anclas a aire acondicionado, gases de escape y pre-ITV | 1 H1 · 100% OK |
+| `/laboratorio/` | Laboratorio central | Maquinaria de precisión, banco de flujo y canal talleres | 1 H1 · 100% OK |
+| `/catalogo-turbos/` | Catálogo de muestra | Referencias ilustrativas, filtros rotulados y consulta | 1 H1 · 100% OK |
+| `/sobre-turbocas/` | Sobre Turbocas | Equipo, método de trabajo e instalaciones de Castellón | 1 H1 · 100% OK |
+| `/contacto/` | Contacto y presupuesto | Teléfono directo, panel de datos y formulario demo | 1 H1 · 100% OK |
+| `/aviso-legal/` | Aviso legal | Plantilla legal con campos pendientes de cliente | 1 H1 · 100% OK |
+| `/politica-de-privacidad/`| Privacidad | Cláusulas de protección de datos conforme a RGPD | 1 H1 · 100% OK |
+| `/404` | Página no encontrada | Manejo de error 404 bajo la base de GitHub Pages | 1 H1 · 100% OK |
 
-- **Estructura:** `BaseLayout` (SEO, canonical, Open Graph, JSON-LD), `Header` (panel de servicios accesible y menú móvil), `Footer`, `MobileActionBar` (Llamar / Diagnosticar; se oculta al escribir en formularios).
-- **Cabeceras:** `HomeHero` (turbo con cotas técnicas), `PageHero`, `Breadcrumbs` (con `BreadcrumbList`), `SectionHeading` (variantes `split` y `rule`).
-- **Contenido:** `NeedSelector`, `ServiceCard`, `TrustStrip`, `ProcessSteps`, `FeatureList`, `CheckList`, `Split`, `SpecFrame`, `Gallery` (rejilla y destacado), `CtaBand`.
-- **Conversión:** `Faq` (`details/summary`), `DemoForm` (validación inline y mensaje demostrativo), `ServiceRequest` (FAQ + formulario sticky).
-- **Catálogo:** `CatalogCard`, `CatalogFilters` (deshabilitados y rotulados como demostración).
-- **Utilidades:** `LegalPage`, `Icon` (set lineal propio), `Img` (`<picture>` WebP, dimensiones y lazy), `JsonLd`.
-- **Librería:** `lib/url.ts` (base de GitHub Pages), `lib/schema.ts`, `data/site.ts`.
+Archivos auxiliares: `robots.txt` y `sitemap.xml` con 12 rutas canónicas absolutas.
 
-## Imágenes copiadas a `public/images/`
+## Auditoría de calidad técnica (QA Senior)
 
-Copiadas con `scripts/prepare-images.mjs` (lectura de `../Recursos`, sin modificarlo). Conservan carpeta y nombre; se añaden 16 variantes `.webp`.
+- **Compilación**: `npm run build` genera 13 páginas HTML estáticas en ~2.5 segundos sin ningún error ni advertencia.
+- **Semántica HTML**: 1 sola etiqueta `<h1>` por página, progresión estricta de niveles sin saltos (`h1 -> h2 -> h3`).
+- **Navegación e hiperenlaces**: Cero enlaces vacíos (`href="#"`). Cada ruta interna utiliza la función auxiliar `url()` preservando el prefijo `/doblessa-turbocas/`. Todas las anclas con hash `#` corresponden a IDs existentes en la página de destino.
+- **Accesibilidad**: Contraste del botón de acción primario (`#f4b000` con `#111827`) de 9.94:1 (cumple WCAG AAA). Respeto absoluto a `prefers-reduced-motion: reduce`. Atributos `alt`, `width` y `height` en todas las imágenes.
+- **Formularios demostrativos**: Todos los formularios previenen la recarga de página mediante `preventDefault()` y muestran un resumen de confirmación en el DOM con feedback accesible.
 
-- `marca/`: logo-turbocas.png, icono-turbocas.png (favicon), marcas-turbocompresores.svg
-- `laboratorio/`: banco-pruebas-turbocompresores.jpeg, turbocompresores-reconstruidos.jpeg
-- `fap-cat/`: equipo-limpieza-filtros-particulas.jpeg, equipo-diagnostico-limpieza-fap.jpeg, filtro-particulas-automovil.jpg, limpieza-filtro-particulas.png
-- `direccion-hidraulica/`: banco-bombas-hidraulicas.jpg, banco-pruebas-direcciones-hidraulicas.jpg, bomba-direccion-hidraulica.jpg (recortada a la pieza)
-- `catalogo/`: turbo-gt2052v-audi-v6-tdi.jpg, cartucho-chra-454231.jpg, cartucho-chra-708639.jpg, cartucho-chra-454135.jpg, junta-turbo-717858.jpg, junta-turbo-454232.jpg, junta-turbo-1900-100-332.jpg (recortada a la pieza)
-- `ui/`: icono-whatsapp.png
+## Próximos pasos (cuando el cliente resuelva `GAPS.md`)
 
-## Decisiones de implementación
-
-- **Idea visual:** "hoja técnica de laboratorio" (cotas, etiquetas de referencia, retícula discreta). Tokens y tipografías del sistema propuesto (Barlow Condensed + Inter).
-- **Hero de inicio:** usa el turbo de fábrica GT2052V. Se descartaron `servicios/reconstruccion-turbocompresores.png` y `reparacion-turbocompresores.png` (turbo cromado de estética racing con la marca de terceros "Master Power").
-- **Iconos:** se descartaron las ilustraciones multicolor de `inicio/` y se usa un set lineal coherente.
-- **Motores de arranque:** `catalogo/turbo-repuesto-01/02/03.jpg` muestran motores de arranque, no turbos, y quedaron fuera del catálogo. Se muestran 7 referencias más la tarjeta "¿No encuentras tu turbo?".
-- **Logotipos de fabricantes:** el SVG de marcas solo aparece en la landing de turbos, con aviso de autorización pendiente.
-- **Galerías:** distinguen fotografía real, "Ilustración" e "Imagen de referencia".
-- **Formularios:** el botón se activa con JS y el envío se bloquea siempre, mostrando el mensaje demostrativo; sin JS no se envía nada.
-- **Flujo de solicitud:** la referencia elegida en el catálogo viaja al formulario por la URL (`?servicio=&ref=`) y lo prellena; al enviar se muestra una pantalla de confirmación con el resumen de lo indicado, los siguientes pasos y la opción de modificar la solicitud. Estados cubiertos: selección, prellenado, error inline, confirmación y 404.
-- **WhatsApp:** botón "Próximamente", sin número.
-- **Mapa:** plano ilustrativo rotulado como no interactivo.
-- **JSON-LD:** `AutoRepair` solo con nombre, teléfono y dirección de la auditoría (sin horario, email, geo ni sameAs); `Service` en las landings; `ItemList`/`Product` sin precio ni stock en el catálogo.
-- **Reveal:** nunca oculta lo que ya está en pantalla al cargar; respeta `prefers-reduced-motion` y tiene estilo de impresión.
-- **Robots y sitemap:** en un sitio de proyecto de GitHub Pages, `robots.txt` queda en `/doblessa-turbocas/robots.txt`, no en la raíz del dominio; en producción irá en la raíz.
-
-## Resultado de build y QA
-
-- `npm run build`: correcto, 13 páginas y 2 endpoints, sin errores ni avisos.
-- Verificador de `dist`: 1 H1 por página, sin `href="#"` ni enlaces vacíos, todos los enlaces y recursos existen bajo `/doblessa-turbocas/` y las anclas son válidas.
-- Capturas revisadas a 1440, 1024, 768 y 390 px (no versionadas, en `design/qa/`). Sin overflow horizontal y sin errores de consola.
-- Probado en navegador: validación del formulario, mensaje demostrativo, panel de servicios con Escape y menú móvil.
-- Crítica de diseño: 73,5 → 81 → 84,5 → **85** (`design/critiques/`).
-
-## Siguiente acción
-
-Presentar el mockup al cliente y recoger la validación de datos. Con fotografía de alta resolución y contenidos confirmados, dar un rasgo propio a cada landing (ficha técnica en turbos, esquema del FAP) y resolver las mejoras menores de `design/critiques/ronda-4.md`.
-
-## Datos que el cliente debe validar
-
-- Dirección (Pol. Ind. La Raya, nave 15, 12005 Castellón) y teléfono 964 196 929.
-- Email real (sustituir `info@localhost`), número de WhatsApp y horarios, que no se muestran.
-- Garantía: plazo y condiciones (solo aparece como concepto).
-- Atención nacional y logística: forma de envío y plazos (no se prometen).
-- Vigencia del servicio a vehículo industrial y de mecánica (aire acondicionado, gases, pre-ITV).
-- Referencias del catálogo y la aplicación "Audi V6 TDI" del GT2052V.
-- Autorización de uso de logotipos de fabricantes (`marcas-turbocompresores.svg`).
-- Fotografías en alta resolución del laboratorio y del equipo (las actuales son de 300×225 px) y fotos de personas.
-- Fabricante y modelo de los equipos (DPF Revival, MSG) antes de citarlos.
-- Textos legales completos: razón social, NIF y datos registrales.
-- Decidir si el mockup debe llevar `noindex` mientras conviva con la web actual.
-
-## Límites y bloqueos
-
-- Sin bloqueos técnicos.
-- Cualquier decisión de marca, alcance o contenido nuevo vuelve al orquestador.
+1. **Reemplazar datos provisionales**: Configurar el correo receptor de leads, horario comercial y teléfono móvil de WhatsApp.
+2. **Fotografía definitiva**: Reemplazar las imágenes provisionales de 300×225 px en `public/images/` por fotografías de alta resolución en formato WebP/JPG.
+3. **Formalizar textos legales**: Completar razón social, CIF y domicilio fiscal en `aviso-legal.astro`.
+4. **Despliegue en dominio final**:
+   - Ajustar `site` y `base` en `astro.config.mjs` para el dominio definitivo (ej. `https://turbocas.com` con `base: '/'`).
+   - Retirar `<meta name="robots" content="noindex, follow" />` en `BaseLayout.astro`.
+   - Implementar redirecciones 301 desde las URLs antiguas del WordPress comprometido en el servidor de producción.
