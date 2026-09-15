@@ -24,12 +24,12 @@ const diagnosis = [
 const gallery = [
   { src: 'laboratorio/banco-pruebas-turbocompresores.jpeg', alt: 'Banco de pruebas para turbocompresores en el laboratorio de Turbocas', width: 300, height: 225, label: 'Banco turbo', caption: 'Banco de pruebas de turbocompresores.' },
   { src: 'direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg', alt: 'Banco de pruebas de direcciones hidráulicas con manómetros', width: 1153, height: 768, label: 'Direcciones', caption: 'Banco de pruebas para direcciones y bombas hidráulicas.' },
-  { src: 'fap-cat/limpieza-filtro-particulas.png', alt: 'Sección de un filtro de partículas y catalizador', width: 1100, height: 550, label: 'FAP · Sección', caption: 'Estructura interior de un filtro y un catalizador.', fit: 'contain' as const },
+  { src: 'fap-cat/limpieza-filtro-particulas.png', alt: 'Sección de un filtro de partículas y catalizador', width: 1100, height: 550, label: 'FAP · Sección', caption: 'Ilustración: estructura interior de un filtro y un catalizador.', fit: 'contain' as const },
   { src: 'fap-cat/equipo-limpieza-filtros-particulas.jpeg', alt: 'Equipos de limpieza de filtros de partículas y de piezas con agua a presión', width: 300, height: 225, label: 'FAP / CAT', caption: 'Zona de limpieza de filtros y piezas.' },
-  { src: 'fap-cat/equipo-diagnostico-limpieza-fap.jpeg', alt: 'Equipo de diagnóstico y limpieza de filtros de partículas', width: 708, height: 1024, label: 'Equipo FAP', caption: 'Equipo de limpieza de filtros de partículas.', fit: 'contain' as const },
+  { src: 'fap-cat/equipo-diagnostico-limpieza-fap.jpeg', alt: 'Equipo de diagnóstico y limpieza de filtros de partículas', width: 708, height: 1024, label: 'Equipo FAP', caption: 'Imagen de referencia del equipo de limpieza de filtros.', fit: 'contain' as const },
   { src: 'laboratorio/turbocompresores-reconstruidos.jpeg', alt: 'Turbocompresores revisados en Turbocas', width: 300, height: 225, label: 'Turbos', caption: 'Turbos identificados tras su revisión.' },
-  { src: 'fap-cat/filtro-particulas-automovil.jpg', alt: 'Filtro de partículas de automóvil', width: 1264, height: 650, label: 'Filtro', caption: 'Filtro de partículas: una de las piezas que valoramos.' },
-  { src: 'direccion-hidraulica/bomba-direccion-hidraulica.jpg', alt: 'Bomba de dirección hidráulica', width: 512, height: 512, label: 'Bomba', caption: 'Bomba de dirección hidráulica: pieza habitual del banco.', fit: 'contain' as const },
+  { src: 'fap-cat/filtro-particulas-automovil.jpg', alt: 'Filtro de partículas de automóvil', width: 1264, height: 650, label: 'Filtro', caption: 'Ilustración: filtro de partículas, una de las piezas que valoramos.' },
+  { src: 'direccion-hidraulica/bomba-direccion-hidraulica.jpg', alt: 'Bomba de dirección hidráulica', width: 512, height: 512, label: 'Bomba', caption: 'Imagen de referencia: bomba de dirección hidráulica.', fit: 'contain' as const },
 ];
 
 const cases = [
@@ -107,8 +107,8 @@ const heroPhotos = [
       <SectionHeading
         id="maquinaria-titulo"
         tag="03 · Bancos de prueba y maquinaria"
-        title="Equipamiento real de nuestras instalaciones"
-        lead="Estas son fotografías de los equipos con los que trabajamos cada día en Castellón."
+        title="Equipos y piezas con los que trabajamos"
+        lead="Fotografías de nuestros bancos e instalaciones en Castellón, junto a imágenes de referencia de las piezas que valoramos, indicadas en su pie."
         align="rule"
       />
       <Gallery items={gallery} columns={4} />

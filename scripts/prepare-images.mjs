@@ -34,6 +34,7 @@ const IMAGES = [
 // La pieza ocupa una zona mínima del original: se recorta alrededor de ella.
 const CROPS = {
   'catalogo/junta-turbo-1900-100-332.jpg': { left: 110, top: 120, width: 230, height: 200 },
+  'direccion-hidraulica/bomba-direccion-hidraulica.jpg': { left: 110, top: 100, width: 300, height: 300 },
 };
 
 for (const [file, width] of IMAGES) {
