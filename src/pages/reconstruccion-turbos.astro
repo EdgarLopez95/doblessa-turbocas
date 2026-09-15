@@ -63,15 +63,37 @@ const description = 'Diagnóstico y reconstrucción de turbocompresores con gara
       <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
       <a class="link-arrow" href="#proceso">Ver el proceso <Icon name="arrow" /></a>
     </div>
-    <SpecFrame slot="media" tone="light" label="Cartucho CHRA" fit="contain">
-      <Img
-        src="catalogo/cartucho-chra-454231.jpg"
-        alt="Cartucho CHRA de turbocompresor con rueda de compresor y rueda de turbina"
-        width={1000}
-        height={1000}
-        priority
-      />
-    </SpecFrame>
+    <div class="tech-sheet" slot="media">
+      <SpecFrame tone="light" label="Cartucho CHRA · Identificación técnica" fit="contain">
+        <Img
+          src="catalogo/cartucho-chra-454231.jpg"
+          alt="Cartucho CHRA de turbocompresor con rueda de compresor y rueda de turbina"
+          width={1000}
+          height={1000}
+          priority
+        />
+      </SpecFrame>
+      <div class="spec-callout">
+        <div class="spec-callout-head">
+          <Icon name="tag" size={16} />
+          <p class="spec-callout-tag">Ejemplo de identificación, no un presupuesto</p>
+        </div>
+        <dl class="spec-grid">
+          <div>
+            <dt>Referencia</dt>
+            <dd>GT2052V / 454231</dd>
+          </div>
+          <div>
+            <dt>Tipo</dt>
+            <dd>Geometría variable (VNT)</dd>
+          </div>
+          <div>
+            <dt>Aplicación de referencia</dt>
+            <dd>Audi V6 TDI <span class="spec-pending">(pendiente de validar)</span></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
   </PageHero>
 
   <section class="section" aria-labelledby="sintomas-titulo">
@@ -107,7 +129,7 @@ const description = 'Diagnóstico y reconstrucción de turbocompresores con gara
           ]}
         />
         <figure class="side-figure" slot="media">
-          <div class="frame">
+          <div class="frame ink-frame">
             <Img
               src="laboratorio/turbocompresores-reconstruidos.jpeg"
               alt="Turbocompresores revisados en Turbocas"
@@ -115,7 +137,7 @@ const description = 'Diagnóstico y reconstrucción de turbocompresores con gara
               height={225}
             />
           </div>
-          <figcaption>Turbocompresores revisados e identificados en el laboratorio. La disponibilidad de cada unidad se confirma caso a caso.</figcaption>
+          <figcaption>Fotografía actual del cliente; se recomienda una toma nueva en alta resolución.</figcaption>
         </figure>
       </Split>
     </div>
@@ -153,18 +175,21 @@ const description = 'Diagnóstico y reconstrucción de turbocompresores con gara
           <Icon name="shield" size={22} />
           <span>
             <strong>Trabajo con garantía</strong>
-            Las reconstrucciones incluyen garantía. Te detallamos por escrito sus condiciones y alcance junto con el presupuesto.
+            Trabajamos con garantía. El plazo y las condiciones las confirmará Turbocas en el presupuesto.
           </span>
         </p>
         <div class="bench" slot="media">
-          <SpecFrame tone="light" label="Banco turbo">
-            <Img
-              src="laboratorio/banco-pruebas-turbocompresores.jpeg"
-              alt="Banco de pruebas para turbocompresores en el laboratorio de Turbocas"
-              width={300}
-              height={225}
-            />
-          </SpecFrame>
+          <figure class="bench-figure">
+            <div class="frame ink-frame">
+              <Img
+                src="laboratorio/banco-pruebas-turbocompresores.jpeg"
+                alt="Banco de pruebas para turbocompresores en el laboratorio de Turbocas"
+                width={300}
+                height={225}
+              />
+            </div>
+            <figcaption>Fotografía actual del cliente; se recomienda una toma nueva en alta resolución.</figcaption>
+          </figure>
         </div>
       </Split>
     </div>
@@ -287,5 +312,97 @@ const description = 'Diagnóstico y reconstrucción de turbocompresores con gara
     width: 100%;
     max-width: 360px;
     justify-self: center;
+  }
+
+  .bench-figure {
+    margin: 0;
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .bench-figure figcaption {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .ink-frame {
+    background: var(--ink-950);
+  }
+
+  .ink-frame :global(img) {
+    object-fit: cover;
+  }
+
+  /* Ficha técnica en hero */
+  .tech-sheet {
+    display: grid;
+    gap: var(--s-3);
+    width: min(100%, 460px);
+    justify-self: center;
+  }
+
+  .spec-callout {
+    padding: var(--s-4);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--turbo-500);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .spec-callout-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink-950);
+  }
+
+  .spec-callout-head :global(svg) {
+    color: var(--turbo-600);
+    flex: none;
+  }
+
+  .spec-callout-tag {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--steel-700);
+  }
+
+  .spec-grid {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+  }
+
+  .spec-grid div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-2);
+    padding-block: 4px;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.875rem;
+  }
+
+  .spec-grid dt {
+    color: var(--steel-700);
+    font-size: 0.8125rem;
+  }
+
+  .spec-grid dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .spec-pending {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--steel-500);
   }
 </style>

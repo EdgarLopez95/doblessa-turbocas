@@ -21,11 +21,26 @@ const symptoms = [
 ];
 
 const flow = [
-  { title: 'Problema', text: 'Nos cuentas qué notas en la dirección y qué vehículo tienes.' },
-  { title: 'Diagnóstico', text: 'Localizamos si el fallo está en la bomba, en la dirección o en el circuito.' },
-  { title: 'Banco de pruebas', text: 'Comprobamos la pieza bajo presión para medir su comportamiento real.' },
-  { title: 'Reparación', text: 'Con tu aprobación, reconstruimos y sustituimos los componentes necesarios.' },
-  { title: 'Entrega', text: 'Verificamos de nuevo en banco y entregamos la pieza o el vehículo.' },
+  {
+    title: 'Síntomas y circuito',
+    text: 'Nos describes la anomalía al volante (dureza variable, zumbidos, chirridos o fugas) y los datos del vehículo.',
+  },
+  {
+    title: 'Diagnóstico de componentes',
+    text: 'Identificamos si el problema se localiza en la bomba de dirección, en la cremallera/caja de dirección o en manguitos y fluido.',
+  },
+  {
+    title: 'Comprobación en banco de presiones',
+    text: 'Montamos la bomba o la dirección en nuestro banco específico con manómetros para medir presiones reales de trabajo y detectar fugas.',
+  },
+  {
+    title: 'Reconstrucción técnica',
+    text: 'Con tu presupuesto confirmado, sustituimos retenes de alta presión, juntas, casquillos o rectificamos según tolerancias.',
+  },
+  {
+    title: 'Test final de presión y entrega',
+    text: 'Verificamos en banco que la pieza mantiene la presión y el caudal exigidos sin pérdidas antes del montaje o expedición.',
+  },
 ];
 
 const faq = [
@@ -138,15 +153,25 @@ const description = 'Reconstrucción de bombas y direcciones hidráulicas con di
             'Verificación final antes de entregar',
           ]}
         />
+        <p class="note-box on-dark">
+          <Icon name="shield" size={22} />
+          <span>
+            <strong>Trabajo con garantía</strong>
+            Trabajamos con garantía. El plazo y las condiciones las confirmará Turbocas en el presupuesto.
+          </span>
+        </p>
         <div class="bench" slot="media">
-          <SpecFrame label="Banco de bombas">
-            <Img
-              src="direccion-hidraulica/banco-bombas-hidraulicas.jpg"
-              alt="Banco de pruebas para bombas hidráulicas"
-              width={300}
-              height={200}
-            />
-          </SpecFrame>
+          <figure class="bench-figure">
+            <div class="frame ink-frame">
+              <Img
+                src="direccion-hidraulica/banco-bombas-hidraulicas.jpg"
+                alt="Banco de pruebas para bombas hidráulicas"
+                width={300}
+                height={200}
+              />
+            </div>
+            <figcaption>Fotografía actual del cliente; se recomienda una toma nueva en alta resolución.</figcaption>
+          </figure>
         </div>
       </Split>
     </div>
@@ -201,8 +226,37 @@ const description = 'Reconstrucción de bombas y direcciones hidráulicas con di
   }
 
   .bench {
-    max-width: 520px;
+    max-width: 440px;
     width: 100%;
     justify-self: center;
+  }
+
+  .bench-figure {
+    margin: 0;
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .bench-figure figcaption {
+    font-size: 0.8125rem;
+    color: var(--steel-300);
+  }
+
+  .frame {
+    overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+    border: 1px solid rgb(255 255 255 / 0.14);
+  }
+
+  .ink-frame {
+    background: var(--ink-950);
+  }
+
+  .ink-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--s-2);
   }
 </style>

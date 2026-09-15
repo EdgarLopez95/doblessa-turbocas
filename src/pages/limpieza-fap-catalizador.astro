@@ -117,11 +117,37 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
     <div class="container">
       <SectionHeading
         id="proceso-titulo"
-        tag="03 · Proceso"
+        tag="03 · Proceso y esquema"
         title="Diagnóstico primero, limpieza si procede"
         lead="No todas las incidencias del filtro se resuelven limpiándolo. Te lo decimos antes de empezar."
         align="split"
       />
+      <div class="system-scheme">
+        <p class="scheme-caption">Esquema de intervención técnica</p>
+        <div class="scheme-grid">
+          <div class="scheme-card">
+            <span class="scheme-step">01</span>
+            <h3>Testigo o síntoma</h3>
+            <p>Aviso en el cuadro de avería o saturación, ciclos de regeneración fallidos o motor en modo protección.</p>
+          </div>
+          <div class="scheme-arrow" aria-hidden="true">
+            <Icon name="arrow" size={24} />
+          </div>
+          <div class="scheme-card is-primary">
+            <span class="scheme-step">02</span>
+            <h3>Diagnóstico del sistema</h3>
+            <p>Comprobación de contrapresión, sensores diferenciales y estado físico del monolito para verificar si es recuperable.</p>
+          </div>
+          <div class="scheme-arrow" aria-hidden="true">
+            <Icon name="arrow" size={24} />
+          </div>
+          <div class="scheme-card">
+            <span class="scheme-step">03</span>
+            <h3>Limpieza en equipo si procede</h3>
+            <p>Limpieza en equipo específico de agua y secado controlado; si el filtro tiene daño interno, te orientamos en alternativas.</p>
+          </div>
+        </div>
+      </div>
       <ProcessSteps steps={steps} />
     </div>
   </section>
@@ -141,7 +167,7 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
         />
         <div class="equip" slot="media">
           <figure class="equip-cell">
-            <div class="equip-frame equip-white">
+            <div class="equip-frame">
               <Img
                 src="fap-cat/equipo-diagnostico-limpieza-fap.jpeg"
                 alt="Equipo de diagnóstico y limpieza de filtros de partículas"
@@ -149,10 +175,10 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
                 height={1024}
               />
             </div>
-            <figcaption>Imagen de referencia del equipo de limpieza.</figcaption>
+            <figcaption>Fotografía actual del cliente; se recomienda una toma nueva en alta resolución.</figcaption>
           </figure>
           <figure class="equip-cell">
-            <div class="equip-frame equip-photo">
+            <div class="equip-frame">
               <Img
                 src="fap-cat/equipo-limpieza-filtros-particulas.jpeg"
                 alt="Equipos de limpieza de filtros de partículas y catalizadores instalados en Turbocas"
@@ -160,7 +186,7 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
                 height={225}
               />
             </div>
-            <figcaption>Fotografía de la instalación en Turbocas.</figcaption>
+            <figcaption>Fotografía actual del cliente; se recomienda una toma nueva en alta resolución.</figcaption>
           </figure>
         </div>
       </Split>
@@ -223,24 +249,26 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
 
   .equip {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 300px));
+    grid-template-columns: repeat(2, minmax(0, 240px));
     gap: var(--s-4);
     justify-content: center;
+    align-items: stretch;
     width: 100%;
   }
 
   .equip-cell {
     margin: 0;
     display: grid;
+    grid-template-rows: 1fr auto;
     gap: var(--s-2);
-    align-content: start;
   }
 
   .equip-frame {
-    aspect-ratio: 3 / 4;
+    height: 220px;
     overflow: hidden;
     border-radius: var(--radius);
-    background: var(--ink-800);
+    background: var(--ink-950);
+    border: 1px solid rgb(255 255 255 / 0.1);
   }
 
   .equip-frame :global(img) {
@@ -249,24 +277,86 @@ const description = 'Servicio especializado de limpieza de filtros de partícula
     object-fit: cover;
   }
 
-  /* Foto real 300×225: se respeta su proporción y tamaño nativo */
-  .equip-photo {
-    aspect-ratio: 4 / 3;
-    max-width: 300px;
-  }
-
-  .equip-white {
-    background: var(--white);
-    border: 1px solid var(--border);
-  }
-
-  .equip-white :global(img) {
-    object-fit: contain;
-    padding: var(--s-4);
-  }
-
   .equip-cell figcaption {
     font-size: 0.8125rem;
     color: var(--text-muted);
+  }
+
+  /* Esquema del sistema */
+  .system-scheme {
+    margin-block: var(--s-6) var(--s-10);
+    padding: var(--s-6);
+    background: var(--ink-950);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: var(--radius);
+  }
+
+  .scheme-caption {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--turbo-500);
+    margin-bottom: var(--s-4);
+  }
+
+  .scheme-grid {
+    display: grid;
+    gap: var(--s-4);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .scheme-grid {
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: var(--s-3);
+    }
+  }
+
+  .scheme-card {
+    padding: var(--s-4);
+    background: rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: var(--s-2);
+    height: 100%;
+  }
+
+  .scheme-card.is-primary {
+    border-color: var(--turbo-500);
+    background: rgb(244 176 0 / 0.08);
+  }
+
+  .scheme-step {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--turbo-500);
+  }
+
+  .scheme-card h3 {
+    font-size: 1.125rem;
+    color: var(--white);
+  }
+
+  .scheme-card p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--steel-300);
+  }
+
+  .scheme-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--turbo-500);
+  }
+
+  @media (max-width: 767px) {
+    .scheme-arrow {
+      transform: rotate(90deg);
+      padding-block: var(--s-1);
+    }
   }
 </style>
