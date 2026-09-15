@@ -9,8 +9,8 @@ interface Props {
 
 const { diagnoseHref = url('contacto/#formulario') } = Astro.props;
 const current = Astro.url.pathname.replace(/\/?$/, '/');
-const isCurrent = (href: string) => current === url(href);
-const isSection = (href: string) => current.startsWith(url(href));
+const isCurrent = (href: string) => current === url(href.split('#')[0]);
+const isSection = (href: string) => current.startsWith(url(href.split('#')[0]));
 const serviceHrefs = ['servicios/', ...services.map((s) => s.slug)];
 const inServices = serviceHrefs.some((h) => isCurrent(h));
 

@@ -10,28 +10,34 @@ import { business } from '../data/site';
 import { service } from '../lib/schema';
 import { url } from '../lib/url';
 
-const groups: { icon: IconName; title: string; when: string; items: string[] }[] = [
+const groups: { id?: string; icon: IconName; title: string; navTitle?: string; when: string; items: string[] }[] = [
   {
     icon: 'eye',
-    title: 'Revisión',
-    when: 'Antes de un viaje o cuando notas algo distinto',
+    title: 'Revisión y puesta a punto',
+    navTitle: 'Revisión general',
+    when: 'Antes de un viaje o cuando notas algo distinto en el vehículo',
     items: ['Niveles y fluidos', 'Frenos y neumáticos', 'Luces y elementos de seguridad'],
   },
   {
+    id: 'aire-acondicionado',
     icon: 'oil',
-    title: 'Mantenimiento',
-    when: 'Cuando lo indica el plan del fabricante',
-    items: ['Cambio de aceite y filtros', 'Carga de aire acondicionado', 'Revisión según el plan de mantenimiento'],
+    title: 'Carga y comprobación de aire acondicionado',
+    navTitle: 'Aire acondicionado',
+    when: 'Climatización, revisión y mantenimiento según el fabricante',
+    items: ['Carga de gas refrigerante y comprobación de estanqueidad', 'Cambio de aceite y filtros', 'Revisión periódica según el plan de mantenimiento'],
   },
   {
+    id: 'gases-de-escape',
     icon: 'clipboard',
-    title: 'Pre-ITV',
-    when: 'Antes de tu cita de inspección técnica',
-    items: ['Revisión de los puntos habituales de la inspección', 'Análisis de gases de escape', 'Explicación de lo que conviene corregir'],
+    title: 'Análisis de gases de escape y pre-ITV',
+    navTitle: 'Gases y pre-ITV',
+    when: 'Comprobación de emisiones antes de la inspección técnica',
+    items: ['Análisis de opacidad y gases de escape (diésel y gasolina)', 'Revisión de los puntos clave de la inspección', 'Explicación clara de lo que conviene corregir'],
   },
   {
     icon: 'gauge',
     title: 'Diagnóstico básico',
+    navTitle: 'Diagnóstico básico',
     when: 'Si se enciende un testigo o notas un síntoma',
     items: ['Lectura de averías', 'Comprobación del síntoma en el vehículo', 'Paso al laboratorio si es turbo, FAP o dirección'],
   },
@@ -70,7 +76,7 @@ const description = 'Mantenimiento, revisiones, pre-ITV y diagnóstico en nuestr
     <div class="hero-panel surface-dark" slot="media">
       <p class="tag">En el taller</p>
       <ul class="hp-list">
-        {groups.map((g) => <li><Icon name={g.icon} /> <span>{g.title}</span></li>)}
+        {groups.map((g) => <li><Icon name={g.icon} /> <span>{g.navTitle || g.title}</span></li>)}
       </ul>
       <p class="hp-address"><Icon name="pin" size={20} /> {business.street}, {business.city}</p>
     </div>
@@ -88,7 +94,7 @@ const description = 'Mantenimiento, revisiones, pre-ITV y diagnóstico en nuestr
       <ul class="groups">
         {
           groups.map((g, i) => (
-            <li class="group" data-reveal style={`--i: ${i}`}>
+            <li class="group" id={g.id} data-reveal style={`--i: ${i}`}>
               <div class="g-head">
                 <span class="g-icon">
                   <Icon name={g.icon} />
@@ -208,6 +214,7 @@ const description = 'Mantenimiento, revisiones, pre-ITV y diagnóstico en nuestr
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
+    scroll-margin-top: calc(var(--header-h, 72px) + 2rem);
   }
 
   .g-head {

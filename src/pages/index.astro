@@ -119,11 +119,14 @@ const gallery = [
           {
             secondary.map((s) => (
               <li class="row">
-                <span class="row-icon">
-                  <Icon name={s.icon} />
-                </span>
-                <span class="row-name">{s.name}</span>
-                <span class="row-human">{s.human}</span>
+                <a class="row-link" href={url(s.slug)}>
+                  <span class="row-icon">
+                    <Icon name={s.icon} />
+                  </span>
+                  <span class="row-name">{s.name}</span>
+                  <span class="row-human">{s.human}</span>
+                  <span class="row-arrow"><Icon name="arrow" size={20} /></span>
+                </a>
               </li>
             ))
           }
@@ -261,12 +264,22 @@ const gallery = [
   }
 
   .row {
+    border-top: 1px solid var(--border);
+  }
+
+  .row-link {
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 40px 1fr auto;
     column-gap: var(--s-4);
     align-items: center;
     padding-block: var(--s-3);
-    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--dur-fast);
+  }
+
+  .row-link:hover {
+    color: var(--turbo-700);
   }
 
   .row-icon {
@@ -277,6 +290,7 @@ const gallery = [
     height: 40px;
     border-radius: var(--radius-sm);
     background: var(--steel-100);
+    color: var(--ink-900);
   }
 
   .row-name {
@@ -291,11 +305,25 @@ const gallery = [
     color: var(--text-muted);
   }
 
+  .row-arrow {
+    grid-row: span 2;
+    display: flex;
+    align-items: center;
+    color: var(--steel-400);
+    transition: transform var(--dur-fast), color var(--dur-fast);
+  }
+
+  .row-link:hover .row-arrow {
+    transform: translateX(4px);
+    color: var(--turbo-600);
+  }
+
   @media (min-width: 768px) {
-    .row {
-      grid-template-columns: 40px 260px 1fr;
+    .row-link {
+      grid-template-columns: 40px 320px 1fr auto;
     }
-    .row-icon {
+    .row-icon,
+    .row-arrow {
       grid-row: auto;
     }
   }

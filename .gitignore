@@ -5,3 +5,4 @@ design/qa/
 .env
 .env.*
 !.env.example
+.claude/
