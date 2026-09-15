@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileActionBar from '../components/MobileActionBar.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { absolute, img, SITE_ORIGIN } from '../lib/url';
+import { absolute, img, SITE_ORIGIN, url } from '../lib/url';
 import { webpOf } from '../lib/images';
 
 interface Props {
@@ -34,7 +34,7 @@ const preload = heroImage ? (webpOf(heroImage) ?? heroImage) : null;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="robots" content="noindex, follow" />
     <meta name="theme-color" content="#111827" />
     <link rel="icon" type="image/png" href={img('marca/icono-turbocas.png')} />
 
@@ -47,12 +47,8 @@ const preload = heroImage ? (webpOf(heroImage) ?? heroImage) : null;
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
-    />
+    <link rel="preload" href={url('fonts/inter-400.woff2')} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={url('fonts/barlow-condensed-600.woff2')} as="font" type="font/woff2" crossorigin />
     {preload && <link rel="preload" as="image" href={img(preload)} fetchpriority="high" />}
 
     <script is:inline>

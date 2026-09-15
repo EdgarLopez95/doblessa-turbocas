@@ -1,4 +1,56 @@
 /* ==========================================================================
+   Fuentes locales autoalojadas
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/barlow-condensed-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/barlow-condensed-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/inter-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/inter-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/inter-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/inter-700.woff2') format('woff2');
+}
+
+/* ==========================================================================
    Turbocas — tokens y base. Sistema: "Precisión que devuelve potencia".
    ========================================================================== */
 
@@ -27,9 +79,9 @@
   --border: var(--steel-100);
   --border-strong: var(--steel-500);
 
-  /* Tipografía */
-  --font-display: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif-condensed, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Tipografía con fallbacks seguros */
+  --font-display: 'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', Arial, Helvetica, sans-serif;
   --fs-h1: clamp(2.5rem, 1.6rem + 3.2vw, 3.5rem);
   --fs-h2: clamp(1.875rem, 1.4rem + 1.6vw, 2.25rem);
   --fs-h3: 1.5rem;
