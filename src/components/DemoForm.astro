@@ -40,6 +40,20 @@ const f = (name: string) => `${id}-${name}`;
   </p>
 
   <form novalidate aria-labelledby={f('titulo')} aria-describedby={f('aviso')}>
+    <fieldset class="field fieldset-tipo">
+      <legend class="label">¿Eres un taller profesional?</legend>
+      <div class="radios">
+        <label class="radio-label">
+          <input type="radio" name="tipo" value="particular" id={f('tipo-particular')} checked />
+          <span>No, soy particular</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="tipo" value="taller" id={f('tipo-taller')} />
+          <span>Sí, soy un taller</span>
+        </label>
+      </div>
+    </fieldset>
+
     <div class="field">
       <label for={f('servicio')}>¿Qué necesitas?</label>
       <select class="input" id={f('servicio')} name="servicio" required aria-describedby={f('servicio-error')}>
@@ -139,6 +153,7 @@ const f = (name: string) => `${id}-${name}`;
   const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   const LABELS: Record<string, string> = {
+    tipo: 'Tipo de cliente',
     servicio: 'Servicio',
     vehiculo: 'Vehículo o referencia',
     nombre: 'Nombre',
@@ -163,6 +178,12 @@ const f = (name: string) => `${id}-${name}`;
     const vehicle = form.querySelector<HTMLInputElement>('input[name="vehiculo"]');
     const preService = params.get('servicio');
     const preRef = params.get('ref')?.slice(0, 120);
+    const preTipo = params.get('tipo');
+
+    if (preTipo === 'taller') {
+      const radioTaller = form.querySelector<HTMLInputElement>('input[name="tipo"][value="taller"]');
+      if (radioTaller) radioTaller.checked = true;
+    }
 
     if (service && preService && Array.from(service.options).some((o) => o.value === preService)) {
       service.value = preService;
@@ -225,10 +246,16 @@ const f = (name: string) => `${id}-${name}`;
       // Pantalla de confirmación con el resumen de lo indicado.
       summaryList.replaceChildren();
       for (const [name, label] of Object.entries(LABELS)) {
-        const field = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
-          `[name="${name}"]`,
-        );
-        const value = field?.value.trim();
+        let value = '';
+        if (name === 'tipo') {
+          const checkedRadio = form.querySelector<HTMLInputElement>('input[name="tipo"]:checked');
+          value = checkedRadio?.value === 'taller' ? 'Sí, soy un taller profesional' : 'No, soy particular';
+        } else {
+          const field = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+            `[name="${name}"]`,
+          );
+          value = field?.value.trim() ?? '';
+        }
         if (!value) continue;
         const row = document.createElement('div');
         const dt = document.createElement('dt');
@@ -290,6 +317,41 @@ const f = (name: string) => `${id}-${name}`;
   form {
     display: grid;
     gap: var(--s-4);
+  }
+
+  .fieldset-tipo {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .fieldset-tipo .label {
+    margin-bottom: var(--s-2);
+    display: block;
+  }
+
+  .radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+  }
+
+  .radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .radio-label input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: var(--ink-950);
+    cursor: pointer;
   }
 
   .row {

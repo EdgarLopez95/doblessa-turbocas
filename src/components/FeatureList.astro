@@ -6,6 +6,7 @@ interface Item {
   icon?: IconName;
   title: string;
   text: string;
+  cta?: { label: string; href: string };
 }
 
 interface Props {
@@ -33,6 +34,11 @@ const { items, columns = 3, numbered = false, tone = 'light' } = Astro.props;
         )}
         <h3 class="title">{item.title}</h3>
         <p class="text">{item.text}</p>
+        {item.cta && (
+          <a class="link-arrow f-cta" href={item.cta.href}>
+            {item.cta.label} <Icon name="arrow" />
+          </a>
+        )}
       </li>
     ))
   }
@@ -112,5 +118,10 @@ const { items, columns = 3, numbered = false, tone = 'light' } = Astro.props;
 
   .dark .text {
     color: var(--steel-300);
+  }
+
+  .f-cta {
+    margin-top: auto;
+    padding-top: var(--s-2);
   }
 </style>

@@ -34,7 +34,12 @@ const gallery = [
 
 const cases = [
   { icon: 'users' as const, title: 'Particulares con una avería', text: 'Conductores que notan un síntoma y quieren saber qué ocurre antes de decidir.' },
-  { icon: 'wrench' as const, title: 'Talleres profesionales', text: 'Talleres que necesitan diagnosticar o reconstruir un turbo, un filtro o una dirección.' },
+  {
+    icon: 'wrench' as const,
+    title: 'Talleres profesionales',
+    text: 'Talleres que necesitan diagnosticar o reconstruir un turbo, un filtro o una dirección.',
+    cta: { label: 'Contactar como taller', href: `${url('contacto/')}?tipo=taller#formulario` },
+  },
   { icon: 'search' as const, title: 'Compradores de recambio', text: 'Quien tiene una referencia y quiere confirmar la compatibilidad antes de comprar.' },
   { icon: 'truck' as const, title: 'Vehículo industrial', text: 'Casos de camión, furgoneta de trabajo o maquinaria, valorando la viabilidad de cada uno.' },
 ];
