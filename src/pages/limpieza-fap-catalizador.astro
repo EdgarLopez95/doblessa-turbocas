@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SpecFrame from '../components/SpecFrame.astro';
+import Img from '../components/Img.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureList from '../components/FeatureList.astro';
+import CheckList from '../components/CheckList.astro';
+import Split from '../components/Split.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import ServiceRequest from '../components/ServiceRequest.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { service } from '../lib/schema';
+
+const signals = [
+  { icon: 'warning' as const, title: 'Testigo del filtro encendido', text: 'El cuadro avisa de un problema con el filtro de partículas.' },
+  { icon: 'gauge' as const, title: 'Regeneraciones que no terminan', text: 'El ventilador sigue funcionando al apagar o las regeneraciones son muy frecuentes.' },
+  { icon: 'bolt' as const, title: 'Pérdida de potencia', text: 'El motor entra en modo de protección y limita las revoluciones.' },
+  { icon: 'clipboard' as const, title: 'Emisiones altas', text: 'Resultados de gases que preocupan antes de una inspección técnica.' },
+  { icon: 'calendar' as const, title: 'Uso urbano y trayectos cortos', text: 'El filtro no alcanza la temperatura necesaria para regenerarse con normalidad.' },
+];
+
+const steps = [
+  { title: 'Consulta', text: 'Nos indicas el vehículo, los síntomas y los avisos que aparecen en el cuadro.' },
+  { title: 'Diagnóstico', text: 'Comprobamos el sistema y el estado del filtro para confirmar si la limpieza tiene sentido en tu caso.' },
+  { title: 'Limpieza', text: 'Si procede, desmontamos el filtro o el catalizador y lo limpiamos con equipo específico.' },
+  { title: 'Entrega', text: 'Montamos, comprobamos el sistema y te explicamos el resultado del trabajo.' },
+];
+
+const faq = [
+  { q: '¿La limpieza sirve para cualquier filtro de partículas?', a: 'No siempre. Si el filtro está dañado físicamente o el origen del problema es otra avería, la limpieza puede no ser la solución. Lo valoramos en el diagnóstico antes de proponerla.' },
+  { q: '¿Qué diferencia hay entre limpieza y regeneración?', a: 'La regeneración la hace el propio vehículo quemando el hollín a alta temperatura. La limpieza actúa sobre residuos que la regeneración ya no elimina, con el filtro desmontado.' },
+  { q: '¿Cuánto cuesta limpiar el FAP o el catalizador?', a: 'Depende del vehículo, del tipo de filtro y del diagnóstico. Te damos presupuesto antes de realizar ningún trabajo.' },
+  { q: '¿Puedo enviaros el filtro desde otra provincia?', a: 'Consúltanos antes de enviarlo. Te indicaremos cómo prepararlo y qué datos del vehículo necesitamos.' },
+];
+
+const description = 'Servicio especializado de limpieza de filtros de partículas y catalizadores. Consulta el proceso y pide presupuesto.';
+---
+
+<BaseLayout
+  title="Limpieza de FAP y catalizadores en Castellón | Turbocas"
+  description={description}
+  path="limpieza-fap-catalizador/"
+  heroImage="fap-cat/limpieza-filtro-particulas.png"
+  diagnoseHref="#solicitud"
+  jsonLd={[service('Limpieza de filtros de partículas y catalizadores', description, 'limpieza-fap-catalizador/')]}
+>
+  <PageHero
+    tag="Laboratorio · FAP y catalizadores"
+    title="Limpieza de FAP y catalizadores en Castellón"
+    lead="Un filtro de partículas saturado puede limitar el rendimiento del motor. Diagnosticamos su estado y te decimos si la limpieza es una buena opción para tu vehículo."
+    crumbs={[
+      { label: 'Servicios', href: 'servicios/' },
+      { label: 'Limpieza de FAP y catalizador', href: 'limpieza-fap-catalizador/' },
+    ]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href="#solicitud">Consultar mi vehículo <Icon name="arrow" /></a>
+      <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+    </div>
+    <SpecFrame slot="media" label="FAP · Sección" fit="contain">
+      <Img
+        src="fap-cat/limpieza-filtro-particulas.png"
+        alt="Sección de un filtro de partículas y catalizador mostrando su estructura interior"
+        width={1100}
+        height={550}
+        priority
+      />
+    </SpecFrame>
+  </PageHero>
+
+  <section class="section surface-white" aria-labelledby="que-es-titulo">
+    <div class="container">
+      <Split ratio="6-6">
+        <p class="tag">01 · En pocas palabras</p>
+        <h2 id="que-es-titulo">Qué es el FAP y qué es el catalizador</h2>
+        <dl class="defs">
+          <div class="def">
+            <dt>Filtro de partículas (FAP / DPF)</dt>
+            <dd>Retiene el hollín que generan los motores diésel. El vehículo lo quema periódicamente (regeneración), pero con el uso se acumulan residuos que ya no se eliminan así.</dd>
+          </div>
+          <div class="def">
+            <dt>Catalizador (CAT)</dt>
+            <dd>Transforma parte de los gases contaminantes del escape en otros menos nocivos. Si se obstruye o se deteriora, afecta a las emisiones y al funcionamiento del motor.</dd>
+          </div>
+        </dl>
+        <figure class="fig" slot="media">
+          <div class="fig-frame">
+            <Img
+              src="fap-cat/filtro-particulas-automovil.jpg"
+              alt="Filtro de partículas de automóvil con acumulación de hollín en su interior"
+              width={1264}
+              height={650}
+            />
+          </div>
+          <figcaption>Representación de un filtro de partículas reteniendo hollín.</figcaption>
+        </figure>
+      </Split>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cuando-titulo">
+    <div class="container">
+      <SectionHeading
+        id="cuando-titulo"
+        tag="02 · Cuándo consultarlo"
+        title="Cuándo puede interesar revisar el filtro"
+        lead="Estas señales no siempre indican un filtro saturado: también pueden deberse a sensores u otras averías. Por eso valoramos cada caso antes de proponer una limpieza."
+        align="rule"
+      />
+      <FeatureList items={signals} columns={3} />
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" id="proceso" aria-labelledby="proceso-titulo">
+    <div class="container">
+      <SectionHeading
+        id="proceso-titulo"
+        tag="03 · Proceso"
+        title="Diagnóstico primero, limpieza si procede"
+        lead="No todas las incidencias del filtro se resuelven limpiándolo. Te lo decimos antes de empezar."
+        align="split"
+      />
+      <ProcessSteps steps={steps} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="equipo-titulo">
+    <div class="container">
+      <Split ratio="7-5" reverse>
+        <p class="tag">04 · Tecnología</p>
+        <h2 id="equipo-titulo">Equipos específicos para filtros y catalizadores</h2>
+        <p class="lead">Contamos con maquinaria dedicada a la limpieza de filtros de partículas y catalizadores, en un espacio propio dentro de nuestras instalaciones.</p>
+        <CheckList
+          items={[
+            'Equipo de limpieza de filtros de partículas y catalizadores',
+            'Equipo de limpieza de piezas con agua a presión',
+            'Diagnosis del vehículo en el taller',
+          ]}
+        />
+        <div class="equip" slot="media">
+          <div class="equip-main">
+            <Img
+              src="fap-cat/equipo-diagnostico-limpieza-fap.jpeg"
+              alt="Equipo de diagnóstico y limpieza de filtros de partículas"
+              width={708}
+              height={1024}
+            />
+          </div>
+          <figure class="equip-photo">
+            <Img
+              src="fap-cat/equipo-limpieza-filtros-particulas.jpeg"
+              alt="Equipos de limpieza de filtros de partículas y catalizadores instalados en Turbocas"
+              width={300}
+              height={225}
+            />
+            <figcaption>Instalación en Turbocas</figcaption>
+          </figure>
+        </div>
+      </Split>
+    </div>
+  </section>
+
+  <ServiceRequest
+    faq={faq}
+    formId="fap"
+    formTitle="Consultar mi vehículo"
+    formIntro="Indica el modelo y los avisos que ves. Te diremos si tiene sentido revisar el filtro."
+    submitLabel="Consultar mi vehículo"
+    defaultService="Limpieza de FAP / catalizador"
+  />
+</BaseLayout>
+
+<style>
+  .defs {
+    display: grid;
+    gap: var(--s-4);
+    margin: var(--s-2) 0 0;
+  }
+
+  .def {
+    padding: var(--s-4) var(--s-6);
+    background: var(--workshop-50);
+    border-left: 3px solid var(--ink-950);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  dt {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+
+  dd {
+    margin: var(--s-1) 0 0;
+    color: var(--text-muted);
+  }
+
+  .fig {
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .fig-frame {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #ece9e4;
+  }
+
+  .fig figcaption {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .equip {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    justify-self: center;
+  }
+
+  .equip-main {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--s-6) var(--s-6) var(--s-16);
+  }
+
+  .equip-main :global(img) {
+    max-height: 360px;
+    width: auto;
+    margin-inline: auto;
+  }
+
+  .equip-photo {
+    margin: calc(-1 * var(--s-10)) 0 0 var(--s-6);
+    width: min(300px, 70%);
+    display: grid;
+    gap: 6px;
+  }
+
+  .equip-photo :global(img) {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 4px solid var(--workshop-50);
+  }
+
+  .equip-photo figcaption {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+</style>

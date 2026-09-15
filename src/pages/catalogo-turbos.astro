@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CatalogFilters from '../components/CatalogFilters.astro';
+import CatalogCard, { type CatalogItem } from '../components/CatalogCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureList from '../components/FeatureList.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { BUSINESS_ID } from '../lib/schema';
+import { absolute, img, SITE_ORIGIN, url } from '../lib/url';
+
+const categories = ['Turbos completos', 'Cartuchos CHRA', 'Juntas y kits'];
+
+const items: CatalogItem[] = [
+  {
+    name: 'Turbocompresor GT2052V',
+    category: 'Turbo completo',
+    reference: 'GT2052V',
+    note: 'Referencia asociada a Audi V6 TDI en el material del cliente. Pendiente de validar.',
+    image: { src: 'catalogo/turbo-gt2052v-audi-v6-tdi.jpg', alt: 'Turbocompresor GT2052V para vehículos Audi V6 TDI', width: 1000, height: 1000 },
+  },
+  {
+    name: 'Cartucho CHRA 454231',
+    category: 'Cartucho CHRA',
+    reference: '454231',
+    note: 'Núcleo rotativo del turbo. Su aplicación depende del turbo completo.',
+    image: { src: 'catalogo/cartucho-chra-454231.jpg', alt: 'Cartucho CHRA 454231 para turbocompresor', width: 1000, height: 1000 },
+  },
+  {
+    name: 'Cartucho CHRA 708639',
+    category: 'Cartucho CHRA',
+    reference: '708639',
+    note: 'Núcleo rotativo del turbo. Su aplicación depende del turbo completo.',
+    image: { src: 'catalogo/cartucho-chra-708639.jpg', alt: 'Cartucho CHRA 708639 para turbocompresor', width: 450, height: 450 },
+  },
+  {
+    name: 'Cartucho CHRA 454135',
+    category: 'Cartucho CHRA',
+    reference: '454135',
+    note: 'Núcleo rotativo del turbo. Su aplicación depende del turbo completo.',
+    image: { src: 'catalogo/cartucho-chra-454135.jpg', alt: 'Cartucho CHRA 454135 para turbocompresor', width: 150, height: 150 },
+  },
+  {
+    name: 'Kit de juntas 717858',
+    category: 'Juntas y kits',
+    reference: '717858',
+    note: 'Juego de juntas para el montaje del turbo. Verifica la referencia de tu turbo.',
+    image: { src: 'catalogo/junta-turbo-717858.jpg', alt: 'Junta para turbocompresor referencia 717858', width: 800, height: 800 },
+  },
+  {
+    name: 'Kit de juntas 454232',
+    category: 'Juntas y kits',
+    reference: '454232',
+    note: 'Juego de juntas para el montaje del turbo. Verifica la referencia de tu turbo.',
+    image: { src: 'catalogo/junta-turbo-454232.jpg', alt: 'Junta para turbocompresor referencia 454232', width: 500, height: 500 },
+  },
+  {
+    name: 'Kit de juntas 1900-100-332',
+    category: 'Juntas y kits',
+    reference: '1900-100-332',
+    note: 'Juego de juntas para el montaje del turbo. Verifica la referencia de tu turbo.',
+    image: { src: 'catalogo/junta-turbo-1900-100-332.jpg', alt: 'Junta para turbocompresor referencia 1900-100-332', width: 452, height: 393 },
+  },
+];
+
+const howTo = [
+  { title: 'Envíanos la referencia', text: 'La encontrarás en la placa de la carcasa del turbo. Si no la tienes, indica marca, modelo, motor y año.' },
+  { title: 'Revisamos la aplicación', text: 'Comprobamos qué referencia corresponde a tu vehículo y si conviene reconstruir o sustituir.' },
+  { title: 'Te confirmamos opciones', text: 'Te respondemos con las alternativas disponibles y su presupuesto antes de cualquier pedido.' },
+];
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Catálogo de muestra de turbocompresores y recambios',
+  url: absolute('catalogo-turbos/'),
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Product',
+      name: item.name,
+      category: item.category,
+      mpn: item.reference,
+      image: new URL(img(item.image.src), SITE_ORIGIN).href,
+      brand: undefined,
+      seller: { '@id': BUSINESS_ID },
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Catálogo de turbos, cartuchos y juntas | Turbocas"
+  description="Consulta referencias de turbocompresores, cartuchos CHRA y juntas. Confirmamos la compatibilidad con tu vehículo antes de cualquier pedido."
+  path="catalogo-turbos/"
+  jsonLd={[itemList]}
+>
+  <PageHero
+    tone="light"
+    tag="Catálogo de muestra"
+    title="Turbocompresores y recambios"
+    lead="Referencias de ejemplo de turbos completos, cartuchos CHRA y juntas. Antes de cualquier pedido confirmamos contigo la compatibilidad con tu vehículo."
+    crumbs={[{ label: 'Catálogo de turbos', href: 'catalogo-turbos/' }]}
+  >
+    <p class="note-box hero-note" slot="media">
+      <Icon name="info" size={20} />
+      <span><strong>Catálogo sin venta online</strong>No mostramos precios, existencias ni compatibilidades: cada referencia se consulta con el equipo.</span>
+    </p>
+  </PageHero>
+
+  <section class="section catalog" aria-labelledby="referencias-titulo">
+    <div class="container">
+      <CatalogFilters categories={categories} />
+
+      <div class="results-head">
+        <h2 id="referencias-titulo">Referencias de ejemplo</h2>
+        <p class="muted">{items.length} referencias · orden de muestra</p>
+      </div>
+
+      <div class="grid">
+        {items.map((item, i) => <CatalogCard item={item} index={i} />)}
+        <article class="missing surface-dark">
+          <Icon name="search" size={32} />
+          <h3>¿No encuentras tu turbo?</h3>
+          <p>Envíanos la referencia o los datos de tu vehículo y buscamos la opción adecuada.</p>
+          <a class="btn btn-primary btn-sm" href={url('contacto/#formulario')}>Consultar referencia</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-white" aria-labelledby="compat-titulo">
+    <div class="container">
+      <SectionHeading
+        id="compat-titulo"
+        tag="Compatibilidad"
+        title="Cómo confirmamos que una pieza es la tuya"
+        lead="Un turbo o un cartucho parecido no siempre es compatible. Este paso evita montar una pieza equivocada."
+        align="split"
+      />
+      <FeatureList items={howTo} columns={3} numbered />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="no-encuentras-titulo">
+    <div class="container">
+      <div class="missing-band">
+        <div>
+          <p class="tag">Presupuesto</p>
+          <h2 id="no-encuentras-titulo">¿No encuentras tu turbo en el catálogo?</h2>
+          <p class="muted">El catálogo solo muestra algunas referencias. Cuéntanos qué necesitas: también valoramos la reconstrucción de tu turbo actual.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href={url('contacto/#formulario')}>Solicitar presupuesto <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-note {
+    max-width: 60ch;
+  }
+
+  .catalog {
+    padding-top: var(--s-10);
+  }
+
+  .results-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-2) var(--s-6);
+    margin-block: var(--s-10) var(--s-4);
+  }
+
+  .results-head h2 {
+    font-size: 1.75rem;
+  }
+
+  .results-head p {
+    font-size: 0.875rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-4);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-6);
+    }
+  }
+
+  .missing {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    border-radius: var(--radius);
+    background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.03) 0 2px, transparent 2px 14px);
+  }
+
+  .missing :global(svg) {
+    color: var(--turbo-500);
+  }
+
+  .missing h3 {
+    font-size: 1.75rem;
+  }
+
+  .missing p {
+    color: var(--steel-300);
+    font-size: 0.9375rem;
+  }
+
+  .missing-band {
+    display: grid;
+    gap: var(--s-6);
+    align-items: center;
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--turbo-500);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 960px) {
+    .missing-band {
+      grid-template-columns: 1fr auto;
+      padding: var(--s-10);
+    }
+  }
+
+  .missing-band h2 {
+    margin-block: var(--s-2);
+    font-size: 1.875rem;
+  }
+</style>

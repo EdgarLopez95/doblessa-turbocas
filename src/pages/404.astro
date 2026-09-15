@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<BaseLayout
+  title="Página no encontrada | Turbocas"
+  description="La página que buscas no existe. Vuelve al inicio o contacta con Turbocas."
+  path="404/"
+  noindex
+>
+  <section class="section surface-dark blueprint nf">
+    <div class="container">
+      <p class="tag">Error 404</p>
+      <h1>Esta página no está en el laboratorio</h1>
+      <p class="lead">Puede que el enlace haya cambiado. Te ayudamos a encontrar lo que necesitas.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={url('')}>Volver al inicio <Icon name="arrow" /></a>
+        <a class="link-arrow" href={url('servicios/')}>Ver servicios <Icon name="arrow" /></a>
+        <a class="link-arrow" href={business.phoneHref}>Llamar al {business.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf .container {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+    min-height: 40vh;
+    align-content: center;
+  }
+
+  .nf h1 {
+    max-width: 18ch;
+  }
+</style>

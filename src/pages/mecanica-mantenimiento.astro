@@ -1,0 +1,291 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CheckList from '../components/CheckList.astro';
+import ServiceRequest from '../components/ServiceRequest.astro';
+import Icon from '../components/Icon.astro';
+import type { IconName } from '../lib/icons';
+import { business } from '../data/site';
+import { service } from '../lib/schema';
+import { url } from '../lib/url';
+
+const groups: { icon: IconName; title: string; when: string; items: string[] }[] = [
+  {
+    icon: 'eye',
+    title: 'Revisión',
+    when: 'Antes de un viaje o cuando notas algo distinto',
+    items: ['Niveles y fluidos', 'Frenos y neumáticos', 'Luces y elementos de seguridad'],
+  },
+  {
+    icon: 'oil',
+    title: 'Mantenimiento',
+    when: 'Cuando lo indica el plan del fabricante',
+    items: ['Cambio de aceite y filtros', 'Carga de aire acondicionado', 'Revisión según el plan de mantenimiento'],
+  },
+  {
+    icon: 'clipboard',
+    title: 'Pre-ITV',
+    when: 'Antes de tu cita de inspección técnica',
+    items: ['Revisión de los puntos habituales de la inspección', 'Análisis de gases de escape', 'Explicación de lo que conviene corregir'],
+  },
+  {
+    icon: 'gauge',
+    title: 'Diagnóstico básico',
+    when: 'Si se enciende un testigo o notas un síntoma',
+    items: ['Lectura de averías', 'Comprobación del síntoma en el vehículo', 'Paso al laboratorio si es turbo, FAP o dirección'],
+  },
+];
+
+const faq = [
+  { q: '¿Necesito cita para el mantenimiento?', a: 'Recomendamos pedirla para organizar el trabajo y reducir el tiempo que el vehículo pasa en el taller. Puedes solicitarla por teléfono o con el formulario.' },
+  { q: '¿Me dais presupuesto antes de empezar?', a: 'Sí. Te explicamos qué conviene hacer y su coste antes de realizar cualquier trabajo.' },
+  { q: '¿Qué pasa si en la revisión aparece un problema de turbo o de filtro?', a: 'Lo valoramos directamente en nuestro laboratorio, en las mismas instalaciones, sin que tengas que llevar el vehículo a otro sitio.' },
+];
+
+const description = 'Mantenimiento, revisiones, pre-ITV y diagnóstico en nuestro taller mecánico de Castellón. Pide cita y te explicamos el trabajo antes de empezar.';
+---
+
+<BaseLayout
+  title="Mecánica y mantenimiento en Castellón | Turbocas"
+  description={description}
+  path="mecanica-mantenimiento/"
+  diagnoseHref="#solicitud"
+  jsonLd={[service('Mecánica y mantenimiento de vehículos', description, 'mecanica-mantenimiento/')]}
+>
+  <PageHero
+    tone="light"
+    tag="Taller · Castellón"
+    title="Mecánica y mantenimiento para tu vehículo"
+    lead="Además del laboratorio, en nuestro taller de Castellón nos ocupamos del mantenimiento y las revisiones del día a día, con la misma forma de trabajar: explicar antes de reparar."
+    crumbs={[
+      { label: 'Servicios', href: 'servicios/' },
+      { label: 'Mecánica y mantenimiento', href: 'mecanica-mantenimiento/' },
+    ]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href="#solicitud">Consultar mi revisión <Icon name="arrow" /></a>
+      <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+    </div>
+    <div class="hero-panel surface-dark" slot="media">
+      <p class="tag">En el taller</p>
+      <ul class="hp-list">
+        {groups.map((g) => <li><Icon name={g.icon} /> <span>{g.title}</span></li>)}
+      </ul>
+      <p class="hp-address"><Icon name="pin" size={20} /> {business.street}, {business.city}</p>
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="necesidades-titulo">
+    <div class="container">
+      <SectionHeading
+        id="necesidades-titulo"
+        tag="Organizado por necesidad"
+        title="¿Qué necesita tu vehículo hoy?"
+        lead="Elige la situación que más se parece a la tuya. Si no lo tienes claro, cuéntanoslo y te orientamos."
+        align="split"
+      />
+      <ul class="groups">
+        {
+          groups.map((g, i) => (
+            <li class="group" data-reveal style={`--i: ${i}`}>
+              <div class="g-head">
+                <span class="g-icon">
+                  <Icon name={g.icon} />
+                </span>
+                <div>
+                  <h3>{g.title}</h3>
+                  <p class="when">{g.when}</p>
+                </div>
+              </div>
+              <CheckList items={g.items} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight surface-white" aria-labelledby="lab-titulo">
+    <div class="container lab-note">
+      <div>
+        <p class="tag">Laboratorio en las mismas instalaciones</p>
+        <h2 id="lab-titulo">¿Sospechas del turbo, el filtro de partículas o la dirección?</h2>
+        <p class="muted">Estos casos los atiende directamente nuestro laboratorio especializado.</p>
+      </div>
+      <ul class="lab-links">
+        <li><a class="link-arrow" href={url('reconstruccion-turbos/')}>Reconstrucción de turbos <Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href={url('limpieza-fap-catalizador/')}>Limpieza de FAP y catalizador <Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href={url('direcciones-hidraulicas/')}>Direcciones hidráulicas <Icon name="arrow" /></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="donde-titulo">
+    <div class="container">
+      <div class="where">
+        <span class="where-icon"><Icon name="pin" size={28} /></span>
+        <div>
+          <h2 id="donde-titulo" class="where-title">Servicio local en nuestro taller</h2>
+          <p class="muted">{business.street}, {business.postalCode} {business.city}. Llámanos para confirmar disponibilidad antes de venir.</p>
+        </div>
+        <a class="btn btn-secondary" href={url('contacto/')}>Ver contacto y ubicación</a>
+      </div>
+    </div>
+  </section>
+
+  <ServiceRequest
+    faq={faq}
+    formId="taller"
+    formTitle="Consultar mi revisión"
+    formIntro="Dinos qué necesitas y te llamamos para concretar."
+    submitLabel="Consultar mi revisión"
+    defaultService="Mecánica y mantenimiento"
+  />
+</BaseLayout>
+
+<style>
+  .hero-panel {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-6);
+    border-radius: var(--radius);
+    border-top: 3px solid var(--turbo-500);
+    max-width: 440px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-panel {
+      padding: var(--s-10);
+    }
+  }
+
+  .hp-list {
+    list-style: none;
+    display: grid;
+  }
+
+  .hp-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 56px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .hp-list :global(svg) {
+    color: var(--turbo-500);
+  }
+
+  .hp-address {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--steel-300);
+  }
+
+  .groups {
+    list-style: none;
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 768px) {
+    .groups {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .group {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .g-head {
+    display: flex;
+    gap: var(--s-4);
+    align-items: center;
+  }
+
+  .g-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border-radius: var(--radius-sm);
+    background: var(--steel-100);
+  }
+
+  .when {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+  }
+
+  .lab-note {
+    display: grid;
+    gap: var(--s-6);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .lab-note {
+      grid-template-columns: 6fr 5fr;
+    }
+  }
+
+  .lab-note h2 {
+    margin-block: var(--s-2);
+    font-size: 1.875rem;
+  }
+
+  .lab-links {
+    list-style: none;
+    display: grid;
+    border-top: 1px solid var(--border);
+  }
+
+  .lab-links li {
+    border-bottom: 1px solid var(--border);
+    padding-block: var(--s-1);
+  }
+
+  .where {
+    display: grid;
+    gap: var(--s-4);
+    align-items: center;
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .where {
+      grid-template-columns: auto 1fr auto;
+      gap: var(--s-6);
+    }
+  }
+
+  .where-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--turbo-500);
+  }
+
+  .where-title {
+    font-size: 1.5rem;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { business } from '../data/site';
+---
+
+<LegalPage
+  title="Aviso legal"
+  metaTitle="Aviso legal | Turbocas"
+  description="Aviso legal del sitio web de Turbocas, taller mecánico y laboratorio en Castellón."
+  path="aviso-legal/"
+>
+  <h2>1. Datos identificativos</h2>
+  <p>
+    Este sitio web pertenece a Turbocas, taller mecánico y laboratorio con domicilio en {business.street}, {business.postalCode} {business.city}, y teléfono {business.phoneDisplay}.
+  </p>
+  <p>La denominación social, el NIF, el correo electrónico y, en su caso, los datos registrales deben ser facilitados por el titular antes de la publicación.</p>
+
+  <h2>2. Objeto</h2>
+  <p>El sitio informa sobre los servicios de reconstrucción de turbocompresores, limpieza de filtros de partículas y catalizadores, reconstrucción de direcciones hidráulicas y mecánica general, y facilita el contacto con el taller.</p>
+
+  <h2>3. Condiciones de uso</h2>
+  <p>El acceso al sitio es gratuito e implica la aceptación de estas condiciones. La persona usuaria se compromete a hacer un uso adecuado de los contenidos y a no emplearlos para actividades ilícitas.</p>
+
+  <h2>4. Información sobre servicios y catálogo</h2>
+  <p>La información de servicios y referencias tiene carácter orientativo. La compatibilidad de las piezas, los presupuestos, los plazos y las condiciones de garantía se confirman de forma individual para cada caso.</p>
+
+  <h2>5. Propiedad intelectual e industrial</h2>
+  <p>Los textos, imágenes, logotipos y diseño del sitio son titularidad de Turbocas o se usan con autorización. Las marcas de terceros que puedan aparecer pertenecen a sus respectivos titulares y se citan solo con fines descriptivos.</p>
+
+  <h2>6. Responsabilidad</h2>
+  <p>Turbocas no se responsabiliza del mal uso de los contenidos ni de los daños derivados de interrupciones técnicas ajenas a su control.</p>
+
+  <h2>7. Legislación aplicable</h2>
+  <p>Estas condiciones se rigen por la legislación española. Para cualquier controversia se estará a lo dispuesto por la normativa aplicable en materia de jurisdicción competente.</p>
+</LegalPage>

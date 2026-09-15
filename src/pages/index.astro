@@ -1,9 +1,374 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/HomeHero.astro';
+import NeedSelector from '../components/NeedSelector.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import Gallery from '../components/Gallery.astro';
+import CheckList from '../components/CheckList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/site';
+import { localBusiness } from '../lib/schema';
+import { url } from '../lib/url';
+
+const featured = services.filter((s) => s.featured);
+const secondary = services.filter((s) => !s.featured);
+
+const trust = [
+  {
+    icon: 'flask' as const,
+    title: 'Laboratorio propio',
+    text: 'Bancos de prueba y equipos específicos para turbos, filtros de partículas y direcciones, en nuestras instalaciones.',
+  },
+  {
+    icon: 'users' as const,
+    title: 'Técnicos especializados',
+    text: 'Personal dedicado a turbocompresores y sistemas diésel, junto a un taller de mecánica general.',
+  },
+  {
+    icon: 'eye' as const,
+    title: 'Diagnóstico antes de reparar',
+    text: 'Te explicamos qué ocurre y qué opciones tienes antes de empezar cualquier trabajo.',
+  },
+  {
+    icon: 'truck' as const,
+    title: 'Atención fuera de Castellón',
+    text: 'Si no puedes venir al taller, te indicamos cómo hacernos llegar la pieza para valorarla.',
+  },
+];
+
+const gallery = [
+  {
+    src: 'direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg',
+    alt: 'Banco de pruebas de direcciones hidráulicas con manómetros y una bomba conectada',
+    width: 1153,
+    height: 768,
+    label: 'Banco direcciones',
+    caption: 'Banco de pruebas para bombas y direcciones hidráulicas.',
+  },
+  {
+    src: 'laboratorio/banco-pruebas-turbocompresores.jpeg',
+    alt: 'Banco de pruebas para turbocompresores en el laboratorio de Turbocas',
+    width: 300,
+    height: 225,
+    label: 'Banco turbo',
+    caption: 'Banco de pruebas de turbocompresores.',
+  },
+  {
+    src: 'fap-cat/equipo-limpieza-filtros-particulas.jpeg',
+    alt: 'Equipos de limpieza de filtros de partículas y catalizadores en Turbocas',
+    width: 300,
+    height: 225,
+    label: 'FAP / CAT',
+    caption: 'Limpieza de filtros y de piezas.',
+  },
+  {
+    src: 'laboratorio/turbocompresores-reconstruidos.jpeg',
+    alt: 'Turbocompresores revisados en Turbocas',
+    width: 300,
+    height: 225,
+    label: 'Turbos',
+    caption: 'Turbos identificados tras su revisión.',
+  },
+  {
+    src: 'direccion-hidraulica/bomba-direccion-hidraulica.jpg',
+    alt: 'Bomba de dirección hidráulica',
+    width: 512,
+    height: 512,
+    label: 'Bomba',
+    caption: 'Bomba de dirección hidráulica.',
+    fit: 'contain' as const,
+  },
+];
 ---
 
-<BaseLayout>
-  <main>
-    <p>Base técnica preparada para el rediseño de Turbocas.</p>
-  </main>
+<BaseLayout
+  title="Reparación y reconstrucción de turbos en Castellón | Turbocas"
+  description="Taller y laboratorio especializado en turbos, FAP y direcciones hidráulicas. Diagnóstico, reparación y servicio nacional. Solicita presupuesto."
+  path=""
+  heroImage="catalogo/turbo-gt2052v-audi-v6-tdi.jpg"
+  jsonLd={[localBusiness()]}
+>
+  <HomeHero />
+
+  <div class="container needs-wrap">
+    <NeedSelector />
+  </div>
+
+  <section class="section" aria-labelledby="servicios-titulo">
+    <div class="container">
+      <SectionHeading
+        id="servicios-titulo"
+        tag="01 · Servicios"
+        title="Tres especialidades de laboratorio y un taller para el día a día"
+        lead="El laboratorio se ocupa de turbos, filtros de partículas y direcciones hidráulicas. El taller de Castellón resuelve mantenimiento, revisiones y diagnóstico."
+        align="split"
+      />
+      <div class="featured">
+        {featured.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+      <div class="secondary">
+        <div class="sec-head">
+          <p class="secondary-label">También en el taller de Castellón</p>
+          <a class="link-arrow" href={url('mecanica-mantenimiento/')}>Ver mecánica y mantenimiento <Icon name="arrow" /></a>
+        </div>
+        <ul class="rows">
+          {
+            secondary.map((s) => (
+              <li class="row">
+                <span class="row-icon">
+                  <Icon name={s.icon} />
+                </span>
+                <span class="row-name">{s.name}</span>
+                <span class="row-human">{s.human}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <a class="link-arrow all" href={url('servicios/')}>Ver todos los servicios y cómo trabajamos <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <section class="section surface-white" aria-labelledby="confianza-titulo">
+    <div class="container">
+      <SectionHeading
+        id="confianza-titulo"
+        tag="02 · Confianza"
+        title="Por qué llevar tu avería a un laboratorio"
+        lead="Un turbo, un filtro o una dirección no se arreglan a ciegas. Medimos, probamos y te lo explicamos."
+        align="split"
+      />
+      <TrustStrip items={trust} />
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" aria-labelledby="proceso-titulo">
+    <div class="container">
+      <SectionHeading
+        id="proceso-titulo"
+        tag="03 · Proceso"
+        title="Así trabajamos, estés donde estés"
+        lead="El mismo método para un particular de Castellón o para un taller de otra provincia. Primero entendemos el caso; después reparamos."
+        align="rule"
+      />
+      <ProcessSteps />
+      <a class="link-arrow on-dark-link process-link" href={url('reconstruccion-turbos/#proceso')}>
+        Ver el proceso de reconstrucción de turbos <Icon name="arrow" />
+      </a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="instalaciones-titulo">
+    <div class="container">
+      <SectionHeading
+        id="instalaciones-titulo"
+        tag="04 · Instalaciones"
+        title="Maquinaria real, en nuestras instalaciones"
+        lead="Bancos de prueba y equipos de limpieza en el mismo espacio donde diagnosticamos. Así comprobamos cada trabajo antes de entregarlo."
+        align="split"
+      >
+        <a class="link-arrow" href={url('laboratorio/')}>Conocer el laboratorio <Icon name="arrow" /></a>
+      </SectionHeading>
+      <Gallery items={gallery} layout="feature" />
+    </div>
+  </section>
+
+  <section class="section-tight industrial-wrap" aria-labelledby="industrial-titulo">
+    <div class="container">
+      <div class="industrial">
+        <div class="ind-copy">
+          <p class="tag">Capacidad técnica</p>
+          <h2 id="industrial-titulo">También valoramos casos de vehículo industrial</h2>
+          <p>
+            El laboratorio no se limita a turismos. Si tienes un camión, una furgoneta de trabajo o maquinaria con turbo,
+            dirección hidráulica o filtro de partículas, cuéntanos el caso y te diremos si podemos valorarlo antes de que
+            envíes nada.
+          </p>
+          <a class="btn btn-primary" href={url('contacto/#formulario')}>Consultar un vehículo industrial</a>
+        </div>
+        <div class="ind-spec">
+          <p class="spec-head">Componentes que se pueden consultar</p>
+          <CheckList
+            tone="dark"
+            items={[
+              'Turbocompresores',
+              'Bombas y direcciones hidráulicas',
+              'Filtros de partículas y catalizadores',
+            ]}
+          />
+          <p class="spec-note">La viabilidad se confirma caso a caso, según la pieza y la documentación del vehículo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
 </BaseLayout>
+
+<style>
+  .needs-wrap {
+    position: relative;
+    z-index: 2;
+    margin-top: -72px;
+  }
+
+  @media (min-width: 1024px) {
+    .needs-wrap {
+      margin-top: -96px;
+    }
+  }
+
+  .featured {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    .featured {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .secondary {
+    margin-top: var(--s-10);
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .sec-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-2) var(--s-6);
+    margin-bottom: var(--s-2);
+  }
+
+  .secondary-label {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .rows {
+    list-style: none;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: var(--s-4);
+    align-items: center;
+    padding-block: var(--s-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .row-icon {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--steel-100);
+  }
+
+  .row-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .row-human {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .row {
+      grid-template-columns: 40px 260px 1fr;
+    }
+    .row-icon {
+      grid-row: auto;
+    }
+  }
+
+  .all {
+    margin-top: var(--s-6);
+  }
+
+  .on-dark-link {
+    color: var(--white);
+  }
+
+  .process-link {
+    margin-top: var(--s-10);
+  }
+
+  .industrial {
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  @media (min-width: 900px) {
+    .industrial {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+
+  .ind-copy {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+    padding: var(--s-6);
+  }
+
+  @media (min-width: 768px) {
+    .ind-copy {
+      padding: var(--s-10);
+    }
+  }
+
+  .ind-copy p:not(.tag) {
+    color: var(--text-muted);
+    max-width: 58ch;
+  }
+
+  .ind-spec {
+    display: grid;
+    gap: var(--s-4);
+    align-content: center;
+    padding: var(--s-6);
+    background: var(--ink-950);
+    color: var(--white);
+    background-image:
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.03) 0 2px, transparent 2px 14px);
+  }
+
+  @media (min-width: 768px) {
+    .ind-spec {
+      padding: var(--s-10);
+    }
+  }
+
+  .spec-head {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+  }
+
+  .spec-note {
+    font-size: 0.875rem;
+    color: var(--steel-300);
+  }
+</style>

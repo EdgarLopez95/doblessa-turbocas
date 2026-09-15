@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Img from '../components/Img.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import Gallery from '../components/Gallery.astro';
+import FeatureList from '../components/FeatureList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/site';
+import { url } from '../lib/url';
+
+const lab = services.filter((s) => s.featured);
+
+const diagnosis = [
+  { title: 'Recepción e identificación', text: 'Registramos el vehículo o la pieza, sus referencias y los síntomas que nos describes.' },
+  { title: 'Inspección y medición', text: 'Desmontamos y medimos para separar desgaste, daño y causas externas a la pieza.' },
+  { title: 'Prueba en banco', text: 'Reproducimos el funcionamiento en banco para confirmar el fallo con datos.' },
+  { title: 'Informe y propuesta', text: 'Te explicamos lo encontrado y las opciones, con presupuesto antes de reparar.' },
+];
+
+const gallery = [
+  { src: 'laboratorio/banco-pruebas-turbocompresores.jpeg', alt: 'Banco de pruebas para turbocompresores en el laboratorio de Turbocas', width: 300, height: 225, label: 'Banco turbo', caption: 'Banco de pruebas de turbocompresores.' },
+  { src: 'direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg', alt: 'Banco de pruebas de direcciones hidráulicas con manómetros', width: 1153, height: 768, label: 'Direcciones', caption: 'Banco de pruebas para direcciones y bombas hidráulicas.' },
+  { src: 'fap-cat/limpieza-filtro-particulas.png', alt: 'Sección de un filtro de partículas y catalizador', width: 1100, height: 550, label: 'FAP · Sección', caption: 'Estructura interior de un filtro y un catalizador.', fit: 'contain' as const },
+  { src: 'fap-cat/equipo-limpieza-filtros-particulas.jpeg', alt: 'Equipos de limpieza de filtros de partículas y de piezas con agua a presión', width: 300, height: 225, label: 'FAP / CAT', caption: 'Zona de limpieza de filtros y piezas.' },
+  { src: 'fap-cat/equipo-diagnostico-limpieza-fap.jpeg', alt: 'Equipo de diagnóstico y limpieza de filtros de partículas', width: 708, height: 1024, label: 'Equipo FAP', caption: 'Equipo de limpieza de filtros de partículas.', fit: 'contain' as const },
+  { src: 'laboratorio/turbocompresores-reconstruidos.jpeg', alt: 'Turbocompresores revisados en Turbocas', width: 300, height: 225, label: 'Turbos', caption: 'Turbos identificados tras su revisión.' },
+  { src: 'fap-cat/filtro-particulas-automovil.jpg', alt: 'Filtro de partículas de automóvil', width: 1264, height: 650, label: 'Filtro', caption: 'Filtro de partículas: una de las piezas que valoramos.' },
+  { src: 'direccion-hidraulica/bomba-direccion-hidraulica.jpg', alt: 'Bomba de dirección hidráulica', width: 512, height: 512, label: 'Bomba', caption: 'Bomba de dirección hidráulica: pieza habitual del banco.', fit: 'contain' as const },
+];
+
+const cases = [
+  { icon: 'users' as const, title: 'Particulares con una avería', text: 'Conductores que notan un síntoma y quieren saber qué ocurre antes de decidir.' },
+  { icon: 'wrench' as const, title: 'Talleres profesionales', text: 'Talleres que necesitan diagnosticar o reconstruir un turbo, un filtro o una dirección.' },
+  { icon: 'search' as const, title: 'Compradores de recambio', text: 'Quien tiene una referencia y quiere confirmar la compatibilidad antes de comprar.' },
+  { icon: 'truck' as const, title: 'Vehículo industrial', text: 'Casos de camión, furgoneta de trabajo o maquinaria, valorando la viabilidad de cada uno.' },
+];
+
+const heroPhotos = [
+  { src: 'laboratorio/banco-pruebas-turbocompresores.jpeg', alt: 'Banco de pruebas para turbocompresores', width: 300, height: 225 },
+  { src: 'fap-cat/equipo-limpieza-filtros-particulas.jpeg', alt: 'Equipos de limpieza de filtros de partículas', width: 300, height: 225 },
+  { src: 'laboratorio/turbocompresores-reconstruidos.jpeg', alt: 'Turbocompresores revisados en el laboratorio', width: 300, height: 225 },
+  { src: 'direccion-hidraulica/banco-bombas-hidraulicas.jpg', alt: 'Banco de pruebas de bombas hidráulicas', width: 300, height: 200 },
+];
+---
+
+<BaseLayout
+  title="Laboratorio de turbos, FAP y direcciones hidráulicas | Turbocas"
+  description="Conoce el laboratorio de Turbocas en Castellón: bancos de prueba y maquinaria para diagnosticar y reconstruir turbos, filtros de partículas y direcciones hidráulicas."
+  path="laboratorio/"
+  heroImage="laboratorio/banco-pruebas-turbocompresores.jpeg"
+>
+  <PageHero
+    tag="Autoridad técnica"
+    title="Laboratorio de turbos, FAP y direcciones hidráulicas"
+    lead="Turbocas es más que un taller generalista: disponemos de bancos de prueba y equipos específicos para diagnosticar y reconstruir componentes que requieren medios especializados."
+    crumbs={[{ label: 'Laboratorio', href: 'laboratorio/' }]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href={url('contacto/#formulario')}>Diagnosticar mi caso <Icon name="arrow" /></a>
+      <a class="link-arrow" href="#maquinaria">Ver la maquinaria <Icon name="arrow" /></a>
+    </div>
+    <div class="collage" slot="media">
+      {
+        heroPhotos.map((p, i) => (
+          <div class="c-tile">
+            <Img {...p} priority={i === 0} />
+          </div>
+        ))
+      }
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="especialidades-titulo">
+    <div class="container">
+      <SectionHeading
+        id="especialidades-titulo"
+        tag="01 · Especialización"
+        title="Tres especialidades, un mismo método"
+        lead="Cada especialidad tiene su propio equipamiento, pero todas siguen el mismo principio: medir y probar antes de reparar."
+        align="split"
+      />
+      <div class="lab-grid">
+        {lab.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" aria-labelledby="diagnostico-titulo">
+    <div class="container">
+      <SectionHeading
+        id="diagnostico-titulo"
+        tag="02 · Diagnóstico"
+        title="Cómo diagnosticamos en el laboratorio"
+        lead="Un buen diagnóstico evita sustituir piezas que no lo necesitan y detecta la causa real de la avería."
+        align="split"
+      />
+      <ProcessSteps steps={diagnosis} />
+    </div>
+  </section>
+
+  <section class="section" id="maquinaria" aria-labelledby="maquinaria-titulo">
+    <div class="container">
+      <SectionHeading
+        id="maquinaria-titulo"
+        tag="03 · Bancos de prueba y maquinaria"
+        title="Equipamiento real de nuestras instalaciones"
+        lead="Estas son fotografías de los equipos con los que trabajamos cada día en Castellón."
+        align="rule"
+      />
+      <Gallery items={gallery} columns={4} />
+    </div>
+  </section>
+
+  <section class="section surface-white" aria-labelledby="casos-titulo">
+    <div class="container">
+      <SectionHeading
+        id="casos-titulo"
+        tag="04 · Tipos de casos"
+        title="A quién ayuda el laboratorio"
+        align="split"
+      />
+      <FeatureList items={cases} columns={4} />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="empezar-titulo">
+    <div class="container start">
+      <h2 id="empezar-titulo">¿Por dónde quieres empezar?</h2>
+      <ul class="start-links">
+        <li><a href={url('reconstruccion-turbos/')}><Icon name="turbo" /> <span>Reconstrucción de turbos</span> <Icon name="arrow" class="go" /></a></li>
+        <li><a href={url('limpieza-fap-catalizador/')}><Icon name="filter" /> <span>Limpieza de FAP y catalizador</span> <Icon name="arrow" class="go" /></a></li>
+        <li><a href={url('direcciones-hidraulicas/')}><Icon name="steering" /> <span>Direcciones hidráulicas</span> <Icon name="arrow" class="go" /></a></li>
+        <li><a href={url('contacto/')}><Icon name="message" /> <span>Contactar con el laboratorio</span> <Icon name="arrow" class="go" /></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="¿Tienes una pieza que necesita un especialista?" ctaLabel="Diagnosticar mi caso" tag="Laboratorio" />
+</BaseLayout>
+
+<style>
+  .collage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-3);
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .c-tile {
+    overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+    border: 1px solid rgb(255 255 255 / 0.14);
+  }
+
+  .c-tile:nth-child(2),
+  .c-tile:nth-child(4) {
+    transform: translateY(var(--s-6));
+  }
+
+  .c-tile :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lab-grid {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    .lab-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .start {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .start-links {
+    list-style: none;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  @media (min-width: 640px) {
+    .start-links {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .start-links {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .start-links a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 72px;
+    height: 100%;
+    padding: var(--s-4);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    transition: border-color var(--dur) var(--ease-out);
+  }
+
+  .start-links a:hover {
+    border-color: var(--ink-950);
+  }
+
+  .start-links span {
+    flex: 1;
+  }
+
+  .start-links :global(.go) {
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .start-links a:hover :global(.go) {
+    transform: translateX(4px);
+  }
+</style>

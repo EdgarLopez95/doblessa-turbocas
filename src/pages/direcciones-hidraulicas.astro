@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SpecFrame from '../components/SpecFrame.astro';
+import Img from '../components/Img.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureList from '../components/FeatureList.astro';
+import CheckList from '../components/CheckList.astro';
+import Split from '../components/Split.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import ServiceRequest from '../components/ServiceRequest.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { service } from '../lib/schema';
+
+const symptoms = [
+  { icon: 'steering' as const, title: 'Dirección dura o irregular', text: 'Cuesta girar el volante o la asistencia cambia según la maniobra.' },
+  { icon: 'sound' as const, title: 'Ruidos al girar', text: 'Zumbidos o chirridos al mover el volante, sobre todo en parado.' },
+  { icon: 'droplet' as const, title: 'Pérdidas de líquido', text: 'Manchas bajo el vehículo o nivel de líquido de dirección que baja.' },
+  { icon: 'warning' as const, title: 'Holguras o vibraciones', text: 'Sensación de juego en la dirección o vibraciones que antes no había.' },
+];
+
+const flow = [
+  { title: 'Problema', text: 'Nos cuentas qué notas en la dirección y qué vehículo tienes.' },
+  { title: 'Diagnóstico', text: 'Localizamos si el fallo está en la bomba, en la dirección o en el circuito.' },
+  { title: 'Banco de pruebas', text: 'Comprobamos la pieza bajo presión para medir su comportamiento real.' },
+  { title: 'Reparación', text: 'Con tu aprobación, reconstruimos y sustituimos los componentes necesarios.' },
+  { title: 'Entrega', text: 'Verificamos de nuevo en banco y entregamos la pieza o el vehículo.' },
+];
+
+const faq = [
+  { q: '¿Es mejor reconstruir o cambiar la bomba de dirección?', a: 'Depende del estado de la pieza y del tipo de avería. Después de probarla en banco te explicamos las opciones y su presupuesto.' },
+  { q: '¿Tengo que traer el vehículo o puedo enviar la pieza?', a: 'Las dos opciones son posibles. Si estás fuera de Castellón, consúltanos antes y te indicamos cómo hacernos llegar la bomba o la dirección.' },
+  { q: '¿Es arriesgado circular con la dirección dura?', a: 'Una dirección que responde de forma anómala afecta al control del vehículo. Si notas cambios, consúltanos cuanto antes y evita forzar el sistema.' },
+  { q: '¿Qué información necesito para pedir una valoración?', a: 'Marca, modelo y año del vehículo, los síntomas que notas y, si ya está desmontada, la referencia de la pieza.' },
+];
+
+const description = 'Reconstrucción de bombas y direcciones hidráulicas con diagnóstico y banco de pruebas en Castellón. Solicita una valoración de tu caso.';
+---
+
+<BaseLayout
+  title="Reconstrucción de direcciones hidráulicas en Castellón | Turbocas"
+  description={description}
+  path="direcciones-hidraulicas/"
+  heroImage="direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg"
+  diagnoseHref="#solicitud"
+  jsonLd={[service('Reconstrucción de direcciones hidráulicas', description, 'direcciones-hidraulicas/')]}
+>
+  <PageHero
+    tag="Laboratorio · Direcciones hidráulicas"
+    title="Reconstrucción de direcciones hidráulicas"
+    lead="Si la dirección está dura, hace ruido o pierde líquido, probamos la bomba y la dirección en banco, las reconstruimos y verificamos su funcionamiento antes de entregarlas."
+    crumbs={[
+      { label: 'Servicios', href: 'servicios/' },
+      { label: 'Direcciones hidráulicas', href: 'direcciones-hidraulicas/' },
+    ]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href="#solicitud">Solicitar valoración <Icon name="arrow" /></a>
+      <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+    </div>
+    <SpecFrame slot="media" label="Banco direcciones">
+      <Img
+        src="direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg"
+        alt="Banco de pruebas de direcciones hidráulicas con manómetros y una bomba conectada"
+        width={1153}
+        height={768}
+        priority
+      />
+    </SpecFrame>
+  </PageHero>
+
+  <section class="section" aria-labelledby="sintomas-titulo">
+    <div class="container">
+      <SectionHeading
+        id="sintomas-titulo"
+        tag="01 · Síntomas"
+        title="Señales de que conviene revisar la dirección"
+        lead="Si reconoces alguna, no esperes a que vaya a más. Una valoración a tiempo suele simplificar la reparación."
+        align="split"
+      />
+      <FeatureList items={symptoms} columns={4} />
+    </div>
+  </section>
+
+  <section class="section surface-white" id="proceso" aria-labelledby="proceso-titulo">
+    <div class="container">
+      <SectionHeading
+        id="proceso-titulo"
+        tag="02 · Proceso"
+        title="Del problema a la entrega, paso a paso"
+        lead="Problema, diagnóstico, banco de pruebas, reparación y entrega: sabrás en todo momento en qué punto está tu pieza."
+        align="rule"
+      />
+      <ProcessSteps steps={flow} tone="light" />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="reparamos-titulo">
+    <div class="container">
+      <Split ratio="7-5">
+        <p class="tag">03 · Qué reparamos</p>
+        <h2 id="reparamos-titulo">Bombas y direcciones de asistencia hidráulica</h2>
+        <p class="lead">Trabajamos sobre los dos componentes principales del sistema. La viabilidad de cada reparación se confirma tras el diagnóstico.</p>
+        <div class="parts">
+          <div class="part">
+            <h3>Bombas de dirección</h3>
+            <p>Generan la presión que asiste al volante. Revisamos caudal, presión, retenes y desgaste interno.</p>
+          </div>
+          <div class="part">
+            <h3>Direcciones (cremalleras)</h3>
+            <p>Transmiten el giro a las ruedas. Revisamos estanqueidad, holguras y comportamiento bajo presión.</p>
+          </div>
+        </div>
+        <figure class="pump" slot="media">
+          <Img
+            src="direccion-hidraulica/bomba-direccion-hidraulica.jpg"
+            alt="Bomba de dirección hidráulica"
+            width={512}
+            height={512}
+          />
+        </figure>
+      </Split>
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" aria-labelledby="banco-titulo">
+    <div class="container">
+      <Split ratio="6-6" reverse>
+        <p class="tag">04 · Banco de pruebas</p>
+        <h2 id="banco-titulo">La pieza se prueba antes y después de repararla</h2>
+        <p class="lead">El banco de bombas nos permite reproducir el trabajo de la pieza bajo presión, detectar el fallo con datos y verificar la reparación antes de la entrega.</p>
+        <CheckList
+          tone="dark"
+          items={[
+            'Comprobación de presión con manómetros',
+            'Detección de fugas y ruidos en funcionamiento',
+            'Verificación final antes de entregar',
+          ]}
+        />
+        <div class="bench" slot="media">
+          <SpecFrame label="Banco de bombas">
+            <Img
+              src="direccion-hidraulica/banco-bombas-hidraulicas.jpg"
+              alt="Banco de pruebas para bombas hidráulicas"
+              width={300}
+              height={200}
+            />
+          </SpecFrame>
+        </div>
+      </Split>
+    </div>
+  </section>
+
+  <ServiceRequest
+    faq={faq}
+    formId="direccion"
+    formTitle="Solicitar valoración"
+    formIntro="Describe qué notas en la dirección. Te orientamos sobre el siguiente paso."
+    submitLabel="Solicitar valoración"
+    defaultService="Dirección hidráulica"
+  />
+</BaseLayout>
+
+<style>
+  .parts {
+    display: grid;
+    gap: var(--s-4);
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .parts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .part {
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ink-950);
+    border-radius: var(--radius);
+  }
+
+  .part p {
+    margin-top: var(--s-2);
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .pump {
+    margin: 0;
+    max-width: 420px;
+    justify-self: center;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .bench {
+    max-width: 520px;
+    width: 100%;
+    justify-self: center;
+  }
+</style>

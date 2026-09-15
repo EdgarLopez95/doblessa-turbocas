@@ -1,0 +1,254 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import CheckList from '../components/CheckList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/site';
+import { url } from '../lib/url';
+
+const lab = services.filter((s) => s.featured);
+const workshop = services.filter((s) => !s.featured);
+const index = [
+  { label: 'Reconstrucción de turbos', kind: 'Laboratorio', href: 'reconstruccion-turbos/' },
+  { label: 'Limpieza de FAP y catalizador', kind: 'Laboratorio', href: 'limpieza-fap-catalizador/' },
+  { label: 'Direcciones hidráulicas', kind: 'Laboratorio', href: 'direcciones-hidraulicas/' },
+  { label: 'Mecánica y mantenimiento', kind: 'Taller en Castellón', href: 'mecanica-mantenimiento/' },
+];
+---
+
+<BaseLayout
+  title="Servicios de turbos, FAP, direcciones y mecánica | Turbocas"
+  description="Reconstrucción de turbos, limpieza de FAP y catalizadores, direcciones hidráulicas y mecánica en Castellón. Consulta cómo trabajamos y solicita presupuesto."
+  path="servicios/"
+>
+  <PageHero
+    tag="Servicios"
+    title="Servicios de laboratorio y taller mecánico"
+    lead="Empieza por lo que notas en tu vehículo. Cada servicio explica cuándo conviene, qué hacemos y cuál es el siguiente paso."
+    crumbs={[{ label: 'Servicios', href: 'servicios/' }]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href={url('contacto/#formulario')}>Solicitar presupuesto <Icon name="arrow" /></a>
+      <a class="link-arrow" href="#proceso">Ver el proceso <Icon name="arrow" /></a>
+    </div>
+    <nav class="index-panel" slot="media" aria-label="Índice de servicios">
+      <p class="tag">Índice de servicios</p>
+      <ol>
+        {
+          index.map((item, i) => (
+            <li>
+              <a href={url(item.href)}>
+                <span class="code">S-{String(i + 1).padStart(2, '0')}</span>
+                <span class="name">
+                  {item.label}
+                  <span class="kind">{item.kind}</span>
+                </span>
+                <Icon name="arrow" size={20} />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </PageHero>
+
+  <section class="section" aria-labelledby="lab-titulo">
+    <div class="container">
+      <SectionHeading
+        id="lab-titulo"
+        tag="Laboratorio · Especialidades"
+        title="Turbos, filtros de partículas y direcciones hidráulicas"
+        lead="Son los trabajos que requieren banco de pruebas y equipos específicos. Atendemos casos de Castellón y de fuera de la provincia."
+        align="split"
+      />
+      <div class="lab-grid">
+        {lab.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-white workshop" aria-labelledby="taller-titulo">
+    <div class="container">
+      <SectionHeading
+        id="taller-titulo"
+        tag="Taller · Castellón"
+        title="Mecánica y mantenimiento en el taller"
+        lead="Servicios del día a día para quien trae su vehículo a nuestras instalaciones de Castellón."
+        align="split"
+      />
+      <div class="workshop-grid">
+        {workshop.map((s, i) => <ServiceCard service={s} index={i + 3} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="alcance-titulo">
+    <div class="container">
+      <SectionHeading
+        id="alcance-titulo"
+        tag="Dónde trabajamos"
+        title="Taller en Castellón, laboratorio abierto a otras provincias"
+      />
+      <div class="scope">
+        <div class="scope-card">
+          <span class="scope-icon"><Icon name="pin" /></span>
+          <h3>Si estás en Castellón</h3>
+          <p>Trae el vehículo al taller. Hacemos el diagnóstico y, si el problema está en el turbo, el filtro o la dirección, lo pasamos directamente al laboratorio.</p>
+          <CheckList items={['Diagnóstico en el vehículo', 'Mecánica, mantenimiento y pre-ITV', 'Trabajos de laboratorio sin intermediarios']} />
+        </div>
+        <div class="scope-card">
+          <span class="scope-icon"><Icon name="truck" /></span>
+          <h3>Si estás en otra provincia</h3>
+          <p>Para turbos, filtros de partículas y direcciones hidráulicas puedes consultarnos a distancia. Antes de enviar nada, te indicamos cómo preparar la pieza.</p>
+          <CheckList items={['Consulta previa por teléfono o formulario', 'Instrucciones para hacernos llegar la pieza', 'Forma de envío y plazos confirmados en cada caso']} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" id="proceso" aria-labelledby="proceso-titulo">
+    <div class="container">
+      <SectionHeading
+        id="proceso-titulo"
+        tag="Proceso"
+        title="Cuatro pasos, sin sorpresas"
+        lead="No reparamos nada sin explicarte antes el diagnóstico y el presupuesto."
+        align="rule"
+      />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .index-panel {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.03);
+  }
+
+  .index-panel ol {
+    list-style: none;
+  }
+
+  .index-panel li + li {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .index-panel a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 64px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .index-panel a :global(svg) {
+    margin-left: auto;
+    flex: none;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .index-panel a:hover :global(svg) {
+    transform: translateX(4px);
+    color: var(--turbo-500);
+  }
+
+  .code {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--turbo-500);
+    letter-spacing: 0.04em;
+  }
+
+  .name {
+    display: grid;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .kind {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--steel-300);
+  }
+
+  .lab-grid {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    .lab-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .workshop-grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  @media (min-width: 1024px) {
+    .workshop-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .workshop :global(.card) {
+    background: var(--workshop-50);
+  }
+
+  .scope {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 900px) {
+    .scope {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .scope-card {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .scope-card {
+      padding: var(--s-10);
+    }
+  }
+
+  .scope-card p {
+    color: var(--text-muted);
+  }
+
+  .scope-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--turbo-500);
+  }
+</style>

@@ -1,0 +1,337 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import DemoForm from '../components/DemoForm.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { localBusiness } from '../lib/schema';
+import { img } from '../lib/url';
+---
+
+<BaseLayout
+  title="Contacto y presupuesto | Turbocas Castellón"
+  description="Contacta con Turbocas para reparar tu turbo, limpiar FAP/CAT o consultar un recambio. Atención desde Castellón y servicio nacional."
+  path="contacto/"
+  diagnoseHref="#formulario"
+  jsonLd={[localBusiness()]}
+>
+  <PageHero
+    tone="light"
+    tag="Contacto y presupuesto"
+    title="Contacta con Turbocas"
+    lead="Llámanos o cuéntanos tu caso con el formulario. No hace falta que sepas qué pieza falla: con una buena descripción podemos orientarte."
+    crumbs={[{ label: 'Contacto', href: 'contacto/' }]}
+  >
+    <div class="phone-card surface-dark" slot="media">
+      <p class="tag">Llamada directa</p>
+      <a class="big-phone" href={business.phoneHref}>
+        <Icon name="phone" size={32} />
+        {business.phoneDisplay}
+      </a>
+      <p class="small">La forma más rápida de explicarnos una avería urgente.</p>
+    </div>
+  </PageHero>
+
+  <section class="section contact" aria-label="Formas de contacto">
+    <div class="container grid">
+      <div class="form-card" id="formulario">
+        <DemoForm
+          id="contacto"
+          title="Cuéntanos tu caso"
+          intro="Te responderemos para concretar el diagnóstico o el presupuesto."
+          submitLabel="Enviar consulta"
+        />
+      </div>
+
+      <aside class="aside" aria-label="Datos de contacto">
+        <div class="wa-card">
+          <img src={img('ui/icono-whatsapp.png')} alt="" width="100" height="100" loading="lazy" />
+          <div>
+            <p class="wa-title">WhatsApp</p>
+            <p class="small" id="wa-estado">Canal previsto. El número se publicará cuando Turbocas lo confirme.</p>
+          </div>
+          <button class="btn btn-sm wa-btn" type="button" disabled aria-describedby="wa-estado">Próximamente</button>
+        </div>
+
+        <div class="place-card">
+          <div class="map" role="img" aria-label="Plano ilustrativo, no interactivo, de la ubicación del taller en un polígono industrial de Castellón">
+            <svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <rect width="400" height="220" fill="#E8EDF2"></rect>
+              <g fill="#F7F8FA" stroke="#CBD5E1" stroke-width="1">
+                <rect x="18" y="16" width="96" height="58" rx="2"></rect>
+                <rect x="132" y="16" width="120" height="58" rx="2"></rect>
+                <rect x="270" y="16" width="112" height="58" rx="2"></rect>
+                <rect x="18" y="96" width="140" height="48" rx="2"></rect>
+                <rect x="176" y="96" width="92" height="48" rx="2"></rect>
+                <rect x="286" y="96" width="96" height="48" rx="2"></rect>
+                <rect x="18" y="166" width="104" height="40" rx="2"></rect>
+                <rect x="140" y="166" width="128" height="40" rx="2"></rect>
+                <rect x="286" y="166" width="96" height="40" rx="2"></rect>
+              </g>
+              <rect x="176" y="96" width="92" height="48" rx="2" fill="#F4B000" opacity="0.35" stroke="#C98700"></rect>
+              <path d="M0 85h400M0 155h400M123 0v220M261 0v220" stroke="#FFFFFF" stroke-width="7"></path>
+              <g transform="translate(222 120)">
+                <path d="M0 -4c-9 0-15-7-15-15 0-8 7-15 15-15s15 7 15 15c0 8-6 15-15 15z" fill="#111827" transform="translate(0 -6)"></path>
+                <circle cx="0" cy="-25" r="5" fill="#F4B000"></circle>
+                <path d="M0 -10 L-6 -18 H6 Z" fill="#111827"></path>
+              </g>
+            </svg>
+            <span class="map-label">Plano ilustrativo · no interactivo</span>
+          </div>
+          <div class="place-body">
+            <p class="place-title"><Icon name="pin" size={20} /> Taller y laboratorio</p>
+            <address>
+              {business.street}<br />
+              {business.postalCode} {business.city}
+            </address>
+            <p class="validate">Dirección pública tomada de la web actual. Pendiente de validar antes de publicar.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight surface-white" aria-labelledby="nacional-titulo">
+    <div class="container national">
+      <div>
+        <p class="tag">Atención nacional</p>
+        <h2 id="nacional-titulo">¿No estás en Castellón?</h2>
+        <p class="muted">Para turbos, filtros de partículas y direcciones hidráulicas podemos valorar piezas de otras provincias. Así funciona:</p>
+      </div>
+      <ol class="n-steps">
+        <li><span>01</span><div><strong>Consulta previa</strong><p>Nos explicas el caso antes de enviar nada.</p></div></li>
+        <li><span>02</span><div><strong>Instrucciones de envío</strong><p>Te indicamos cómo preparar la pieza y qué datos incluir.</p></div></li>
+        <li><span>03</span><div><strong>Diagnóstico y presupuesto</strong><p>Revisamos la pieza y te proponemos la solución.</p></div></li>
+      </ol>
+      <p class="small n-note">La forma de envío y los plazos se confirman en cada caso; no se garantizan de antemano.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding-top: var(--s-10);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-10);
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--s-10);
+      align-items: start;
+    }
+  }
+
+  .form-card {
+    padding: var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--turbo-500);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .form-card {
+      padding: var(--s-10);
+    }
+  }
+
+  .aside {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .phone-card {
+    display: grid;
+    gap: var(--s-2);
+    padding: var(--s-6);
+    border-radius: var(--radius);
+  }
+
+  .phone-card .small {
+    color: var(--steel-300);
+  }
+
+  .big-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 56px;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.8rem + 1.5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--white);
+  }
+
+  .big-phone :global(svg) {
+    color: var(--turbo-500);
+  }
+
+  .big-phone:hover {
+    color: var(--turbo-500);
+  }
+
+  .wa-card {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: var(--s-3) var(--s-4);
+    align-items: center;
+    padding: var(--s-4) var(--s-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .wa-card img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .wa-title {
+    font-weight: 600;
+  }
+
+  .wa-card .small {
+    color: var(--text-muted);
+  }
+
+  .wa-btn {
+    grid-column: 1 / -1;
+    background: var(--workshop-50);
+    border-color: var(--steel-500);
+    color: var(--ink-800);
+  }
+
+  @media (min-width: 480px) {
+    .wa-card {
+      grid-template-columns: 44px 1fr auto;
+    }
+    .wa-btn {
+      grid-column: auto;
+    }
+  }
+
+  .place-card {
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .map {
+    position: relative;
+    aspect-ratio: 400 / 220;
+  }
+
+  .map svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-label {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    padding: 2px 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--steel-700);
+  }
+
+  .place-body {
+    display: grid;
+    gap: var(--s-2);
+    padding: var(--s-4) var(--s-6) var(--s-6);
+  }
+
+  .place-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: 600;
+  }
+
+  address {
+    font-style: normal;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .validate {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .national {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 960px) {
+    .national {
+      grid-template-columns: 4fr 7fr;
+      column-gap: var(--s-16);
+      align-items: start;
+    }
+    .n-note {
+      grid-column: 2;
+    }
+  }
+
+  .national h2 {
+    margin-block: var(--s-2);
+    font-size: 1.875rem;
+  }
+
+  .n-steps {
+    list-style: none;
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  @media (min-width: 640px) {
+    .n-steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .n-steps li {
+    display: grid;
+    gap: var(--s-2);
+    padding-top: var(--s-4);
+    border-top: 2px solid var(--ink-950);
+  }
+
+  .n-steps span {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--steel-700);
+  }
+
+  .n-steps p {
+    margin-top: 2px;
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+  }
+
+  .n-note {
+    color: var(--text-muted);
+  }
+</style>

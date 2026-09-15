@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SpecFrame from '../components/SpecFrame.astro';
+import Img from '../components/Img.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureList from '../components/FeatureList.astro';
+import CheckList from '../components/CheckList.astro';
+import Split from '../components/Split.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import ServiceRequest from '../components/ServiceRequest.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+import { service } from '../lib/schema';
+import { img } from '../lib/url';
+
+const symptoms = [
+  { icon: 'bolt' as const, title: 'Pérdida de potencia', text: 'El vehículo no empuja como antes, sobre todo al acelerar o en subidas.' },
+  { icon: 'smoke' as const, title: 'Humo anormal por el escape', text: 'Humo azulado, blanco o negro que aparece de forma persistente.' },
+  { icon: 'sound' as const, title: 'Silbidos o ruidos nuevos', text: 'Un silbido metálico o un sonido al acelerar que antes no estaba.' },
+  { icon: 'warning' as const, title: 'Testigo o modo de emergencia', text: 'El motor limita la potencia o aparece un aviso de avería en el cuadro.' },
+  { icon: 'droplet' as const, title: 'Consumo de aceite', text: 'Baja el nivel de aceite o hay restos de aceite en los conductos de admisión.' },
+  { icon: 'clipboard' as const, title: 'Necesidad de revisión', text: 'Kilometraje alto, sustitución de motor o compra de un vehículo usado.' },
+];
+
+const steps = [
+  { title: 'Recogida o consulta', text: 'Nos cuentas el vehículo y los síntomas. Puedes traerlo al taller o hacernos llegar el turbo.' },
+  { title: 'Diagnóstico', text: 'Desmontamos, medimos e identificamos la causa. A veces el origen está fuera del turbo: engrase, admisión o sensores.' },
+  { title: 'Reconstrucción', text: 'Con tu presupuesto aprobado, sustituimos los componentes desgastados y equilibramos el conjunto cuando es necesario.' },
+  { title: 'Entrega', text: 'Comprobamos el turbo en banco y te lo entregamos, o montado en tu vehículo, con la explicación del trabajo.' },
+];
+
+const faq = [
+  { q: '¿Siempre compensa reconstruir el turbo en lugar de sustituirlo?', a: 'Depende del estado de la pieza y del origen de la avería. Tras el diagnóstico te explicamos las opciones disponibles para que decidas con información.' },
+  { q: '¿Puedo haceros llegar el turbo si no estoy en Castellón?', a: 'Sí, atendemos casos de fuera de Castellón. Consúltanos antes de enviar nada: te indicaremos cómo preparar la pieza y qué información adjuntar.' },
+  { q: '¿Qué datos necesitáis para darme presupuesto?', a: 'Marca, modelo, motor y año del vehículo, la referencia del turbo si la tienes (suele estar en una placa de la carcasa) y una descripción de los síntomas. Las fotos ayudan.' },
+  { q: '¿Cuánto tarda la reconstrucción?', a: 'Depende del diagnóstico y de la disponibilidad de los componentes. Te daremos una previsión concreta junto con el presupuesto.' },
+  { q: 'Soy un taller, ¿puedo trabajar con vosotros?', a: 'El laboratorio atiende a particulares y también a talleres que necesitan un especialista en turbos. Indícalo en el formulario para que te contactemos con esa información.' },
+];
+
+const description = 'Diagnóstico y reconstrucción de turbocompresores con garantía. Cuéntanos qué vehículo tienes y solicita una valoración.';
+---
+
+<BaseLayout
+  title="Reconstrucción de turbos en Castellón | Turbocas"
+  description={description}
+  path="reconstruccion-turbos/"
+  heroImage="catalogo/cartucho-chra-454231.jpg"
+  diagnoseHref="#solicitud"
+  jsonLd={[service('Reconstrucción de turbocompresores', description, 'reconstruccion-turbos/')]}
+>
+  <PageHero
+    tag="Laboratorio · Turbocompresores"
+    title="Reconstrucción de turbos con diagnóstico especializado"
+    lead="Tu turbo, en manos expertas. Revisamos el turbocompresor pieza a pieza, lo reconstruimos y lo comprobamos en banco antes de devolvértelo."
+    crumbs={[
+      { label: 'Servicios', href: 'servicios/' },
+      { label: 'Reconstrucción de turbos', href: 'reconstruccion-turbos/' },
+    ]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href="#solicitud">Solicitar diagnóstico <Icon name="arrow" /></a>
+      <a class="btn btn-outline" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+      <a class="link-arrow" href="#proceso">Ver el proceso <Icon name="arrow" /></a>
+    </div>
+    <SpecFrame slot="media" tone="light" label="Cartucho CHRA" fit="contain">
+      <Img
+        src="catalogo/cartucho-chra-454231.jpg"
+        alt="Cartucho CHRA de turbocompresor con rueda de compresor y rueda de turbina"
+        width={1000}
+        height={1000}
+        priority
+      />
+    </SpecFrame>
+  </PageHero>
+
+  <section class="section" aria-labelledby="sintomas-titulo">
+    <div class="container">
+      <SectionHeading
+        id="sintomas-titulo"
+        tag="01 · Situaciones"
+        title="¿Te suena alguna de estas situaciones?"
+        lead="Son señales habituales que conviene revisar. Por sí solas no confirman una avería del turbo: por eso siempre empezamos con un diagnóstico."
+        align="rule"
+      />
+      <FeatureList items={symptoms} columns={3} />
+    </div>
+  </section>
+
+  <section class="section surface-white" aria-labelledby="revisa-titulo">
+    <div class="container">
+      <Split ratio="7-5">
+        <p class="tag">02 · Qué se revisa</p>
+        <h2 id="revisa-titulo">Qué revisamos en tu turbocompresor</h2>
+        <p class="lead">Un turbo reconstruido solo es fiable si se ha revisado entero. Estos son los puntos que comprobamos durante el diagnóstico.</p>
+        <CheckList
+          columns={2}
+          items={[
+            'Rueda del compresor y rueda de turbina',
+            'Eje, cojinetes y holguras axial y radial',
+            'Juntas, segmentos y estanqueidad de aceite',
+            'Geometría variable o válvula wastegate',
+            'Actuador y su recorrido',
+            'Carcasas, bridas y conductos',
+            'Equilibrado del conjunto rotativo (CHRA)',
+            'Posibles causas externas de la avería',
+          ]}
+        />
+        <figure class="side-figure" slot="media">
+          <div class="frame">
+            <Img
+              src="laboratorio/turbocompresores-reconstruidos.jpeg"
+              alt="Turbocompresores revisados en Turbocas"
+              width={300}
+              height={225}
+            />
+          </div>
+          <figcaption>Turbocompresores revisados e identificados en el laboratorio. La disponibilidad de cada unidad se confirma caso a caso.</figcaption>
+        </figure>
+      </Split>
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" id="proceso" aria-labelledby="proceso-titulo">
+    <div class="container">
+      <SectionHeading
+        id="proceso-titulo"
+        tag="03 · Proceso técnico"
+        title="Del síntoma al turbo comprobado"
+        lead="No reconstruimos nada sin explicarte antes el diagnóstico y el presupuesto."
+        align="split"
+      />
+      <ProcessSteps steps={steps} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="banco-titulo">
+    <div class="container">
+      <Split ratio="5-7" reverse>
+        <p class="tag">04 · Banco de pruebas</p>
+        <h2 id="banco-titulo">Comprobado en banco antes de salir del laboratorio</h2>
+        <p class="lead">
+          El banco de pruebas nos permite verificar el comportamiento del turbo reconstruido en condiciones controladas, en lugar de descubrir un problema cuando ya está montado.
+        </p>
+        <CheckList
+          items={[
+            'Comprobación del funcionamiento del conjunto',
+            'Detección de fugas, holguras o ruidos anómalos',
+            'Información concreta para explicarte el resultado',
+          ]}
+        />
+        <p class="note-box">
+          <Icon name="shield" size={22} />
+          <span>
+            <strong>Trabajo con garantía</strong>
+            Las reconstrucciones incluyen garantía. Te detallamos por escrito sus condiciones y alcance junto con el presupuesto.
+          </span>
+        </p>
+        <div class="bench" slot="media">
+          <SpecFrame tone="light" label="Banco turbo">
+            <Img
+              src="laboratorio/banco-pruebas-turbocompresores.jpeg"
+              alt="Banco de pruebas para turbocompresores en el laboratorio de Turbocas"
+              width={300}
+              height={225}
+            />
+          </SpecFrame>
+        </div>
+      </Split>
+    </div>
+  </section>
+
+  <section class="section-tight surface-white" aria-labelledby="marcas-titulo">
+    <div class="container brands">
+      <div class="brands-head">
+        <p class="tag">05 · Referencias</p>
+        <h2 id="marcas-titulo">Fabricantes y tecnologías de turbo de referencia</h2>
+        <ul class="tech">
+          <li class="chip">Geometría variable (VNT)</li>
+          <li class="chip">Válvula wastegate</li>
+          <li class="chip">Cartuchos CHRA</li>
+          <li class="chip">Turismo y furgoneta</li>
+          <li class="chip">Vehículo industrial · consultar</li>
+        </ul>
+      </div>
+      <figure class="brands-figure">
+        <img
+          src={img('marca/marcas-turbocompresores.svg')}
+          alt="Logotipos de fabricantes de turbocompresores del sector"
+          width="1425"
+          height="74"
+          loading="lazy"
+        />
+        <figcaption>
+          Referencia visual del sector. No implica acuerdo con los fabricantes ni disponibilidad de piezas. Uso de logotipos pendiente de autorización.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <ServiceRequest
+    faq={faq}
+    formId="turbo"
+    formTitle="Solicitar diagnóstico"
+    formIntro="Cuéntanos el vehículo y lo que notas. No necesitas saber qué turbo lleva."
+    submitLabel="Solicitar diagnóstico"
+    defaultService="Reconstrucción de turbo"
+  />
+</BaseLayout>
+
+<style>
+  .side-figure {
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+    max-width: 420px;
+    justify-self: center;
+  }
+
+  .frame {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    aspect-ratio: 4 / 3;
+  }
+
+  .frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .side-figure figcaption {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .brands {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .brands-head {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .brands-head h2 {
+    font-size: 1.875rem;
+  }
+
+  .tech {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  .tech .chip {
+    background: var(--workshop-50);
+  }
+
+  .brands-figure {
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    border: 1px dashed var(--steel-500);
+    border-radius: var(--radius);
+  }
+
+  .brands-figure img {
+    width: 100%;
+    height: auto;
+    opacity: 0.85;
+  }
+
+  .brands-figure figcaption {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .bench {
+    width: 100%;
+    max-width: 360px;
+    justify-self: center;
+  }
+</style>

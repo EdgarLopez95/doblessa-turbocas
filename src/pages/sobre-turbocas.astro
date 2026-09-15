@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SpecFrame from '../components/SpecFrame.astro';
+import Img from '../components/Img.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureList from '../components/FeatureList.astro';
+import Gallery from '../components/Gallery.astro';
+import CheckList from '../components/CheckList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
+
+const principles = [
+  { icon: 'eye' as const, title: 'Diagnosticar antes de vender', text: 'Primero entendemos qué le pasa al vehículo o a la pieza. Después proponemos la solución.' },
+  { icon: 'layers' as const, title: 'Mostrar el proceso', text: 'Te explicamos cada paso: qué revisamos, qué encontramos y qué vamos a hacer.' },
+  { icon: 'message' as const, title: 'Hablar claro', text: 'Sin tecnicismos innecesarios. Si algo no compensa repararlo, te lo decimos.' },
+  { icon: 'phone' as const, title: 'Contacto directo', text: 'Un teléfono visible y una forma sencilla de contarnos tu caso, sin rodeos.' },
+];
+
+const gallery = [
+  { src: 'fap-cat/equipo-limpieza-filtros-particulas.jpeg', alt: 'Zona de limpieza de filtros de partículas y piezas en las instalaciones de Turbocas', width: 300, height: 225, label: 'Instalaciones', caption: 'Zona de limpieza de filtros y piezas.' },
+  { src: 'laboratorio/banco-pruebas-turbocompresores.jpeg', alt: 'Banco de pruebas para turbocompresores de Turbocas', width: 300, height: 225, label: 'Laboratorio', caption: 'Banco de pruebas de turbocompresores.' },
+  { src: 'direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg', alt: 'Banco de pruebas de direcciones hidráulicas', width: 1153, height: 768, label: 'Direcciones', caption: 'Banco de pruebas de direcciones hidráulicas.' },
+];
+---
+
+<BaseLayout
+  title="Sobre Turbocas: laboratorio y taller en Castellón | Turbocas"
+  description="Turbocas es un taller mecánico con laboratorio especializado en turbocompresores, FAP/catalizadores y direcciones hidráulicas en Castellón. Conoce cómo trabajamos."
+  path="sobre-turbocas/"
+  heroImage="fap-cat/equipo-limpieza-filtros-particulas.jpeg"
+>
+  <PageHero
+    tone="light"
+    tag="Sobre Turbocas"
+    title="Laboratorio y taller mecánico en Castellón"
+    lead="Somos un taller mecánico con laboratorio propio especializado en turbocompresores, filtros de partículas y catalizadores y direcciones hidráulicas. Precisión que devuelve potencia."
+    crumbs={[{ label: 'Sobre Turbocas', href: 'sobre-turbocas/' }]}
+  >
+    <div class="actions" slot="actions">
+      <a class="btn btn-primary" href={url('contacto/#formulario')}>Diagnosticar mi caso <Icon name="arrow" /></a>
+      <a class="link-arrow" href={url('laboratorio/')}>Ver el laboratorio <Icon name="arrow" /></a>
+    </div>
+    <SpecFrame slot="media" tone="light" label="Castellón">
+      <Img
+        src="fap-cat/equipo-limpieza-filtros-particulas.jpeg"
+        alt="Instalaciones de Turbocas con equipos de limpieza identificados con la marca"
+        width={300}
+        height={225}
+        priority
+      />
+    </SpecFrame>
+  </PageHero>
+
+  <section class="section" aria-labelledby="metodo-titulo">
+    <div class="container">
+      <SectionHeading
+        id="metodo-titulo"
+        tag="01 · Método"
+        title="Cómo trabajamos"
+        lead="Cuatro principios que aplicamos igual a un cambio de aceite que a la reconstrucción de un turbo."
+        align="split"
+      />
+      <FeatureList items={principles} columns={4} />
+    </div>
+  </section>
+
+  <section class="section surface-dark blueprint" aria-labelledby="equipo-titulo">
+    <div class="container team">
+      <div class="team-copy">
+        <p class="tag">02 · Equipo</p>
+        <h2 id="equipo-titulo">Mecánica y laboratorio bajo el mismo techo</h2>
+        <p class="lead">
+          Mecánicos y técnicos de laboratorio trabajan en las mismas instalaciones. El diagnóstico del taller y la reconstrucción de componentes se coordinan sin intermediarios, lo que simplifica cada caso.
+        </p>
+      </div>
+      <div class="audiences">
+        <div class="aud">
+          <h3>Para particulares</h3>
+          <CheckList tone="dark" items={['Explicación clara de la avería', 'Presupuesto antes de reparar', 'Un único interlocutor']} />
+        </div>
+        <div class="aud">
+          <h3>Para talleres</h3>
+          <CheckList tone="dark" items={['Laboratorio especialista de apoyo', 'Diagnóstico con banco de pruebas', 'Información técnica del trabajo']} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="instalaciones-titulo">
+    <div class="container">
+      <SectionHeading
+        id="instalaciones-titulo"
+        tag="03 · Instalaciones"
+        title="Un espacio preparado para trabajo técnico"
+        lead="Zonas diferenciadas para mecánica, limpieza de filtros y pruebas en banco."
+        align="split"
+      >
+        <a class="link-arrow" href={url('laboratorio/#maquinaria')}>Ver toda la maquinaria <Icon name="arrow" /></a>
+      </SectionHeading>
+      <Gallery items={gallery} columns={3} />
+    </div>
+  </section>
+
+  <CtaBand title="Hablemos de tu vehículo" ctaLabel="Contactar con Turbocas" ctaHref="contacto/" tag="Contacto" />
+</BaseLayout>
+
+<style>
+  .team {
+    display: grid;
+    gap: var(--s-10);
+  }
+
+  @media (min-width: 960px) {
+    .team {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--s-16);
+      align-items: center;
+    }
+  }
+
+  .team-copy {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .audiences {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 640px) {
+    .audiences {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .aud {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+    padding: var(--s-6);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-top: 3px solid var(--turbo-500);
+    border-radius: var(--radius);
+  }
+</style>
