@@ -72,10 +72,10 @@ export const services: Service[] = [
     next: 'Solicita una valoración de tu bomba o dirección.',
     cta: 'Ver direcciones hidráulicas',
     image: {
-      src: 'direccion-hidraulica/banco-bombas-hidraulicas.jpg',
-      alt: 'Banco de pruebas para bombas hidráulicas',
-      width: 300,
-      height: 200,
+      src: 'direccion-hidraulica/banco-pruebas-direcciones-hidraulicas.jpg',
+      alt: 'Banco de pruebas de bombas y direcciones hidráulicas',
+      width: 1153,
+      height: 768,
     },
   },
   {
