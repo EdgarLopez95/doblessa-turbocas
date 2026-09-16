@@ -154,7 +154,7 @@ const poster = img('inicio/hero-taller-castellon.jpg');
 
   /*
    * Velo por zonas. El contenedor está centrado, así que la columna de texto termina hacia 50% + 80px
-   * en cualquier ancho de escritorio: denso hasta 50% + 120px (texto ≥ 8:1 medido), abierto entre texto y placa
+   * en cualquier ancho de escritorio: denso de 50% − 620px (inicio del texto) a 50% + 90px; abierto también en el margen izquierdo en pantallas anchas (texto ≥ 8:1 medido), abierto entre texto y placa
    * y a la derecha para que se lea el vídeo, y fundido inferior hacia el selector de síntomas.
    */
   .hero-veil {
@@ -164,10 +164,11 @@ const poster = img('inicio/hero-taller-castellon.jpg');
       linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 34%),
       linear-gradient(
         90deg,
-        rgb(17 24 39 / 0.92) 0%,
-        rgb(17 24 39 / 0.88) calc(50% + 120px),
-        rgb(17 24 39 / 0.45) calc(50% + 270px),
-        rgb(17 24 39 / 0.35) 100%
+        rgb(17 24 39 / 0.4) 0%,
+        rgb(17 24 39 / 0.9) calc(50% - 620px),
+        rgb(17 24 39 / 0.88) calc(50% + 90px),
+        rgb(17 24 39 / 0.4) calc(50% + 190px),
+        rgb(17 24 39 / 0.25) 100%
       );
   }
 
