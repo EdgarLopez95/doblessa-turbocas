@@ -14,8 +14,6 @@ interface Props {
   submitLabel: string;
   defaultService: string;
   formId: string;
-  helpfulVehicle?: string;
-  helpfulPiece?: string;
 }
 
 const {
@@ -26,15 +24,13 @@ const {
   submitLabel,
   defaultService,
   formId,
-  helpfulVehicle,
-  helpfulPiece,
 } = Astro.props;
 ---
 
 <section class="section request" aria-labelledby={`${formId}-faq`}>
   <div class="container grid">
     <div class="faq-col">
-      <HelpfulDataPanel vehicleBullet={helpfulVehicle} pieceBullet={helpfulPiece} class="request-helpful" />
+      <HelpfulDataPanel class="request-helpful" />
       <p class="tag">Dudas habituales</p>
       <h2 id={`${formId}-faq`}>{faqTitle}</h2>
       <Faq items={faq} />

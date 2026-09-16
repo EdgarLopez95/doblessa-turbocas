@@ -2,16 +2,10 @@
 import Icon from './Icon.astro';
 
 interface Props {
-  vehicleBullet?: string;
-  pieceBullet?: string;
   class?: string;
 }
 
-const {
-  vehicleBullet = 'Marca, modelo, motor y año del vehículo',
-  pieceBullet = 'Referencia de la pieza si está en la placa (si no la tienes, no pasa nada)',
-  class: className,
-} = Astro.props;
+const { class: className } = Astro.props;
 ---
 
 <div class:list={['helpful-panel', className]}>
@@ -20,13 +14,13 @@ const {
     <h3 class="hp-title">Qué datos nos ayudan</h3>
   </div>
   <ul class="hp-list">
-    <li>{vehicleBullet}</li>
-    <li>{pieceBullet}</li>
+    <li>Marca, modelo, motor y año del vehículo</li>
+    <li>Referencia de la pieza si está en la placa (si no la tienes, no pasa nada)</li>
     <li>Síntomas o testigos que ves</li>
     <li>Si puedes, una foto de la pieza o del cuadro</li>
     <li>Si envías la pieza desde fuera de Castellón: consúltanos ANTES de expedirla</li>
   </ul>
-  <p class="hp-note">No hace falta que sepas el código técnico. Con esto podemos orientarte.</p>
+  <p class="hp-note">Con lo que tengas a mano empezamos.</p>
 </div>
 
 <style>

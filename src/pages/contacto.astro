@@ -85,6 +85,7 @@ import { img } from '../lib/url';
               {business.street}<br />
               {business.postalCode} {business.city}
             </address>
+            <p class="hours"><Icon name="calendar" size={18} /> <span>Horario de atención: pendiente de confirmar por Turbocas. Mientras tanto, llama al {business.phoneDisplay}.</span></p>
             <p class="validate">Dirección pública tomada de la web actual. Pendiente de validar antes de publicar.</p>
           </div>
         </div>
@@ -104,7 +105,7 @@ import { img } from '../lib/url';
         <li><span>02</span><div><strong>Instrucciones de envío</strong><p>Te indicamos cómo preparar la pieza y qué datos incluir.</p></div></li>
         <li><span>03</span><div><strong>Diagnóstico y presupuesto</strong><p>Revisamos la pieza y te proponemos la solución.</p></div></li>
       </ol>
-      <p class="small n-note">La forma de envío y los plazos se confirman en cada caso; no se garantizan de antemano.</p>
+      <p class="small n-note">Agencia, plazos y portes: se confirman en cada presupuesto.</p>
     </div>
   </section>
 </BaseLayout>
@@ -261,6 +262,20 @@ import { img } from '../lib/url';
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.25;
+  }
+
+  .hours {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 0.875rem;
+    color: var(--text-strong);
+    font-weight: 500;
+  }
+
+  .hours :global(svg) {
+    color: var(--turbo-600);
+    flex: none;
   }
 
   .validate {

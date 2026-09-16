@@ -54,6 +54,10 @@ const legalLinks = [
           <Icon name="pin" size={20} />
           <span>{business.street}<br />{business.postalCode} {business.city}</span>
         </p>
+        <p class="f-hours">
+          <Icon name="calendar" size={16} />
+          <span>Horario de atención: pendiente de confirmar por Turbocas. Mientras tanto, llama al {business.phoneDisplay}.</span>
+        </p>
       </address>
       <a class="btn btn-primary btn-sm f-cta" href={url('contacto/#formulario')}>Solicitar presupuesto</a>
     </div>
@@ -171,6 +175,22 @@ const legalLinks = [
     margin-top: var(--s-2);
     color: var(--steel-300);
     line-height: 1.5;
+  }
+
+  .f-hours {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+    color: var(--steel-300);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .f-hours :global(svg) {
+    color: var(--turbo-500);
+    flex: none;
+    margin-top: 2px;
   }
 
   .f-cta {
