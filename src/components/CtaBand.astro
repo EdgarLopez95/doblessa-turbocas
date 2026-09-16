@@ -20,36 +20,65 @@ const {
 } = Astro.props;
 ---
 
-<section class="band surface-dark blueprint" aria-labelledby="cta-band-title">
-  <div class="container inner">
-    <div class="copy">
-      <p class="tag">{tag}</p>
-      <h2 id="cta-band-title">{title}</h2>
-      <p class="lead">{text}</p>
-    </div>
-    <div class="side">
-      <a class="btn btn-primary big" href={url(ctaHref)}>
-        {ctaLabel}
-        <Icon name="arrow" />
-      </a>
-      <p class="or">o llama directamente</p>
-      <a class="phone" href={business.phoneHref}>
-        <Icon name="phone" size={28} />
-        {business.phoneDisplay}
-      </a>
+<!-- Card oscura sobre fondo claro: separa el CTA del footer aunque compartan la tinta. -->
+<section class="cta-band" aria-labelledby="cta-band-title">
+  <div class="container">
+    <div class="card surface-dark blueprint">
+      <div class="inner">
+        <div class="copy">
+          <p class="tag">{tag}</p>
+          <h2 id="cta-band-title">{title}</h2>
+          <p class="lead">{text}</p>
+        </div>
+        <div class="side">
+          <a class="btn btn-primary big" href={url(ctaHref)}>
+            {ctaLabel}
+            <Icon name="arrow" />
+          </a>
+          <p class="or">o llama directamente</p>
+          <a class="phone" href={business.phoneHref}>
+            <Icon name="phone" size={28} />
+            {business.phoneDisplay}
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .band {
+  /*
+   * Card tinta completa sobre fondo claro, con aire arriba y abajo: el fondo claro separa el CTA del footer.
+   * Sin solape a propósito: card y footer comparten tinta y la zona solapada volvería a fundirse con el pie.
+   */
+  .cta-band {
     padding-block: var(--s-16);
-    overflow: hidden;
+    background: var(--surface-base);
   }
 
   @media (min-width: 1024px) {
-    .band {
+    .cta-band {
       padding-block: var(--s-24);
+    }
+  }
+
+  .card {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border-top: 3px solid var(--turbo-500);
+    box-shadow: 0 32px 64px -32px rgb(17 24 39 / 0.55);
+    padding: var(--s-10) var(--s-6);
+  }
+
+  @media (min-width: 768px) {
+    .card {
+      padding: var(--s-16) var(--s-10);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card {
+      padding: var(--s-16);
     }
   }
 
@@ -83,7 +112,7 @@ const {
     border: 1px solid rgb(255 255 255 / 0.14);
     border-left: 3px solid var(--turbo-500);
     border-radius: var(--radius);
-    background: rgb(255 255 255 / 0.03);
+    background: rgb(255 255 255 / 0.04);
   }
 
   .big {
@@ -105,7 +134,7 @@ const {
     gap: var(--s-3);
     min-height: 48px;
     font-family: var(--font-display);
-    font-size: 2.25rem;
+    font-size: clamp(1.875rem, 1.5rem + 1.2vw, 2.25rem);
     font-weight: 700;
     letter-spacing: 0.02em;
     text-decoration: none;
