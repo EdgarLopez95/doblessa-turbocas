@@ -25,6 +25,7 @@ const poster = img('inicio/hero-taller-castellon.jpg');
       <source src={url('videos/hero-taller-castellon.webm')} type="video/webm" />
       <source src={url('videos/hero-taller-castellon.mp4')} type="video/mp4" />
     </video>
+    <div class="hero-tint"></div>
     <div class="hero-veil"></div>
   </div>
 
@@ -138,17 +139,36 @@ const poster = img('inicio/hero-taller-castellon.jpg');
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* El material llega etalonado en rojo: se neutraliza para que manden tinta y ámbar. */
-    filter: grayscale(1) brightness(0.85) contrast(1.1);
+    /* El material llega etalonado en rojo: se pasa a gris con más luz para que se lea el taller. */
+    filter: grayscale(1) brightness(1.05) contrast(1.15);
   }
 
-  /* Velo: tinta densa bajo el texto (izquierda) y fundido inferior hacia el selector de síntomas. */
+  /* Virado frío hacia la tinta del sistema (sin rojo ni ámbar en el fondo). */
+  .hero-tint {
+    position: absolute;
+    inset: 0;
+    background: var(--steel-500);
+    mix-blend-mode: color;
+    opacity: 0.55;
+  }
+
+  /*
+   * Velo por zonas. El contenedor está centrado, así que la columna de texto termina hacia 50% + 80px
+   * en cualquier ancho de escritorio: denso hasta 50% + 120px (texto ≥ 8:1 medido), abierto entre texto y placa
+   * y a la derecha para que se lea el vídeo, y fundido inferior hacia el selector de síntomas.
+   */
   .hero-veil {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 38%),
-      linear-gradient(90deg, rgb(17 24 39 / 0.94) 0%, rgb(17 24 39 / 0.86) 45%, rgb(17 24 39 / 0.5) 100%);
+      linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 34%),
+      linear-gradient(
+        90deg,
+        rgb(17 24 39 / 0.92) 0%,
+        rgb(17 24 39 / 0.88) calc(50% + 120px),
+        rgb(17 24 39 / 0.45) calc(50% + 270px),
+        rgb(17 24 39 / 0.35) 100%
+      );
   }
 
   /* Retícula técnica muy tenue sobre el velo, sin competir con la imagen. */
@@ -163,11 +183,11 @@ const poster = img('inicio/hero-taller-castellon.jpg');
   }
 
   @media (max-width: 959px) {
-    /* En móvil y tablet el texto ocupa todo el ancho: velo uniforme y más denso. */
+    /* En móvil y tablet el texto acaba hacia el 52% del alto (medido a 360–768 px): velo denso hasta el 55% y abierto alrededor de la placa. */
     .hero-veil {
       background:
-        linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 30%),
-        linear-gradient(180deg, rgb(17 24 39 / 0.84) 0%, rgb(17 24 39 / 0.84) 100%);
+        linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 14%),
+        linear-gradient(180deg, rgb(17 24 39 / 0.86) 0%, rgb(17 24 39 / 0.84) 55%, rgb(17 24 39 / 0.6) 68%, rgb(17 24 39 / 0.6) 100%);
     }
   }
 
@@ -338,11 +358,15 @@ const poster = img('inicio/hero-taller-castellon.jpg');
     top: 94%;
   }
 
+  /* Fondo tinta propio: legible aunque la zona de la placa quede con el velo abierto. */
   .legend {
     list-style: none;
     display: grid;
     gap: 4px;
     margin: var(--s-6) 0 0;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--radius-sm);
+    background: rgb(17 24 39 / 0.85);
     font-size: 0.875rem;
     color: var(--steel-300);
   }
