@@ -144,6 +144,12 @@ const panelSecondary = [
         </li>
       </ul>
       <ul class="m-links">
+        <li>
+          <a href={url('')} aria-current={isCurrent('') ? 'page' : undefined}>
+            Inicio
+            <Icon name="arrow" size={20} />
+          </a>
+        </li>
         {
           mainNav.map((item) => (
             <li>

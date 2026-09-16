@@ -34,6 +34,9 @@ Documentación complementaria entregada:
 
 - **Hero de inicio con vídeo de taller** (`HomeHero.astro`): vídeo decorativo de fondo (`aria-hidden`, `autoplay muted loop playsinline`, sin `controls`, `preload="none"`) en WebM VP9 1,1 MB + MP4 H.264 1,1 MB, con poster `inicio/hero-taller-castellon.jpg` (22 KB) como LCP, preload y og:image de la home. El etalonaje rojo se neutraliza con `grayscale` y un virado frío (`steel-500`, `mix-blend-mode: color`). Velo por zonas: denso bajo el texto (≥ 10,9:1 incluso con un fotograma blanco) y abierto entre texto y placa, a la derecha y en el margen izquierdo de pantallas anchas para que se lea el taller; en móvil denso hasta el 55 % del alto, con leyenda y lema sobre fondo tinta propio. Con `prefers-reduced-motion: reduce` o `saveData` el `<video>` se elimina y queda solo el poster. La placa del turbo con cotas flota a la derecha (400 px) desde 960 px y pasa bajo el copy en móvil.
 
+- **CTA de presupuesto como card** (`CtaBand.astro`, en inicio, servicios, laboratorio y sobre Turbocas): card tinta completa sobre fondo claro con aire por encima y por debajo, para que no se confunda con el footer. Sin solape a propósito: comparten color y la parte solapada volvía a fundirse con el pie.
+- **Enlace «Inicio» visible**: añadido como primer enlace del menú móvil (con `aria-current` en la home) y de la columna «Turbocas» del footer. En escritorio se mantiene el logo como vuelta al inicio, junto a las migas de pan.
+
 ## Rutas compiladas en `dist/`
 
 | Ruta | Página | Función principal | Estado H1 / Enlaces |
