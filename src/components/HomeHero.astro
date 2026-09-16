@@ -1,13 +1,48 @@
 ---
 import Icon from './Icon.astro';
-import Img from './Img.astro';
 import { business } from '../data/site';
-import { url } from '../lib/url';
+import { img, url } from '../lib/url';
 
 const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brida de turbina'];
+const poster = img('inicio/hero-taller-castellon.jpg');
 ---
 
-<section class="hero surface-dark blueprint">
+<section class="hero surface-dark">
+  <!-- Fondo decorativo: poster como base (LCP) y vídeo de taller encima, siempre bajo un velo tinta. -->
+  <div class="hero-media" aria-hidden="true">
+    <img class="hero-poster" src={poster} alt="" width="1280" height="502" decoding="async" fetchpriority="high" />
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={poster}
+      aria-hidden="true"
+      data-hero-video
+    >
+      <source src={url('videos/hero-taller-castellon.webm')} type="video/webm" />
+      <source src={url('videos/hero-taller-castellon.mp4')} type="video/mp4" />
+    </video>
+    <div class="hero-veil"></div>
+  </div>
+
+  <script is:inline>
+    (() => {
+      // Sin movimiento para quien lo pide y sin descarga de vídeo con ahorro de datos: queda solo el poster.
+      const video = document.querySelector('[data-hero-video]');
+      if (!video) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+      if (reduce || saveData) {
+        video.pause();
+        video.removeAttribute('autoplay');
+        video.remove();
+      }
+    })();
+  </script>
+
   <div class="container grid">
     <div class="copy">
       <p class="tag">Laboratorio de turbos · FAP · Direcciones hidráulicas</p>
@@ -33,14 +68,19 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
           <path d="M6 98.5H94M6 97v3M94 97v3M1.5 6V94M0 6h3M0 94h3"></path>
         </svg>
         <div class="plate">
-          <Img
-            class="turbo"
-            src="catalogo/turbo-gt2052v-audi-v6-tdi.jpg"
-            alt="Turbocompresor de geometría variable GT2052V con entrada del compresor, actuador y brida de turbina"
-            width={1000}
-            height={1000}
-            priority
-          />
+          <!-- Carga inmediata (visible en escritorio) pero sin prioridad alta: el LCP es el poster del vídeo. -->
+          <picture class="pic">
+            <source srcset={img('catalogo/turbo-gt2052v-audi-v6-tdi.webp')} type="image/webp" />
+            <img
+              class="turbo"
+              src={img('catalogo/turbo-gt2052v-audi-v6-tdi.jpg')}
+              alt="Turbocompresor de geometría variable GT2052V con entrada del compresor, actuador y brida de turbina"
+              width="1000"
+              height="1000"
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
         </div>
         <svg class="callouts" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
           <polyline style="--d: 0" pathLength="1" points="51.6,31.4 58,6 100,6"></polyline>
@@ -69,8 +109,11 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
 
 <style>
   .hero {
-    padding-block: var(--s-10) 120px;
+    position: relative;
+    isolation: isolate;
     overflow: hidden;
+    background: var(--ink-950);
+    padding-block: var(--s-10) 120px;
   }
 
   @media (min-width: 1024px) {
@@ -79,16 +122,74 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     }
   }
 
+  /* ---------- Capa de fondo ---------- */
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-poster,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* El material llega etalonado en rojo: se neutraliza para que manden tinta y ámbar. */
+    filter: grayscale(1) brightness(0.85) contrast(1.1);
+  }
+
+  /* Velo: tinta densa bajo el texto (izquierda) y fundido inferior hacia el selector de síntomas. */
+  .hero-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 38%),
+      linear-gradient(90deg, rgb(17 24 39 / 0.94) 0%, rgb(17 24 39 / 0.86) 45%, rgb(17 24 39 / 0.5) 100%);
+  }
+
+  /* Retícula técnica muy tenue sobre el velo, sin competir con la imagen. */
+  .hero-veil::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  @media (max-width: 959px) {
+    /* En móvil y tablet el texto ocupa todo el ancho: velo uniforme y más denso. */
+    .hero-veil {
+      background:
+        linear-gradient(0deg, var(--ink-950) 0%, rgb(17 24 39 / 0) 30%),
+        linear-gradient(180deg, rgb(17 24 39 / 0.84) 0%, rgb(17 24 39 / 0.84) 100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Respaldo sin JS: nunca se muestra movimiento. */
+    .hero-video {
+      display: none;
+    }
+  }
+
+  /* ---------- Contenido ---------- */
   .grid {
+    position: relative;
+    z-index: 1;
     display: grid;
-    gap: var(--s-16);
+    gap: var(--s-10);
     align-items: center;
   }
 
   @media (min-width: 960px) {
     .grid {
-      grid-template-columns: 7fr 5fr;
-      gap: var(--s-10);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     }
   }
 
@@ -127,10 +228,18 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     padding-block: 10px;
   }
 
+  /* ---------- Placa técnica del turbo ---------- */
   .visual {
     margin: 0;
     justify-self: center;
-    width: min(100%, 500px);
+    width: min(100%, 340px);
+  }
+
+  @media (min-width: 960px) {
+    .visual {
+      justify-self: end;
+      width: min(100%, 400px);
+    }
   }
 
   .stage {
@@ -154,7 +263,7 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     inset: 6%;
     border-radius: var(--radius);
     background: var(--white);
-    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.7);
+    box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.8);
     overflow: hidden;
   }
 
@@ -197,13 +306,12 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     border: 1px solid rgb(255 255 255 / 0.2);
     border-radius: 2px;
     font-family: var(--font-display);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--white);
-    /* Todas las etiquetas centradas sobre su línea guía, en el borde de la placa */
     transform: translateY(-50%);
   }
 
@@ -234,7 +342,7 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     list-style: none;
     display: grid;
     gap: 4px;
-    margin-top: var(--s-6);
+    margin: var(--s-6) 0 0;
     font-size: 0.875rem;
     color: var(--steel-300);
   }
@@ -245,7 +353,8 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     margin-right: 6px;
   }
 
-  @media (min-width: 560px) {
+  /* Textos de las cotas solo en escritorio, donde la placa flota a la derecha. */
+  @media (min-width: 960px) {
     .c-text {
       display: inline;
     }
@@ -254,8 +363,13 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     }
   }
 
+  /* El lema lleva su propio fondo tinta: legible sea cual sea el fotograma de detrás. */
   .motto {
-    margin-top: var(--s-4);
+    display: table;
+    margin: var(--s-4) auto 0;
+    padding: 4px 10px;
+    border-radius: 2px;
+    background: rgb(17 24 39 / 0.85);
     text-align: center;
     font-family: var(--font-display);
     font-size: 0.9375rem;
@@ -265,7 +379,8 @@ const parts = ['Entrada del compresor', 'Actuador de geometría variable', 'Brid
     color: var(--steel-300);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
+  /* Dibujo de cotas solo en escritorio y con movimiento permitido: en móvil no hay nada animado junto a los botones. */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 960px) {
     .plate {
       animation: rise 240ms var(--ease-out) both;
     }

@@ -32,6 +32,8 @@ Documentación complementaria entregada:
 8. **A9. SEO técnico, privacidad y fuentes locales**: Incorporado `noindex, follow` permanente en `BaseLayout.astro`. Descargadas 6 variantes WOFF2 e implementadas en `global.css`, suprimiendo los `preconnect` y stylesheet de Google Fonts. Actualizada la política de privacidad para reflejar que las fuentes son locales y no hay llamadas a Google Fonts. (Commits `a083e6c` y `e5d201d`).
 9. **A10. Garantía y horario en pie de página**: Incorporado bloque con icono de escudo en `Footer.astro` con la redacción exacta requerida: *"Trabajamos con garantía. El plazo y las condiciones las confirmará Turbocas en el presupuesto."* Añadido aviso de horario pendiente de confirmar sin inventar franjas: *"Horario de atención: pendiente de confirmar por Turbocas. Mientras tanto, llama al 964 196 929."*. (Commits `abf00cc` y `e5d201d`).
 
+- **Hero de inicio con vídeo de taller** (`HomeHero.astro`): vídeo decorativo de fondo (`aria-hidden`, `autoplay muted loop playsinline`, sin `controls`, `preload="none"`) en WebM VP9 1,1 MB + MP4 H.264 1,1 MB, con poster `inicio/hero-taller-castellon.jpg` (22 KB) como LCP, preload y og:image de la home. El etalonaje rojo del material se neutraliza con `grayscale` bajo un velo tinta (contraste medido ≥ 10:1 en el texto). Con `prefers-reduced-motion: reduce` o `saveData` el `<video>` se elimina y queda solo el poster. La placa del turbo con cotas flota a la derecha (400 px) desde 960 px y pasa bajo el copy en móvil.
+
 ## Rutas compiladas en `dist/`
 
 | Ruta | Página | Función principal | Estado H1 / Enlaces |
